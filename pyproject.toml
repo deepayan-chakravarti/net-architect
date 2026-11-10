@@ -1,0 +1,23 @@
+[project]
+name = "netarchitect"
+version = "1.0.0"
+description = "NetArchitect: Recommendation & Config Engine - algorithmic network planning with an explainable decision engine (CIC-307 mini-project)"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+netarchitect = "netarchitect.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["netarchitect*"]
+
+[tool.setuptools.package-data]
+netarchitect = ["presets/*.json", "web/static/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

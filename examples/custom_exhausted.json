@@ -1,0 +1,9 @@
+{
+  "name": "Root too small (expected AddressSpaceExhaustedError)",
+  "network_type": "campus",
+  "root_prefix": "172.30.0.0/24",
+  "sites": [
+    {"name": "HQ", "vlans": [{"name": "USERS", "vlan_id": 10, "hosts": 300}, {"name": "MGMT", "vlan_id": 99, "hosts": 10, "role": "mgmt"}]}
+  ],
+  "links": []
+}

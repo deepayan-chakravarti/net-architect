@@ -1,0 +1,2282 @@
+{
+  "version": "1.0.0",
+  "meta": {
+    "name": "Global WAN",
+    "profile": "global_wan",
+    "network_type": "wan",
+    "resiliency": "redundant",
+    "root_prefix": "10.64.0.0/16",
+    "warnings": []
+  },
+  "topology": {
+    "tier": "Hub-and-spoke IPsec overlay with regional site LANs",
+    "sites": {
+      "NYC": {
+        "port_demand": 700,
+        "access_switches": 35,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "LONDON": {
+        "port_demand": 560,
+        "access_switches": 28,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "SINGAPORE": {
+        "port_demand": 490,
+        "access_switches": 25,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "MUMBAI": {
+        "port_demand": 500,
+        "access_switches": 25,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      }
+    },
+    "access_switches_total": 113
+  },
+  "media": {
+    "links": [
+      {
+        "subject": "NYC <-> LONDON",
+        "distance_m": 5570000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 38.225490196078425,
+        "budget": null,
+        "warnings": [],
+        "id": "L1",
+        "a": "NYC",
+        "b": "LONDON",
+        "role": "primary"
+      },
+      {
+        "subject": "NYC <-> SINGAPORE",
+        "distance_m": 15340000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 105.27450980392157,
+        "budget": null,
+        "warnings": [],
+        "id": "L2",
+        "a": "NYC",
+        "b": "SINGAPORE",
+        "role": "primary"
+      },
+      {
+        "subject": "NYC <-> MUMBAI",
+        "distance_m": 12540000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 86.05882352941177,
+        "budget": null,
+        "warnings": [],
+        "id": "L3",
+        "a": "NYC",
+        "b": "MUMBAI",
+        "role": "primary"
+      },
+      {
+        "subject": "LONDON <-> MUMBAI",
+        "distance_m": 7190000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 49.34313725490196,
+        "budget": null,
+        "warnings": [],
+        "id": "L4",
+        "a": "LONDON",
+        "b": "MUMBAI",
+        "role": "secondary"
+      },
+      {
+        "subject": "SINGAPORE <-> MUMBAI",
+        "distance_m": 3900000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 26.764705882352942,
+        "budget": null,
+        "warnings": [],
+        "id": "L5",
+        "a": "SINGAPORE",
+        "b": "MUMBAI",
+        "role": "secondary"
+      },
+      {
+        "subject": "NYC <-> CLOUD-VPC",
+        "distance_m": 350000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 2.4019607843137254,
+        "budget": null,
+        "warnings": [],
+        "id": "L6",
+        "a": "NYC",
+        "b": "CLOUD-VPC",
+        "role": "primary"
+      },
+      {
+        "subject": "LONDON <-> CLOUD-VPC",
+        "distance_m": 5600000.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Carrier circuit",
+        "transceiver": "Provider handoff (1000BASE-LX/10GBASE-LR UNI)",
+        "standard": "Provider-managed",
+        "transport": "internet",
+        "service": "Internet underlay + IPsec overlay",
+        "poe": false,
+        "latency_ms": 38.431372549019606,
+        "budget": null,
+        "warnings": [],
+        "id": "L7",
+        "a": "LONDON",
+        "b": "CLOUD-VPC",
+        "role": "secondary"
+      }
+    ],
+    "cable_runs": []
+  },
+  "addressing": {
+    "root": "10.64.0.0/16",
+    "root_size": 65536,
+    "site_blocks_allocated": 5152,
+    "root_utilization_pct": 7.86,
+    "subnet_count": 23,
+    "address_efficiency_pct": 77.33,
+    "flsm_equivalent_addresses": 14360,
+    "vlsm_addresses": 3352,
+    "blocks": [
+      {
+        "root": "10.64.0.0/21",
+        "root_size": 2048,
+        "allocated": 1184,
+        "free": 864,
+        "root_utilization_pct": 57.81,
+        "subnets": [
+          {
+            "name": "IOT-SCANNERS",
+            "site": "NYC",
+            "kind": "lan",
+            "role": "iot",
+            "vlan_id": 100,
+            "hosts_requested": 600,
+            "cidr": "10.64.0.0/22",
+            "network": "10.64.0.0",
+            "prefix": 22,
+            "mask": "255.255.252.0",
+            "wildcard": "0.0.3.255",
+            "broadcast": "10.64.3.255",
+            "gateway": "10.64.0.1",
+            "first_usable": "10.64.0.1",
+            "last_usable": "10.64.3.254",
+            "usable": 1022,
+            "block_size": 1024,
+            "utilization_pct": 58.8
+          },
+          {
+            "name": "USERS",
+            "site": "NYC",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 10,
+            "hosts_requested": 100,
+            "cidr": "10.64.4.0/25",
+            "network": "10.64.4.0",
+            "prefix": 25,
+            "mask": "255.255.255.128",
+            "wildcard": "0.0.0.127",
+            "broadcast": "10.64.4.127",
+            "gateway": "10.64.4.1",
+            "first_usable": "10.64.4.1",
+            "last_usable": "10.64.4.126",
+            "usable": 126,
+            "block_size": 128,
+            "utilization_pct": 80.2
+          },
+          {
+            "name": "MGMT",
+            "site": "NYC",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 99,
+            "hosts_requested": 16,
+            "cidr": "10.64.4.128/27",
+            "network": "10.64.4.128",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.64.4.159",
+            "gateway": "10.64.4.129",
+            "first_usable": "10.64.4.129",
+            "last_usable": "10.64.4.158",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 56.7
+          }
+        ],
+        "site": "NYC",
+        "block": "10.64.0.0/21",
+        "mask": "255.255.248.0",
+        "wildcard": "0.0.7.255"
+      },
+      {
+        "root": "10.64.8.0/22",
+        "root_size": 1024,
+        "allocated": 608,
+        "free": 416,
+        "root_utilization_pct": 59.38,
+        "subnets": [
+          {
+            "name": "IOT-SCANNERS",
+            "site": "LONDON",
+            "kind": "lan",
+            "role": "iot",
+            "vlan_id": 100,
+            "hosts_requested": 500,
+            "cidr": "10.64.8.0/23",
+            "network": "10.64.8.0",
+            "prefix": 23,
+            "mask": "255.255.254.0",
+            "wildcard": "0.0.1.255",
+            "broadcast": "10.64.9.255",
+            "gateway": "10.64.8.1",
+            "first_usable": "10.64.8.1",
+            "last_usable": "10.64.9.254",
+            "usable": 510,
+            "block_size": 512,
+            "utilization_pct": 98.2
+          },
+          {
+            "name": "USERS",
+            "site": "LONDON",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 10,
+            "hosts_requested": 60,
+            "cidr": "10.64.10.0/26",
+            "network": "10.64.10.0",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.64.10.63",
+            "gateway": "10.64.10.1",
+            "first_usable": "10.64.10.1",
+            "last_usable": "10.64.10.62",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 98.4
+          },
+          {
+            "name": "MGMT",
+            "site": "LONDON",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 99,
+            "hosts_requested": 16,
+            "cidr": "10.64.10.64/27",
+            "network": "10.64.10.64",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.64.10.95",
+            "gateway": "10.64.10.65",
+            "first_usable": "10.64.10.65",
+            "last_usable": "10.64.10.94",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 56.7
+          }
+        ],
+        "site": "LONDON",
+        "block": "10.64.8.0/22",
+        "mask": "255.255.252.0",
+        "wildcard": "0.0.3.255"
+      },
+      {
+        "root": "10.64.12.0/22",
+        "root_size": 1024,
+        "allocated": 608,
+        "free": 416,
+        "root_utilization_pct": 59.38,
+        "subnets": [
+          {
+            "name": "IOT-SCANNERS",
+            "site": "SINGAPORE",
+            "kind": "lan",
+            "role": "iot",
+            "vlan_id": 100,
+            "hosts_requested": 450,
+            "cidr": "10.64.12.0/23",
+            "network": "10.64.12.0",
+            "prefix": 23,
+            "mask": "255.255.254.0",
+            "wildcard": "0.0.1.255",
+            "broadcast": "10.64.13.255",
+            "gateway": "10.64.12.1",
+            "first_usable": "10.64.12.1",
+            "last_usable": "10.64.13.254",
+            "usable": 510,
+            "block_size": 512,
+            "utilization_pct": 88.4
+          },
+          {
+            "name": "USERS",
+            "site": "SINGAPORE",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 10,
+            "hosts_requested": 40,
+            "cidr": "10.64.14.0/26",
+            "network": "10.64.14.0",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.64.14.63",
+            "gateway": "10.64.14.1",
+            "first_usable": "10.64.14.1",
+            "last_usable": "10.64.14.62",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 66.1
+          },
+          {
+            "name": "MGMT",
+            "site": "SINGAPORE",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 99,
+            "hosts_requested": 16,
+            "cidr": "10.64.14.64/27",
+            "network": "10.64.14.64",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.64.14.95",
+            "gateway": "10.64.14.65",
+            "first_usable": "10.64.14.65",
+            "last_usable": "10.64.14.94",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 56.7
+          }
+        ],
+        "site": "SINGAPORE",
+        "block": "10.64.12.0/22",
+        "mask": "255.255.252.0",
+        "wildcard": "0.0.3.255"
+      },
+      {
+        "root": "10.64.16.0/22",
+        "root_size": 1024,
+        "allocated": 608,
+        "free": 416,
+        "root_utilization_pct": 59.38,
+        "subnets": [
+          {
+            "name": "IOT-SCANNERS",
+            "site": "MUMBAI",
+            "kind": "lan",
+            "role": "iot",
+            "vlan_id": 100,
+            "hosts_requested": 450,
+            "cidr": "10.64.16.0/23",
+            "network": "10.64.16.0",
+            "prefix": 23,
+            "mask": "255.255.254.0",
+            "wildcard": "0.0.1.255",
+            "broadcast": "10.64.17.255",
+            "gateway": "10.64.16.1",
+            "first_usable": "10.64.16.1",
+            "last_usable": "10.64.17.254",
+            "usable": 510,
+            "block_size": 512,
+            "utilization_pct": 88.4
+          },
+          {
+            "name": "USERS",
+            "site": "MUMBAI",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 10,
+            "hosts_requested": 50,
+            "cidr": "10.64.18.0/26",
+            "network": "10.64.18.0",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.64.18.63",
+            "gateway": "10.64.18.1",
+            "first_usable": "10.64.18.1",
+            "last_usable": "10.64.18.62",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 82.3
+          },
+          {
+            "name": "MGMT",
+            "site": "MUMBAI",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 99,
+            "hosts_requested": 16,
+            "cidr": "10.64.18.64/27",
+            "network": "10.64.18.64",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.64.18.95",
+            "gateway": "10.64.18.65",
+            "first_usable": "10.64.18.65",
+            "last_usable": "10.64.18.94",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 56.7
+          }
+        ],
+        "site": "MUMBAI",
+        "block": "10.64.16.0/22",
+        "mask": "255.255.252.0",
+        "wildcard": "0.0.3.255"
+      },
+      {
+        "root": "10.64.20.0/27",
+        "root_size": 32,
+        "allocated": 24,
+        "free": 8,
+        "root_utilization_pct": 75.0,
+        "subnets": [
+          {
+            "name": "P2P-NYC-LONDON",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.64.20.0/30",
+            "network": "10.64.20.0",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.64.20.3",
+            "gateway": null,
+            "first_usable": "10.64.20.1",
+            "last_usable": "10.64.20.2",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "P2P-NYC-SINGAPORE",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.64.20.4/30",
+            "network": "10.64.20.4",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.64.20.7",
+            "gateway": null,
+            "first_usable": "10.64.20.5",
+            "last_usable": "10.64.20.6",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "P2P-NYC-MUMBAI",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.64.20.8/30",
+            "network": "10.64.20.8",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.64.20.11",
+            "gateway": null,
+            "first_usable": "10.64.20.9",
+            "last_usable": "10.64.20.10",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "P2P-LONDON-MUMBAI",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.64.20.12/30",
+            "network": "10.64.20.12",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.64.20.15",
+            "gateway": null,
+            "first_usable": "10.64.20.13",
+            "last_usable": "10.64.20.14",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "P2P-SINGAPORE-MUMBAI",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.64.20.16/30",
+            "network": "10.64.20.16",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.64.20.19",
+            "gateway": null,
+            "first_usable": "10.64.20.17",
+            "last_usable": "10.64.20.18",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-NYC",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.64.20.20/32",
+            "network": "10.64.20.20",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.64.20.20",
+            "gateway": null,
+            "first_usable": "10.64.20.20",
+            "last_usable": "10.64.20.20",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-LONDON",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.64.20.21/32",
+            "network": "10.64.20.21",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.64.20.21",
+            "gateway": null,
+            "first_usable": "10.64.20.21",
+            "last_usable": "10.64.20.21",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-SINGAPORE",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.64.20.22/32",
+            "network": "10.64.20.22",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.64.20.22",
+            "gateway": null,
+            "first_usable": "10.64.20.22",
+            "last_usable": "10.64.20.22",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-MUMBAI",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.64.20.23/32",
+            "network": "10.64.20.23",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.64.20.23",
+            "gateway": null,
+            "first_usable": "10.64.20.23",
+            "last_usable": "10.64.20.23",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          }
+        ],
+        "site": "INFRA",
+        "block": "10.64.20.0/27",
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31"
+      },
+      {
+        "root": "10.200.0.0/16",
+        "root_size": 65536,
+        "allocated": 320,
+        "free": 65216,
+        "root_utilization_pct": 0.49,
+        "subnets": [
+          {
+            "name": "APP-TIER",
+            "site": "CLOUD-VPC",
+            "kind": "lan",
+            "role": "server",
+            "vlan_id": null,
+            "hosts_requested": 200,
+            "cidr": "10.200.0.0/24",
+            "network": "10.200.0.0",
+            "prefix": 24,
+            "mask": "255.255.255.0",
+            "wildcard": "0.0.0.255",
+            "broadcast": "10.200.0.255",
+            "gateway": "10.200.0.1",
+            "first_usable": "10.200.0.1",
+            "last_usable": "10.200.0.254",
+            "usable": 254,
+            "block_size": 256,
+            "utilization_pct": 79.1
+          },
+          {
+            "name": "DATA-TIER",
+            "site": "CLOUD-VPC",
+            "kind": "lan",
+            "role": "server",
+            "vlan_id": null,
+            "hosts_requested": 50,
+            "cidr": "10.200.1.0/26",
+            "network": "10.200.1.0",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.200.1.63",
+            "gateway": "10.200.1.1",
+            "first_usable": "10.200.1.1",
+            "last_usable": "10.200.1.62",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 82.3
+          }
+        ],
+        "site": "CLOUD-VPC",
+        "block": "10.200.0.0/16",
+        "mask": "255.255.0.0",
+        "wildcard": "0.0.255.255"
+      }
+    ]
+  },
+  "routing": {
+    "igp": "OSPFv2",
+    "process_id": 1,
+    "reference_bandwidth_mbps": 100000,
+    "hub": "NYC",
+    "areas": {
+      "NYC": 0,
+      "LONDON": 1,
+      "SINGAPORE": 2,
+      "MUMBAI": 3
+    },
+    "summaries": {
+      "LONDON": {
+        "area": 1,
+        "network": "10.64.8.0",
+        "mask": "255.255.252.0",
+        "cidr": "10.64.8.0/22",
+        "lan_subnets": 3
+      },
+      "SINGAPORE": {
+        "area": 2,
+        "network": "10.64.12.0",
+        "mask": "255.255.252.0",
+        "cidr": "10.64.12.0/22",
+        "lan_subnets": 3
+      },
+      "MUMBAI": {
+        "area": 3,
+        "network": "10.64.16.0",
+        "mask": "255.255.252.0",
+        "cidr": "10.64.16.0/22",
+        "lan_subnets": 3
+      }
+    },
+    "bfd": false,
+    "bgp": {
+      "asn": 65010,
+      "peers": [
+        {
+          "site": "CLOUD-VPC",
+          "asn": 64512,
+          "prefix": "10.200.0.0/16"
+        }
+      ],
+      "advertise": [
+        "10.64.0.0/16"
+      ]
+    },
+    "subnet_count": 23,
+    "design": "Multi-area OSPF"
+  },
+  "latency": {
+    "pairs": [
+      {
+        "a": "NYC",
+        "b": "LONDON",
+        "one_way_ms": 38.275,
+        "path": [
+          "NYC",
+          "LONDON"
+        ]
+      },
+      {
+        "a": "NYC",
+        "b": "SINGAPORE",
+        "one_way_ms": 105.325,
+        "path": [
+          "NYC",
+          "SINGAPORE"
+        ]
+      },
+      {
+        "a": "NYC",
+        "b": "MUMBAI",
+        "one_way_ms": 86.109,
+        "path": [
+          "NYC",
+          "MUMBAI"
+        ]
+      },
+      {
+        "a": "NYC",
+        "b": "CLOUD-VPC",
+        "one_way_ms": 2.452,
+        "path": [
+          "NYC",
+          "CLOUD-VPC"
+        ]
+      },
+      {
+        "a": "LONDON",
+        "b": "SINGAPORE",
+        "one_way_ms": 76.208,
+        "path": [
+          "LONDON",
+          "MUMBAI",
+          "SINGAPORE"
+        ]
+      },
+      {
+        "a": "LONDON",
+        "b": "MUMBAI",
+        "one_way_ms": 49.393,
+        "path": [
+          "LONDON",
+          "MUMBAI"
+        ]
+      },
+      {
+        "a": "LONDON",
+        "b": "CLOUD-VPC",
+        "one_way_ms": 38.481,
+        "path": [
+          "LONDON",
+          "CLOUD-VPC"
+        ]
+      },
+      {
+        "a": "SINGAPORE",
+        "b": "MUMBAI",
+        "one_way_ms": 26.815,
+        "path": [
+          "SINGAPORE",
+          "MUMBAI"
+        ]
+      },
+      {
+        "a": "SINGAPORE",
+        "b": "CLOUD-VPC",
+        "one_way_ms": 107.776,
+        "path": [
+          "SINGAPORE",
+          "NYC",
+          "CLOUD-VPC"
+        ]
+      },
+      {
+        "a": "MUMBAI",
+        "b": "CLOUD-VPC",
+        "one_way_ms": 87.875,
+        "path": [
+          "MUMBAI",
+          "LONDON",
+          "CLOUD-VPC"
+        ]
+      }
+    ],
+    "worst": {
+      "a": "SINGAPORE",
+      "b": "CLOUD-VPC",
+      "one_way_ms": 107.776,
+      "path": [
+        "SINGAPORE",
+        "NYC",
+        "CLOUD-VPC"
+      ]
+    },
+    "budget_ms": null
+  },
+  "qos": null,
+  "acls": [
+    {
+      "name": "IOT-IN-V100",
+      "kind": "extended",
+      "purpose": "IoT least privilege: scanners reach only the cloud application tier on TCP 443/8883",
+      "ios": "ip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.0.0 0.0.3.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.0.0 0.0.3.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.0.0 0.0.3.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.0.0 0.0.3.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.0.0 0.0.3.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.0.0 0.0.3.255 any log"
+    },
+    {
+      "name": "IOT-IN-V100",
+      "kind": "extended",
+      "purpose": "IoT least privilege: scanners reach only the cloud application tier on TCP 443/8883",
+      "ios": "ip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.8.0 0.0.1.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.8.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.8.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.8.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.8.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.8.0 0.0.1.255 any log"
+    },
+    {
+      "name": "IOT-IN-V100",
+      "kind": "extended",
+      "purpose": "IoT least privilege: scanners reach only the cloud application tier on TCP 443/8883",
+      "ios": "ip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.12.0 0.0.1.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.12.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.12.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.12.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.12.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.12.0 0.0.1.255 any log"
+    },
+    {
+      "name": "IOT-IN-V100",
+      "kind": "extended",
+      "purpose": "IoT least privilege: scanners reach only the cloud application tier on TCP 443/8883",
+      "ios": "ip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.16.0 0.0.1.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.16.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.16.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.16.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.16.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.16.0 0.0.1.255 any log"
+    },
+    {
+      "name": "VTY-MGMT",
+      "kind": "standard",
+      "purpose": "Only management subnets may SSH to devices",
+      "ios": "ip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log"
+    }
+  ],
+  "configs": {
+    "NYC-RTR1": "! ======================================================================\n! NetArchitect generated configuration - NYC-RTR1\n! Platform : Cisco ISR4331 (IOS-XE) / IOSv\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: site edge router, hub (area 0)\n! Site block: 10.64.0.0/21\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname NYC-RTR1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\n!\n! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---\ncrypto isakmp policy 10\n encryption aes 256\n hash sha256\n authentication pre-share\n group 14\n lifetime 28800\ncrypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac\n mode transport\ncrypto ipsec profile IPSEC-GRE\n set transform-set TS-GRE\ncrypto ipsec transform-set TS-VTI esp-aes 256 esp-sha256-hmac\n mode tunnel\ncrypto ipsec profile IPSEC-VTI\n set transform-set TS-VTI\ncrypto isakmp key NA-b93a5b47676d4b47 address 203.0.113.10\ncrypto isakmp key NA-14d7968553cfd1a0 address 203.0.113.14\ncrypto isakmp key NA-9e6359a05b1f2ad3 address 203.0.113.18\ncrypto isakmp key NA-261fd155fc225fe4 address 203.0.113.22\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.0.0 0.0.3.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.0.0 0.0.3.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.0.0 0.0.3.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.0.0 0.0.3.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.0.0 0.0.3.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.0.0 0.0.3.255 any log\n!\n! --- Loopback (router-id) ---\ninterface Loopback0\n ip address 10.64.20.20 255.255.255.255\n!\n! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---\ninterface GigabitEthernet0/0/0\n description LAN trunk to NYC-ASW1\n no ip address\n no shutdown\ninterface GigabitEthernet0/0/0.10\n description USERS gateway 10.64.4.0/25 (100 hosts)\n encapsulation dot1Q 10\n ip address 10.64.4.1 255.255.255.128\ninterface GigabitEthernet0/0/0.99\n description MGMT gateway 10.64.4.128/27 (16 hosts)\n encapsulation dot1Q 99\n ip address 10.64.4.129 255.255.255.224\ninterface GigabitEthernet0/0/0.100\n description IOT-SCANNERS gateway 10.64.0.0/22 (600 hosts)\n encapsulation dot1Q 100\n ip address 10.64.0.1 255.255.252.0\n ip access-group IOT-IN-V100 in\ninterface GigabitEthernet0/0/0.999\n description native VLAN (unused)\n encapsulation dot1Q 999 native\n!\n! --- Internet underlay (RFC 5737 lab addressing) ---\ninterface GigabitEthernet0/0/1\n description INTERNET underlay\n ip address 203.0.113.6 255.255.255.252\n no shutdown\nip route 0.0.0.0 0.0.0.0 203.0.113.5 name INTERNET\n!\n! --- Encrypted tunnels ---\ninterface Tunnel1\n description GRE/IPsec to LONDON (5,570 km)\n ip address 10.64.20.1 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.10\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel2\n description GRE/IPsec to SINGAPORE (15,340 km)\n ip address 10.64.20.5 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.14\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel3\n description GRE/IPsec to MUMBAI (12,540 km)\n ip address 10.64.20.9 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.18\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel6\n description IPsec VTI + eBGP to CLOUD-VPC VPC\n ip address 169.254.10.21 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n tunnel source GigabitEthernet0/0/1\n tunnel mode ipsec ipv4\n tunnel destination 203.0.113.22\n tunnel protection ipsec profile IPSEC-VTI\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.64.4.1\nip dhcp excluded-address 10.64.0.1\nip dhcp pool NYC-USERS\n network 10.64.4.0 255.255.255.128\n default-router 10.64.4.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\nip dhcp pool NYC-IOT-SCANNERS\n network 10.64.0.0 255.255.252.0\n default-router 10.64.0.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\n!\n! --- OSPF (Multi-area OSPF) ---\nrouter ospf 1\n router-id 10.64.20.20\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface Tunnel1\n no passive-interface Tunnel2\n no passive-interface Tunnel3\n network 10.64.20.20 0.0.0.0 area 0\n network 10.64.20.0 0.0.0.3 area 0\n network 10.64.20.4 0.0.0.3 area 0\n network 10.64.20.8 0.0.0.3 area 0\n network 10.64.4.0 0.0.0.127 area 0\n network 10.64.4.128 0.0.0.31 area 0\n network 10.64.0.0 0.0.3.255 area 0\n redistribute bgp 65010 subnets route-map BGP-TO-OSPF\n!\n! --- eBGP to cloud VPC (aggregate out, VPC CIDR in) ---\nip route 10.64.0.0 255.255.0.0 Null0 254 name AGGREGATE-DISCARD\nip prefix-list TO-CLOUD seq 5 permit 10.64.0.0/16\nip prefix-list FROM-CLOUD seq 5 permit 10.200.0.0/16 le 24\nroute-map BGP-TO-OSPF permit 10\n match ip address prefix-list FROM-CLOUD\nrouter bgp 65010\n bgp router-id 10.64.20.20\n bgp log-neighbor-changes\n neighbor 169.254.10.22 remote-as 64512\n neighbor 169.254.10.22 description CLOUD-VPC VGW\n neighbor 169.254.10.22 timers 10 30\n address-family ipv4\n  network 10.64.0.0 mask 255.255.0.0\n  neighbor 169.254.10.22 activate\n  neighbor 169.254.10.22 prefix-list TO-CLOUD out\n  neighbor 169.254.10.22 prefix-list FROM-CLOUD in\n exit-address-family\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 4\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "LONDON-RTR1": "! ======================================================================\n! NetArchitect generated configuration - LONDON-RTR1\n! Platform : Cisco ISR4331 (IOS-XE) / IOSv\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: site edge router, ABR area 0/1\n! Site block: 10.64.8.0/22\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname LONDON-RTR1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\n!\n! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---\ncrypto isakmp policy 10\n encryption aes 256\n hash sha256\n authentication pre-share\n group 14\n lifetime 28800\ncrypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac\n mode transport\ncrypto ipsec profile IPSEC-GRE\n set transform-set TS-GRE\ncrypto ipsec transform-set TS-VTI esp-aes 256 esp-sha256-hmac\n mode tunnel\ncrypto ipsec profile IPSEC-VTI\n set transform-set TS-VTI\ncrypto isakmp key NA-b93a5b47676d4b47 address 203.0.113.6\ncrypto isakmp key NA-34ef1501908242c3 address 203.0.113.18\ncrypto isakmp key NA-11a9e9909014e40d address 203.0.113.22\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.8.0 0.0.1.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.8.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.8.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.8.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.8.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.8.0 0.0.1.255 any log\n!\n! --- Loopback (router-id) ---\ninterface Loopback0\n ip address 10.64.20.21 255.255.255.255\n!\n! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---\ninterface GigabitEthernet0/0/0\n description LAN trunk to LONDON-ASW1\n no ip address\n no shutdown\ninterface GigabitEthernet0/0/0.10\n description USERS gateway 10.64.10.0/26 (60 hosts)\n encapsulation dot1Q 10\n ip address 10.64.10.1 255.255.255.192\ninterface GigabitEthernet0/0/0.99\n description MGMT gateway 10.64.10.64/27 (16 hosts)\n encapsulation dot1Q 99\n ip address 10.64.10.65 255.255.255.224\ninterface GigabitEthernet0/0/0.100\n description IOT-SCANNERS gateway 10.64.8.0/23 (500 hosts)\n encapsulation dot1Q 100\n ip address 10.64.8.1 255.255.254.0\n ip access-group IOT-IN-V100 in\ninterface GigabitEthernet0/0/0.999\n description native VLAN (unused)\n encapsulation dot1Q 999 native\n!\n! --- Internet underlay (RFC 5737 lab addressing) ---\ninterface GigabitEthernet0/0/1\n description INTERNET underlay\n ip address 203.0.113.10 255.255.255.252\n no shutdown\nip route 0.0.0.0 0.0.0.0 203.0.113.9 name INTERNET\n!\n! --- Encrypted tunnels ---\ninterface Tunnel1\n description GRE/IPsec to NYC (5,570 km)\n ip address 10.64.20.2 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.6\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel4\n description GRE/IPsec to MUMBAI (7,190 km)\n ip address 10.64.20.13 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.18\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel7\n description IPsec VTI + eBGP to CLOUD-VPC VPC\n ip address 169.254.10.25 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n tunnel source GigabitEthernet0/0/1\n tunnel mode ipsec ipv4\n tunnel destination 203.0.113.22\n tunnel protection ipsec profile IPSEC-VTI\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.64.10.1\nip dhcp excluded-address 10.64.8.1\nip dhcp pool LONDON-USERS\n network 10.64.10.0 255.255.255.192\n default-router 10.64.10.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\nip dhcp pool LONDON-IOT-SCANNERS\n network 10.64.8.0 255.255.254.0\n default-router 10.64.8.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\n!\n! --- OSPF (Multi-area OSPF) ---\nrouter ospf 1\n router-id 10.64.20.21\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface Tunnel1\n no passive-interface Tunnel4\n network 10.64.20.21 0.0.0.0 area 0\n network 10.64.20.0 0.0.0.3 area 0\n network 10.64.20.12 0.0.0.3 area 0\n network 10.64.10.0 0.0.0.63 area 1\n network 10.64.10.64 0.0.0.31 area 1\n network 10.64.8.0 0.0.1.255 area 1\n area 1 range 10.64.8.0 255.255.252.0\n redistribute bgp 65010 subnets route-map BGP-TO-OSPF\n!\n! --- eBGP to cloud VPC (aggregate out, VPC CIDR in) ---\nip route 10.64.0.0 255.255.0.0 Null0 254 name AGGREGATE-DISCARD\nip prefix-list TO-CLOUD seq 5 permit 10.64.0.0/16\nip prefix-list FROM-CLOUD seq 5 permit 10.200.0.0/16 le 24\nroute-map BGP-TO-OSPF permit 10\n match ip address prefix-list FROM-CLOUD\nrouter bgp 65010\n bgp router-id 10.64.20.21\n bgp log-neighbor-changes\n neighbor 169.254.10.26 remote-as 64512\n neighbor 169.254.10.26 description CLOUD-VPC VGW\n neighbor 169.254.10.26 timers 10 30\n address-family ipv4\n  network 10.64.0.0 mask 255.255.0.0\n  neighbor 169.254.10.26 activate\n  neighbor 169.254.10.26 prefix-list TO-CLOUD out\n  neighbor 169.254.10.26 prefix-list FROM-CLOUD in\n exit-address-family\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 4\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "SINGAPORE-RTR1": "! ======================================================================\n! NetArchitect generated configuration - SINGAPORE-RTR1\n! Platform : Cisco ISR4331 (IOS-XE) / IOSv\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: site edge router, ABR area 0/2\n! Site block: 10.64.12.0/22\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname SINGAPORE-RTR1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\n!\n! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---\ncrypto isakmp policy 10\n encryption aes 256\n hash sha256\n authentication pre-share\n group 14\n lifetime 28800\ncrypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac\n mode transport\ncrypto ipsec profile IPSEC-GRE\n set transform-set TS-GRE\ncrypto isakmp key NA-14d7968553cfd1a0 address 203.0.113.6\ncrypto isakmp key NA-1a7616bfdc3f9c5e address 203.0.113.18\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.12.0 0.0.1.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.12.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.12.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.12.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.12.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.12.0 0.0.1.255 any log\n!\n! --- Loopback (router-id) ---\ninterface Loopback0\n ip address 10.64.20.22 255.255.255.255\n!\n! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---\ninterface GigabitEthernet0/0/0\n description LAN trunk to SINGAPORE-ASW1\n no ip address\n no shutdown\ninterface GigabitEthernet0/0/0.10\n description USERS gateway 10.64.14.0/26 (40 hosts)\n encapsulation dot1Q 10\n ip address 10.64.14.1 255.255.255.192\ninterface GigabitEthernet0/0/0.99\n description MGMT gateway 10.64.14.64/27 (16 hosts)\n encapsulation dot1Q 99\n ip address 10.64.14.65 255.255.255.224\ninterface GigabitEthernet0/0/0.100\n description IOT-SCANNERS gateway 10.64.12.0/23 (450 hosts)\n encapsulation dot1Q 100\n ip address 10.64.12.1 255.255.254.0\n ip access-group IOT-IN-V100 in\ninterface GigabitEthernet0/0/0.999\n description native VLAN (unused)\n encapsulation dot1Q 999 native\n!\n! --- Internet underlay (RFC 5737 lab addressing) ---\ninterface GigabitEthernet0/0/1\n description INTERNET underlay\n ip address 203.0.113.14 255.255.255.252\n no shutdown\nip route 0.0.0.0 0.0.0.0 203.0.113.13 name INTERNET\n!\n! --- Encrypted tunnels ---\ninterface Tunnel2\n description GRE/IPsec to NYC (15,340 km)\n ip address 10.64.20.6 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.6\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel5\n description GRE/IPsec to MUMBAI (3,900 km)\n ip address 10.64.20.17 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.18\n tunnel protection ipsec profile IPSEC-GRE\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.64.14.1\nip dhcp excluded-address 10.64.12.1\nip dhcp pool SINGAPORE-USERS\n network 10.64.14.0 255.255.255.192\n default-router 10.64.14.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\nip dhcp pool SINGAPORE-IOT-SCANNERS\n network 10.64.12.0 255.255.254.0\n default-router 10.64.12.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\n!\n! --- OSPF (Multi-area OSPF) ---\nrouter ospf 1\n router-id 10.64.20.22\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface Tunnel2\n no passive-interface Tunnel5\n network 10.64.20.22 0.0.0.0 area 0\n network 10.64.20.4 0.0.0.3 area 0\n network 10.64.20.16 0.0.0.3 area 0\n network 10.64.14.0 0.0.0.63 area 2\n network 10.64.14.64 0.0.0.31 area 2\n network 10.64.12.0 0.0.1.255 area 2\n area 2 range 10.64.12.0 255.255.252.0\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 4\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "MUMBAI-RTR1": "! ======================================================================\n! NetArchitect generated configuration - MUMBAI-RTR1\n! Platform : Cisco ISR4331 (IOS-XE) / IOSv\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: site edge router, ABR area 0/3\n! Site block: 10.64.16.0/22\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname MUMBAI-RTR1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\n!\n! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---\ncrypto isakmp policy 10\n encryption aes 256\n hash sha256\n authentication pre-share\n group 14\n lifetime 28800\ncrypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac\n mode transport\ncrypto ipsec profile IPSEC-GRE\n set transform-set TS-GRE\ncrypto isakmp key NA-9e6359a05b1f2ad3 address 203.0.113.6\ncrypto isakmp key NA-34ef1501908242c3 address 203.0.113.10\ncrypto isakmp key NA-1a7616bfdc3f9c5e address 203.0.113.14\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended IOT-IN-V100\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.64.16.0 0.0.1.255 host 1.1.1.1 eq domain\n remark HTTPS to cloud app\n permit tcp 10.64.16.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.16.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883\n remark HTTPS to cloud app\n permit tcp 10.64.16.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443\n remark MQTT/TLS telemetry\n permit tcp 10.64.16.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883\n remark IoT may not talk to anything else\n deny ip 10.64.16.0 0.0.1.255 any log\n!\n! --- Loopback (router-id) ---\ninterface Loopback0\n ip address 10.64.20.23 255.255.255.255\n!\n! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---\ninterface GigabitEthernet0/0/0\n description LAN trunk to MUMBAI-ASW1\n no ip address\n no shutdown\ninterface GigabitEthernet0/0/0.10\n description USERS gateway 10.64.18.0/26 (50 hosts)\n encapsulation dot1Q 10\n ip address 10.64.18.1 255.255.255.192\ninterface GigabitEthernet0/0/0.99\n description MGMT gateway 10.64.18.64/27 (16 hosts)\n encapsulation dot1Q 99\n ip address 10.64.18.65 255.255.255.224\ninterface GigabitEthernet0/0/0.100\n description IOT-SCANNERS gateway 10.64.16.0/23 (450 hosts)\n encapsulation dot1Q 100\n ip address 10.64.16.1 255.255.254.0\n ip access-group IOT-IN-V100 in\ninterface GigabitEthernet0/0/0.999\n description native VLAN (unused)\n encapsulation dot1Q 999 native\n!\n! --- Internet underlay (RFC 5737 lab addressing) ---\ninterface GigabitEthernet0/0/1\n description INTERNET underlay\n ip address 203.0.113.18 255.255.255.252\n no shutdown\nip route 0.0.0.0 0.0.0.0 203.0.113.17 name INTERNET\n!\n! --- Encrypted tunnels ---\ninterface Tunnel3\n description GRE/IPsec to NYC (12,540 km)\n ip address 10.64.20.10 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.6\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel4\n description GRE/IPsec to LONDON (7,190 km)\n ip address 10.64.20.14 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.10\n tunnel protection ipsec profile IPSEC-GRE\ninterface Tunnel5\n description GRE/IPsec to SINGAPORE (3,900 km)\n ip address 10.64.20.18 255.255.255.252\n ip mtu 1400\n ip tcp adjust-mss 1360\n ip ospf network point-to-point\n tunnel source GigabitEthernet0/0/1\n tunnel destination 203.0.113.14\n tunnel protection ipsec profile IPSEC-GRE\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.64.18.1\nip dhcp excluded-address 10.64.16.1\nip dhcp pool MUMBAI-USERS\n network 10.64.18.0 255.255.255.192\n default-router 10.64.18.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\nip dhcp pool MUMBAI-IOT-SCANNERS\n network 10.64.16.0 255.255.254.0\n default-router 10.64.16.1\n dns-server 1.1.1.1\n domain-name wan.netarch.lab\n!\n! --- OSPF (Multi-area OSPF) ---\nrouter ospf 1\n router-id 10.64.20.23\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface Tunnel3\n no passive-interface Tunnel4\n no passive-interface Tunnel5\n network 10.64.20.23 0.0.0.0 area 0\n network 10.64.20.8 0.0.0.3 area 0\n network 10.64.20.12 0.0.0.3 area 0\n network 10.64.20.16 0.0.0.3 area 0\n network 10.64.18.0 0.0.0.63 area 3\n network 10.64.18.64 0.0.0.31 area 3\n network 10.64.16.0 0.0.1.255 area 3\n area 3 range 10.64.16.0 255.255.252.0\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 4\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "NYC-ASW1": "! ======================================================================\n! NetArchitect generated configuration - NYC-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 35 access switch(es) in NYC; increment the hostname and the Vlan99 address (next free host in 10.64.4.128/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname NYC-ASW1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 10\n name USERS\nvlan 99\n name MGMT\nvlan 100\n name IOT-SCANNERS\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan99\n description In-band management\n ip address 10.64.4.130 255.255.255.224\n no shutdown\nip default-gateway 10.64.4.129\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 18\n description IOT-SCANNERS endpoints\n switchport mode access\n switchport access vlan 100\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/19 - 22\n description USERS endpoints\n switchport mode access\n switchport access vlan 10\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to NYC-RTR1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 10,99,100,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "LONDON-ASW1": "! ======================================================================\n! NetArchitect generated configuration - LONDON-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 28 access switch(es) in LONDON; increment the hostname and the Vlan99 address (next free host in 10.64.10.64/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname LONDON-ASW1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 10\n name USERS\nvlan 99\n name MGMT\nvlan 100\n name IOT-SCANNERS\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan99\n description In-band management\n ip address 10.64.10.66 255.255.255.224\n no shutdown\nip default-gateway 10.64.10.65\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 19\n description IOT-SCANNERS endpoints\n switchport mode access\n switchport access vlan 100\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/20 - 22\n description USERS endpoints\n switchport mode access\n switchport access vlan 10\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to LONDON-RTR1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 10,99,100,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "SINGAPORE-ASW1": "! ======================================================================\n! NetArchitect generated configuration - SINGAPORE-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 25 access switch(es) in SINGAPORE; increment the hostname and the Vlan99 address (next free host in 10.64.14.64/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname SINGAPORE-ASW1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 10\n name USERS\nvlan 99\n name MGMT\nvlan 100\n name IOT-SCANNERS\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan99\n description In-band management\n ip address 10.64.14.66 255.255.255.224\n no shutdown\nip default-gateway 10.64.14.65\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 19\n description IOT-SCANNERS endpoints\n switchport mode access\n switchport access vlan 100\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/20 - 22\n description USERS endpoints\n switchport mode access\n switchport access vlan 10\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to SINGAPORE-RTR1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 10,99,100,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "MUMBAI-ASW1": "! ======================================================================\n! NetArchitect generated configuration - MUMBAI-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 25 access switch(es) in MUMBAI; increment the hostname and the Vlan99 address (next free host in 10.64.18.64/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname MUMBAI-ASW1\nno ip domain-lookup\nip domain-name wan.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 10\n name USERS\nvlan 99\n name MGMT\nvlan 100\n name IOT-SCANNERS\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan99\n description In-band management\n ip address 10.64.18.66 255.255.255.224\n no shutdown\nip default-gateway 10.64.18.65\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 19\n description IOT-SCANNERS endpoints\n switchport mode access\n switchport access vlan 100\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/20 - 22\n description USERS endpoints\n switchport mode access\n switchport access vlan 10\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to MUMBAI-RTR1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 10,99,100,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark NYC MGMT\n permit 10.64.4.128 0.0.0.31\n remark LONDON MGMT\n permit 10.64.10.64 0.0.0.31\n remark SINGAPORE MGMT\n permit 10.64.14.64 0.0.0.31\n remark MUMBAI MGMT\n permit 10.64.18.64 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "ISP-SIM": "! ======================================================================\n! NetArchitect generated configuration - ISP-SIM\n! Platform : Cisco ISR4331 (lab Internet simulator)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Router-on-a-stick: one sub-interface per customer /30 (RFC 5737 TEST-NET-3).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname ISP-SIM\nno ip domain-lookup\ninterface GigabitEthernet0/0/0\n description trunk to ISP-SW\n no ip address\n no shutdown\ninterface GigabitEthernet0/0/0.11\n description NYC-RTR1\n encapsulation dot1Q 11\n ip address 203.0.113.5 255.255.255.252\ninterface GigabitEthernet0/0/0.12\n description LONDON-RTR1\n encapsulation dot1Q 12\n ip address 203.0.113.9 255.255.255.252\ninterface GigabitEthernet0/0/0.13\n description SINGAPORE-RTR1\n encapsulation dot1Q 13\n ip address 203.0.113.13 255.255.255.252\ninterface GigabitEthernet0/0/0.14\n description MUMBAI-RTR1\n encapsulation dot1Q 14\n ip address 203.0.113.17 255.255.255.252\ninterface GigabitEthernet0/0/0.15\n description CLOUD-VPC-VGW-SIM\n encapsulation dot1Q 15\n ip address 203.0.113.21 255.255.255.252\n!\nend\nwrite memory\n",
+    "ISP-SW": "! ======================================================================\n! NetArchitect generated configuration - ISP-SW\n! Platform : Cisco Catalyst 3650 (lab Internet access switch)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname ISP-SW\nno ip domain-lookup\nvlan 11\n name NYC-RTR1\nvlan 12\n name LONDON-RTR1\nvlan 13\n name SINGAPORE-RTR1\nvlan 14\n name MUMBAI-RTR1\nvlan 15\n name CLOUD-VPC-VGW-SIM\ninterface GigabitEthernet1/0/1\n description NYC-RTR1 Gi0/0/1\n switchport mode access\n switchport access vlan 11\n spanning-tree portfast\n no shutdown\ninterface GigabitEthernet1/0/2\n description LONDON-RTR1 Gi0/0/1\n switchport mode access\n switchport access vlan 12\n spanning-tree portfast\n no shutdown\ninterface GigabitEthernet1/0/3\n description SINGAPORE-RTR1 Gi0/0/1\n switchport mode access\n switchport access vlan 13\n spanning-tree portfast\n no shutdown\ninterface GigabitEthernet1/0/4\n description MUMBAI-RTR1 Gi0/0/1\n switchport mode access\n switchport access vlan 14\n spanning-tree portfast\n no shutdown\ninterface GigabitEthernet1/0/5\n description CLOUD-VPC-VGW-SIM Gi0/0/1\n switchport mode access\n switchport access vlan 15\n spanning-tree portfast\n no shutdown\ninterface GigabitEthernet1/1/1\n description trunk to ISP-SIM\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk allowed vlan 11,12,13,14,15\n switchport nonegotiate\n no shutdown\n!\nend\nwrite memory\n",
+    "CLOUD-VPC-VGW-SIM": "! ======================================================================\n! NetArchitect generated configuration - CLOUD-VPC-VGW-SIM\n! Platform : Cisco ISR4331 / CSR1000v (lab stand-in for the cloud VPN gateway)\n! Scenario : Global WAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! In production these values are entered in the cloud console (VPN connection + BGP ASN); this router lets the lab run end-to-end.\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname CLOUD-VPC-VGW-SIM\nno ip domain-lookup\n!\n! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---\ncrypto isakmp policy 10\n encryption aes 256\n hash sha256\n authentication pre-share\n group 14\n lifetime 28800\ncrypto ipsec transform-set TS-VTI esp-aes 256 esp-sha256-hmac\n mode tunnel\ncrypto ipsec profile IPSEC-VTI\n set transform-set TS-VTI\ncrypto isakmp key NA-261fd155fc225fe4 address 203.0.113.6\ncrypto isakmp key NA-11a9e9909014e40d address 203.0.113.10\ninterface GigabitEthernet0/0/1\n description INTERNET underlay\n ip address 203.0.113.22 255.255.255.252\n no shutdown\nip route 0.0.0.0 0.0.0.0 203.0.113.21\ninterface Loopback1\n description VPC subnet APP-TIER 10.200.0.0/24\n ip address 10.200.0.1 255.255.255.0\ninterface Loopback2\n description VPC subnet DATA-TIER 10.200.1.0/26\n ip address 10.200.1.1 255.255.255.192\ninterface Tunnel6\n description VTI to NYC-RTR1\n ip address 169.254.10.22 255.255.255.252\n tunnel source GigabitEthernet0/0/1\n tunnel mode ipsec ipv4\n tunnel destination 203.0.113.6\n tunnel protection ipsec profile IPSEC-VTI\ninterface Tunnel7\n description VTI to LONDON-RTR1\n ip address 169.254.10.26 255.255.255.252\n tunnel source GigabitEthernet0/0/1\n tunnel mode ipsec ipv4\n tunnel destination 203.0.113.10\n tunnel protection ipsec profile IPSEC-VTI\nip route 10.200.0.0 255.255.0.0 Null0 254\nrouter bgp 64512\n bgp log-neighbor-changes\n neighbor 169.254.10.21 remote-as 65010\n neighbor 169.254.10.21 timers 10 30\n neighbor 169.254.10.25 remote-as 65010\n neighbor 169.254.10.25 timers 10 30\n address-family ipv4\n  network 10.200.0.0 mask 255.255.0.0\n  neighbor 169.254.10.21 activate\n  neighbor 169.254.10.25 activate\n exit-address-family\n!\nend\nwrite memory\n"
+  },
+  "cabling": [
+    {
+      "a": "NYC-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "NYC-RTR1",
+      "b_port": "GigabitEthernet0/0/0",
+      "medium": "Cat6a LAN trunk (router-on-a-stick)"
+    },
+    {
+      "a": "LONDON-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "LONDON-RTR1",
+      "b_port": "GigabitEthernet0/0/0",
+      "medium": "Cat6a LAN trunk (router-on-a-stick)"
+    },
+    {
+      "a": "SINGAPORE-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "SINGAPORE-RTR1",
+      "b_port": "GigabitEthernet0/0/0",
+      "medium": "Cat6a LAN trunk (router-on-a-stick)"
+    },
+    {
+      "a": "MUMBAI-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "MUMBAI-RTR1",
+      "b_port": "GigabitEthernet0/0/0",
+      "medium": "Cat6a LAN trunk (router-on-a-stick)"
+    },
+    {
+      "a": "ISP-SIM",
+      "a_port": "GigabitEthernet0/0/0",
+      "b": "ISP-SW",
+      "b_port": "GigabitEthernet1/1/1",
+      "medium": "ISP trunk"
+    },
+    {
+      "a": "ISP-SW",
+      "a_port": "GigabitEthernet1/0/1",
+      "b": "NYC-RTR1",
+      "b_port": "GigabitEthernet0/0/1",
+      "medium": "Internet underlay (simulated)"
+    },
+    {
+      "a": "ISP-SW",
+      "a_port": "GigabitEthernet1/0/2",
+      "b": "LONDON-RTR1",
+      "b_port": "GigabitEthernet0/0/1",
+      "medium": "Internet underlay (simulated)"
+    },
+    {
+      "a": "ISP-SW",
+      "a_port": "GigabitEthernet1/0/3",
+      "b": "SINGAPORE-RTR1",
+      "b_port": "GigabitEthernet0/0/1",
+      "medium": "Internet underlay (simulated)"
+    },
+    {
+      "a": "ISP-SW",
+      "a_port": "GigabitEthernet1/0/4",
+      "b": "MUMBAI-RTR1",
+      "b_port": "GigabitEthernet0/0/1",
+      "medium": "Internet underlay (simulated)"
+    },
+    {
+      "a": "ISP-SW",
+      "a_port": "GigabitEthernet1/0/5",
+      "b": "CLOUD-VPC-VGW-SIM",
+      "b_port": "GigabitEthernet0/0/1",
+      "medium": "Internet underlay (simulated)"
+    }
+  ],
+  "verification": {
+    "passed": 38,
+    "total": 38,
+    "checks": [
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.3.254",
+        "expected": "NYC/IOT-SCANNERS",
+        "result": "NYC/IOT-SCANNERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.4.126",
+        "expected": "NYC/USERS",
+        "result": "NYC/USERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.4.158",
+        "expected": "NYC/MGMT",
+        "result": "NYC/MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.9.254",
+        "expected": "LONDON/IOT-SCANNERS",
+        "result": "LONDON/IOT-SCANNERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.10.62",
+        "expected": "LONDON/USERS",
+        "result": "LONDON/USERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.10.94",
+        "expected": "LONDON/MGMT",
+        "result": "LONDON/MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.13.254",
+        "expected": "SINGAPORE/IOT-SCANNERS",
+        "result": "SINGAPORE/IOT-SCANNERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.14.62",
+        "expected": "SINGAPORE/USERS",
+        "result": "SINGAPORE/USERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.14.94",
+        "expected": "SINGAPORE/MGMT",
+        "result": "SINGAPORE/MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.17.254",
+        "expected": "MUMBAI/IOT-SCANNERS",
+        "result": "MUMBAI/IOT-SCANNERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.18.62",
+        "expected": "MUMBAI/USERS",
+        "result": "MUMBAI/USERS",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.64.18.94",
+        "expected": "MUMBAI/MGMT",
+        "result": "MUMBAI/MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.200.0.254",
+        "expected": "CLOUD-VPC/APP-TIER",
+        "result": "CLOUD-VPC/APP-TIER",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.200.1.62",
+        "expected": "CLOUD-VPC/DATA-TIER",
+        "result": "CLOUD-VPC/DATA-TIER",
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DNS query: udp 10.64.0.5 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "Internet HTTPS: tcp 10.64.0.5 -> 93.184.216.34:443",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "to internal NYC/USERS SMB: tcp 10.64.0.5 -> 10.64.4.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "MQTT/TLS to cloud: tcp 10.64.0.5 -> 10.200.0.10:8883",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 3,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "SSH to cloud: tcp 10.64.0.5 -> 10.200.0.10:22",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DNS query: udp 10.64.8.5 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "Internet HTTPS: tcp 10.64.8.5 -> 93.184.216.34:443",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "to internal NYC/USERS SMB: tcp 10.64.8.5 -> 10.64.4.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "MQTT/TLS to cloud: tcp 10.64.8.5 -> 10.200.0.10:8883",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 3,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "SSH to cloud: tcp 10.64.8.5 -> 10.200.0.10:22",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DNS query: udp 10.64.12.5 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "Internet HTTPS: tcp 10.64.12.5 -> 93.184.216.34:443",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "to internal NYC/USERS SMB: tcp 10.64.12.5 -> 10.64.4.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "MQTT/TLS to cloud: tcp 10.64.12.5 -> 10.200.0.10:8883",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 3,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "SSH to cloud: tcp 10.64.12.5 -> 10.200.0.10:22",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "DNS query: udp 10.64.16.5 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "Internet HTTPS: tcp 10.64.16.5 -> 93.184.216.34:443",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "to internal NYC/USERS SMB: tcp 10.64.16.5 -> 10.64.4.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "MQTT/TLS to cloud: tcp 10.64.16.5 -> 10.200.0.10:8883",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 3,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "IOT-IN-V100",
+        "flow": "SSH to cloud: tcp 10.64.16.5 -> 10.200.0.10:22",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 6,
+        "pass": true
+      }
+    ]
+  },
+  "rationale": [
+    {
+      "domain": "Input",
+      "subject": "Global WAN",
+      "decision": "wan profile, 5 sites, 7 links, root 10.64.0.0/16",
+      "justification": "Parameters validated: 2,564 hosts across 14 subnets, resiliency 'redundant'.",
+      "references": [],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "NYC <-> LONDON",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 5570 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 38.2 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 38.225
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "NYC <-> SINGAPORE",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 15340 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 105.3 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 105.275
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "NYC <-> MUMBAI",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 12540 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 86.1 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 86.059
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "LONDON <-> MUMBAI",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 7190 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 49.3 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 49.343
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "SINGAPORE <-> MUMBAI",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 3900 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 26.8 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 26.765
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "NYC <-> CLOUD-VPC",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 350 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 2.4 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 2.402
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "LONDON <-> CLOUD-VPC",
+      "decision": "Internet underlay with IPsec overlay",
+      "justification": "Link spans 5600 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 38.4 ms (cable distance x 1.4 path factor / 204 km per ms in glass).",
+      "references": [
+        "RFC 4301 (IPsec)",
+        "ITU-T G.652"
+      ],
+      "data": {
+        "latency_ms": 38.431
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "NYC access layer",
+      "decision": "35 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (700), so only port-consuming endpoints are counted. ceil(700 x (1 + 20% growth) / 24) = 35.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 700,
+        "access_switches": 35,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "LONDON access layer",
+      "decision": "28 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (560), so only port-consuming endpoints are counted. ceil(560 x (1 + 20% growth) / 24) = 28.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 560,
+        "access_switches": 28,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "SINGAPORE access layer",
+      "decision": "25 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (490), so only port-consuming endpoints are counted. ceil(490 x (1 + 20% growth) / 24) = 25.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 490,
+        "access_switches": 25,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "MUMBAI access layer",
+      "decision": "25 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (500), so only port-consuming endpoints are counted. ceil(500 x (1 + 20% growth) / 24) = 25.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 500,
+        "access_switches": 25,
+        "aps": 0,
+        "voice_phones": 0,
+        "wireless_clients": 0,
+        "poe_total_w": 0.0,
+        "poe_per_switch_w": 0.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "Spanning tree",
+      "decision": "Rapid PVST+ (802.1w per VLAN), root at distribution",
+      "justification": "RSTP converges in under a second via proposal/agreement instead of 802.1D's 30-50 s listening/learning timers. The distribution switch is pinned as root (priority 4096) so the L2 forwarding path matches the L3 gateway, and PortFast + BPDU Guard on edge ports stop a rogue switch from triggering a topology change.",
+      "references": [
+        "IEEE 802.1w",
+        "IEEE 802.1D-2004"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "Trunk policy",
+      "decision": "802.1Q trunks, explicit allowed list, native VLAN 999, DTP off",
+      "justification": "Trunks carry only the VLANs that exist at that site (no 'allowed vlan all'), the native VLAN is moved to unused VLAN 999 and DTP is disabled with 'nonegotiate'. This blocks double-tagging VLAN hopping and switch-spoofing attacks; unused ports are shut down in black-hole VLAN 998.",
+      "references": [
+        "IEEE 802.1Q",
+        "Cisco SAFE"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "Topology",
+      "subject": "Topology tier",
+      "decision": "Hub-and-spoke IPsec overlay with regional site LANs",
+      "justification": "Chosen because sites are continents apart, so each has a collapsed site LAN and an edge router that builds encrypted GRE tunnels across the Internet to the hub (and backup peers); routing hierarchy follows the tunnel hierarchy.",
+      "references": [],
+      "data": {
+        "access_switches_total": 113
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "NYC IOT-SCANNERS",
+      "decision": "10.64.0.0/22 (gw 10.64.0.1, bcast 10.64.3.255)",
+      "justification": "600 hosts + 1 gateway + network + broadcast = 603 addresses -> 2^10 = 1024 block (/22); /23 would offer only 510 usable < 601 required. Utilisation 58.8% of 1022 usable. Network address is a multiple of the 1024-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "IOT-SCANNERS",
+        "site": "NYC",
+        "kind": "lan",
+        "role": "iot",
+        "vlan_id": 100,
+        "hosts_requested": 600,
+        "cidr": "10.64.0.0/22",
+        "network": "10.64.0.0",
+        "prefix": 22,
+        "mask": "255.255.252.0",
+        "wildcard": "0.0.3.255",
+        "broadcast": "10.64.3.255",
+        "gateway": "10.64.0.1",
+        "first_usable": "10.64.0.1",
+        "last_usable": "10.64.3.254",
+        "usable": 1022,
+        "block_size": 1024,
+        "utilization_pct": 58.8
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "NYC USERS",
+      "decision": "10.64.4.0/25 (gw 10.64.4.1, bcast 10.64.4.127)",
+      "justification": "100 hosts + 1 gateway + network + broadcast = 103 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 101 required. Utilisation 80.2% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "USERS",
+        "site": "NYC",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 10,
+        "hosts_requested": 100,
+        "cidr": "10.64.4.0/25",
+        "network": "10.64.4.0",
+        "prefix": 25,
+        "mask": "255.255.255.128",
+        "wildcard": "0.0.0.127",
+        "broadcast": "10.64.4.127",
+        "gateway": "10.64.4.1",
+        "first_usable": "10.64.4.1",
+        "last_usable": "10.64.4.126",
+        "usable": 126,
+        "block_size": 128,
+        "utilization_pct": 80.2
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "NYC MGMT",
+      "decision": "10.64.4.128/27 (gw 10.64.4.129, bcast 10.64.4.159)",
+      "justification": "16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "NYC",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 99,
+        "hosts_requested": 16,
+        "cidr": "10.64.4.128/27",
+        "network": "10.64.4.128",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.64.4.159",
+        "gateway": "10.64.4.129",
+        "first_usable": "10.64.4.129",
+        "last_usable": "10.64.4.158",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 56.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block NYC",
+      "decision": "10.64.0.0/21",
+      "justification": "Sum of NYC's subnet blocks = 1,184 addresses, rounded up to the next power of two (2,048) so the whole site is one bit-aligned prefix /21. This lets the site be advertised as a single summary route (wildcard 0.0.7.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.64.0.0/21",
+        "demand": 1184
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "LONDON IOT-SCANNERS",
+      "decision": "10.64.8.0/23 (gw 10.64.8.1, bcast 10.64.9.255)",
+      "justification": "500 hosts + 1 gateway + network + broadcast = 503 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 501 required. Utilisation 98.2% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "IOT-SCANNERS",
+        "site": "LONDON",
+        "kind": "lan",
+        "role": "iot",
+        "vlan_id": 100,
+        "hosts_requested": 500,
+        "cidr": "10.64.8.0/23",
+        "network": "10.64.8.0",
+        "prefix": 23,
+        "mask": "255.255.254.0",
+        "wildcard": "0.0.1.255",
+        "broadcast": "10.64.9.255",
+        "gateway": "10.64.8.1",
+        "first_usable": "10.64.8.1",
+        "last_usable": "10.64.9.254",
+        "usable": 510,
+        "block_size": 512,
+        "utilization_pct": 98.2
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "LONDON USERS",
+      "decision": "10.64.10.0/26 (gw 10.64.10.1, bcast 10.64.10.63)",
+      "justification": "60 hosts + 1 gateway + network + broadcast = 63 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 61 required. Utilisation 98.4% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "USERS",
+        "site": "LONDON",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 10,
+        "hosts_requested": 60,
+        "cidr": "10.64.10.0/26",
+        "network": "10.64.10.0",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.64.10.63",
+        "gateway": "10.64.10.1",
+        "first_usable": "10.64.10.1",
+        "last_usable": "10.64.10.62",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 98.4
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "LONDON MGMT",
+      "decision": "10.64.10.64/27 (gw 10.64.10.65, bcast 10.64.10.95)",
+      "justification": "16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "LONDON",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 99,
+        "hosts_requested": 16,
+        "cidr": "10.64.10.64/27",
+        "network": "10.64.10.64",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.64.10.95",
+        "gateway": "10.64.10.65",
+        "first_usable": "10.64.10.65",
+        "last_usable": "10.64.10.94",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 56.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block LONDON",
+      "decision": "10.64.8.0/22",
+      "justification": "Sum of LONDON's subnet blocks = 608 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.64.8.0/22",
+        "demand": 608
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "SINGAPORE IOT-SCANNERS",
+      "decision": "10.64.12.0/23 (gw 10.64.12.1, bcast 10.64.13.255)",
+      "justification": "450 hosts + 1 gateway + network + broadcast = 453 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 451 required. Utilisation 88.4% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "IOT-SCANNERS",
+        "site": "SINGAPORE",
+        "kind": "lan",
+        "role": "iot",
+        "vlan_id": 100,
+        "hosts_requested": 450,
+        "cidr": "10.64.12.0/23",
+        "network": "10.64.12.0",
+        "prefix": 23,
+        "mask": "255.255.254.0",
+        "wildcard": "0.0.1.255",
+        "broadcast": "10.64.13.255",
+        "gateway": "10.64.12.1",
+        "first_usable": "10.64.12.1",
+        "last_usable": "10.64.13.254",
+        "usable": 510,
+        "block_size": 512,
+        "utilization_pct": 88.4
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "SINGAPORE USERS",
+      "decision": "10.64.14.0/26 (gw 10.64.14.1, bcast 10.64.14.63)",
+      "justification": "40 hosts + 1 gateway + network + broadcast = 43 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 41 required. Utilisation 66.1% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "USERS",
+        "site": "SINGAPORE",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 10,
+        "hosts_requested": 40,
+        "cidr": "10.64.14.0/26",
+        "network": "10.64.14.0",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.64.14.63",
+        "gateway": "10.64.14.1",
+        "first_usable": "10.64.14.1",
+        "last_usable": "10.64.14.62",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 66.1
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "SINGAPORE MGMT",
+      "decision": "10.64.14.64/27 (gw 10.64.14.65, bcast 10.64.14.95)",
+      "justification": "16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "SINGAPORE",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 99,
+        "hosts_requested": 16,
+        "cidr": "10.64.14.64/27",
+        "network": "10.64.14.64",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.64.14.95",
+        "gateway": "10.64.14.65",
+        "first_usable": "10.64.14.65",
+        "last_usable": "10.64.14.94",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 56.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block SINGAPORE",
+      "decision": "10.64.12.0/22",
+      "justification": "Sum of SINGAPORE's subnet blocks = 608 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.64.12.0/22",
+        "demand": 608
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "MUMBAI IOT-SCANNERS",
+      "decision": "10.64.16.0/23 (gw 10.64.16.1, bcast 10.64.17.255)",
+      "justification": "450 hosts + 1 gateway + network + broadcast = 453 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 451 required. Utilisation 88.4% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "IOT-SCANNERS",
+        "site": "MUMBAI",
+        "kind": "lan",
+        "role": "iot",
+        "vlan_id": 100,
+        "hosts_requested": 450,
+        "cidr": "10.64.16.0/23",
+        "network": "10.64.16.0",
+        "prefix": 23,
+        "mask": "255.255.254.0",
+        "wildcard": "0.0.1.255",
+        "broadcast": "10.64.17.255",
+        "gateway": "10.64.16.1",
+        "first_usable": "10.64.16.1",
+        "last_usable": "10.64.17.254",
+        "usable": 510,
+        "block_size": 512,
+        "utilization_pct": 88.4
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "MUMBAI USERS",
+      "decision": "10.64.18.0/26 (gw 10.64.18.1, bcast 10.64.18.63)",
+      "justification": "50 hosts + 1 gateway + network + broadcast = 53 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 51 required. Utilisation 82.3% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "USERS",
+        "site": "MUMBAI",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 10,
+        "hosts_requested": 50,
+        "cidr": "10.64.18.0/26",
+        "network": "10.64.18.0",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.64.18.63",
+        "gateway": "10.64.18.1",
+        "first_usable": "10.64.18.1",
+        "last_usable": "10.64.18.62",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 82.3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "MUMBAI MGMT",
+      "decision": "10.64.18.64/27 (gw 10.64.18.65, bcast 10.64.18.95)",
+      "justification": "16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "MUMBAI",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 99,
+        "hosts_requested": 16,
+        "cidr": "10.64.18.64/27",
+        "network": "10.64.18.64",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.64.18.95",
+        "gateway": "10.64.18.65",
+        "first_usable": "10.64.18.65",
+        "last_usable": "10.64.18.94",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 56.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block MUMBAI",
+      "decision": "10.64.16.0/22",
+      "justification": "Sum of MUMBAI's subnet blocks = 608 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.64.16.0/22",
+        "demand": 608
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block INFRA",
+      "decision": "10.64.20.0/27",
+      "justification": "Sum of INFRA's subnet blocks = 24 addresses, rounded up to the next power of two (32) so the whole site is one bit-aligned prefix /27. This lets the site be advertised as a single summary route (wildcard 0.0.0.31).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.64.20.0/27",
+        "demand": 24
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "CLOUD-VPC APP-TIER",
+      "decision": "10.200.0.0/24 (gw 10.200.0.1, bcast 10.200.0.255)",
+      "justification": "200 hosts + 1 gateway + network + broadcast = 203 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 201 required. Utilisation 79.1% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "APP-TIER",
+        "site": "CLOUD-VPC",
+        "kind": "lan",
+        "role": "server",
+        "vlan_id": null,
+        "hosts_requested": 200,
+        "cidr": "10.200.0.0/24",
+        "network": "10.200.0.0",
+        "prefix": 24,
+        "mask": "255.255.255.0",
+        "wildcard": "0.0.0.255",
+        "broadcast": "10.200.0.255",
+        "gateway": "10.200.0.1",
+        "first_usable": "10.200.0.1",
+        "last_usable": "10.200.0.254",
+        "usable": 254,
+        "block_size": 256,
+        "utilization_pct": 79.1
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "CLOUD-VPC DATA-TIER",
+      "decision": "10.200.1.0/26 (gw 10.200.1.1, bcast 10.200.1.63)",
+      "justification": "50 hosts + 1 gateway + network + broadcast = 53 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 51 required. Utilisation 82.3% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "DATA-TIER",
+        "site": "CLOUD-VPC",
+        "kind": "lan",
+        "role": "server",
+        "vlan_id": null,
+        "hosts_requested": 50,
+        "cidr": "10.200.1.0/26",
+        "network": "10.200.1.0",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.200.1.63",
+        "gateway": "10.200.1.1",
+        "first_usable": "10.200.1.1",
+        "last_usable": "10.200.1.62",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 82.3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block CLOUD-VPC",
+      "decision": "10.200.0.0/16",
+      "justification": "CLOUD-VPC keeps its own provider-assigned prefix 10.200.0.0/16, allocated outside the enterprise root 10.64.0.0/16 so cloud and on-prem routes never overlap and each side can be summarised independently.",
+      "references": [
+        "RFC 4632"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Root utilisation",
+      "decision": "7.86% of 10.64.0.0/16",
+      "justification": "23 subnets packed largest-first with zero overlap (verified by sorting on network address and checking each broadcast < next network). Host demand fills 77.33% of allocated addresses. A fixed-length design using the largest LAN block everywhere would consume 14,360 addresses vs 3,352 with VLSM.",
+      "references": [
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "root_utilization_pct": 7.86,
+        "address_efficiency_pct": 77.33,
+        "flsm_equivalent_addresses": 14360,
+        "vlsm_addresses": 3352
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Cloud tunnel inside addresses",
+      "decision": "169.254.10.0/24 carved into /30s",
+      "justification": "Cloud VPN gateways number the BGP-over-IPsec inside interfaces from the IPv4 link-local range; using it keeps tunnel addressing out of both the enterprise root and the VPC CIDR.",
+      "references": [
+        "RFC 3927"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Internet underlay addresses",
+      "decision": "203.0.113.0/24 /30 per site (lab)",
+      "justification": "Public WAN addresses in the lab use the RFC 5737 documentation block so the configs never collide with real Internet space; replace with ISP-assigned addresses in production.",
+      "references": [
+        "RFC 5737"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "Interior gateway protocol",
+      "decision": "Multi-area OSPFv2 (area 0 backbone at NYC, one area per remote site)",
+      "justification": "Selected multi-area OSPF because 4 geographically dispersed sites interconnect over an Internet/IPsec WAN whose tunnels can flap independently. Areas confine Type-1/2 LSA flooding and SPF recalculation to the site where a change happens; area 0 carries only inter-area summaries. OSPF remains vendor-neutral and converges in seconds as a link-state protocol.",
+      "references": [
+        "RFC 2328 (OSPFv2) section 3",
+        "RFC 3509 (ABR behaviour)"
+      ],
+      "data": {
+        "subnets": 23,
+        "areas": {
+          "NYC": 0,
+          "LONDON": 1,
+          "SINGAPORE": 2,
+          "MUMBAI": 3
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "Area 1 summary (LONDON)",
+      "decision": "area 1 range 10.64.8.0 255.255.252.0",
+      "justification": "The ABR at LONDON advertises 3 intra-area subnets into area 0 as one Type-3 LSA 10.64.8.0/22. This works only because the VLSM engine allocated the site as one contiguous, bit-aligned block; it shrinks every other router's routing table and hides intra-site flaps from the backbone.",
+      "references": [
+        "RFC 2328 section 12.4.3",
+        "RFC 4632"
+      ],
+      "data": {
+        "area": 1,
+        "network": "10.64.8.0",
+        "mask": "255.255.252.0",
+        "cidr": "10.64.8.0/22",
+        "lan_subnets": 3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "Area 2 summary (SINGAPORE)",
+      "decision": "area 2 range 10.64.12.0 255.255.252.0",
+      "justification": "The ABR at SINGAPORE advertises 3 intra-area subnets into area 0 as one Type-3 LSA 10.64.12.0/22. This works only because the VLSM engine allocated the site as one contiguous, bit-aligned block; it shrinks every other router's routing table and hides intra-site flaps from the backbone.",
+      "references": [
+        "RFC 2328 section 12.4.3",
+        "RFC 4632"
+      ],
+      "data": {
+        "area": 2,
+        "network": "10.64.12.0",
+        "mask": "255.255.252.0",
+        "cidr": "10.64.12.0/22",
+        "lan_subnets": 3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "Area 3 summary (MUMBAI)",
+      "decision": "area 3 range 10.64.16.0 255.255.252.0",
+      "justification": "The ABR at MUMBAI advertises 3 intra-area subnets into area 0 as one Type-3 LSA 10.64.16.0/22. This works only because the VLSM engine allocated the site as one contiguous, bit-aligned block; it shrinks every other router's routing table and hides intra-site flaps from the backbone.",
+      "references": [
+        "RFC 2328 section 12.4.3",
+        "RFC 4632"
+      ],
+      "data": {
+        "area": 3,
+        "network": "10.64.16.0",
+        "mask": "255.255.252.0",
+        "cidr": "10.64.16.0/22",
+        "lan_subnets": 3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "OSPF reference bandwidth",
+      "decision": "auto-cost reference-bandwidth 100000",
+      "justification": "The default 100 Mbps reference gives FastEthernet, 1G and 10G links the same cost (1). Raising it to 100 Gbps makes cost = 100000 / link Mbps, so 10G = 10, 1G = 100 and SPF prefers the faster path. Must be identical on every router.",
+      "references": [
+        "RFC 2328 Appendix C.3"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "Cloud boundary",
+      "decision": "eBGP AS65010 <-> AS64512 (CLOUD-VPC)",
+      "justification": "The cloud VPC is a separate administrative and routing domain; cloud VPN gateways only exchange dynamic routes via BGP. eBGP isolates the domains: the enterprise advertises one aggregate (10.64.0.0/16) filtered by prefix-list, and accepts only the VPC CIDR, so a mistake on either side cannot leak or black-hole the other's routes. Private ASNs from 64512-65534 are used.",
+      "references": [
+        "RFC 4271 (BGP-4)",
+        "RFC 6996 (private ASNs)",
+        "RFC 7454 (BGP filtering)"
+      ],
+      "data": {
+        "asn": 65010,
+        "peers": [
+          {
+            "site": "CLOUD-VPC",
+            "asn": 64512,
+            "prefix": "10.200.0.0/16"
+          }
+        ],
+        "advertise": [
+          "10.64.0.0/16"
+        ]
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "BGP -> OSPF",
+      "decision": "Redistribute VPC prefix into OSPF at NYC",
+      "justification": "Spokes keep a local Internet default route (split tunnelling), so the VPC prefix must be injected into OSPF as an E2 route by the hub that terminates the eBGP session; a route-map limits redistribution to the VPC CIDR only.",
+      "references": [
+        "RFC 2328 section 2.3 (AS-external routes)"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "QoS & Latency",
+      "subject": "Path latency",
+      "decision": "Worst path SINGAPORE -> NYC -> CLOUD-VPC = 107.776 ms one-way",
+      "justification": "Estimated from cable/route distance at ~4.9 us/km (Internet paths x1.4) plus 0.05 ms per hop. Intercontinental latency is dominated by physics, so chatty IoT protocols should batch telemetry and use MQTT/HTTPS keep-alives rather than synchronous request/response.",
+      "references": [
+        "ITU-T G.114"
+      ],
+      "data": {
+        "worst": {
+          "a": "SINGAPORE",
+          "b": "CLOUD-VPC",
+          "one_way_ms": 107.776,
+          "path": [
+            "SINGAPORE",
+            "NYC",
+            "CLOUD-VPC"
+          ]
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "Verification",
+      "subject": "Packet-flow simulation",
+      "decision": "38/38 checks passed",
+      "justification": "Every LAN's last usable address was resolved by longest-prefix match to exactly one subnet (proves zero overlap), and representative flows (DHCP, DNS, Internet, lateral SMB, cloud MQTT/SSH) were walked through each generated ACL entry-by-entry using the same wildcard arithmetic the router applies.",
+      "references": [],
+      "data": {
+        "passed": 38,
+        "total": 38
+      },
+      "level": "decision"
+    }
+  ],
+  "rationale_text": "== Input =================================================================\n[001] Global WAN: wan profile, 5 sites, 7 links, root 10.64.0.0/16\n      Why: Parameters validated: 2,564 hosts across 14 subnets, resiliency 'redundant'.\n\n== L1 Media ==============================================================\n[002] NYC <-> LONDON: Internet underlay with IPsec overlay\n      Why: Link spans 5570 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 38.2 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n[003] NYC <-> SINGAPORE: Internet underlay with IPsec overlay\n      Why: Link spans 15340 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 105.3 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n[004] NYC <-> MUMBAI: Internet underlay with IPsec overlay\n      Why: Link spans 12540 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 86.1 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n[005] LONDON <-> MUMBAI: Internet underlay with IPsec overlay\n      Why: Link spans 7190 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 49.3 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n[006] SINGAPORE <-> MUMBAI: Internet underlay with IPsec overlay\n      Why: Link spans 3900 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 26.8 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n[007] NYC <-> CLOUD-VPC: Internet underlay with IPsec overlay\n      Why: Link spans 350 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 2.4 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n[008] LONDON <-> CLOUD-VPC: Internet underlay with IPsec overlay\n      Why: Link spans 5600 km; owned fibre is uneconomic beyond metro reach and the longest unamplified 10G optic (10GBASE-ZR) stops at 80 km. A carrier Internet circuit is used and confidentiality is restored with an IPsec tunnel. Estimated one-way propagation 38.4 ms (cable distance x 1.4 path factor / 204 km per ms in glass).\n      Ref: RFC 4301 (IPsec), ITU-T G.652\n\n== L2 Switching ==========================================================\n[009] NYC access layer: 35 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (700), so only port-consuming endpoints are counted. ceil(700 x (1 + 20% growth) / 24) = 35.\n      Ref: IEEE 802.1Q (voice VLAN)\n[010] LONDON access layer: 28 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (560), so only port-consuming endpoints are counted. ceil(560 x (1 + 20% growth) / 24) = 28.\n      Ref: IEEE 802.1Q (voice VLAN)\n[011] SINGAPORE access layer: 25 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (490), so only port-consuming endpoints are counted. ceil(490 x (1 + 20% growth) / 24) = 25.\n      Ref: IEEE 802.1Q (voice VLAN)\n[012] MUMBAI access layer: 25 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (500), so only port-consuming endpoints are counted. ceil(500 x (1 + 20% growth) / 24) = 25.\n      Ref: IEEE 802.1Q (voice VLAN)\n[013] Spanning tree: Rapid PVST+ (802.1w per VLAN), root at distribution\n      Why: RSTP converges in under a second via proposal/agreement instead of 802.1D's 30-50 s listening/learning timers. The distribution switch is pinned as root (priority 4096) so the L2 forwarding path matches the L3 gateway, and PortFast + BPDU Guard on edge ports stop a rogue switch from triggering a topology change.\n      Ref: IEEE 802.1w, IEEE 802.1D-2004\n[014] Trunk policy: 802.1Q trunks, explicit allowed list, native VLAN 999, DTP off\n      Why: Trunks carry only the VLANs that exist at that site (no 'allowed vlan all'), the native VLAN is moved to unused VLAN 999 and DTP is disabled with 'nonegotiate'. This blocks double-tagging VLAN hopping and switch-spoofing attacks; unused ports are shut down in black-hole VLAN 998.\n      Ref: IEEE 802.1Q, Cisco SAFE\n\n== Topology ==============================================================\n[015] Topology tier: Hub-and-spoke IPsec overlay with regional site LANs\n      Why: Chosen because sites are continents apart, so each has a collapsed site LAN and an edge router that builds encrypted GRE tunnels across the Internet to the hub (and backup peers); routing hierarchy follows the tunnel hierarchy.\n\n== L3 VLSM ===============================================================\n[016] NYC IOT-SCANNERS: 10.64.0.0/22 (gw 10.64.0.1, bcast 10.64.3.255)\n      Why: 600 hosts + 1 gateway + network + broadcast = 603 addresses -> 2^10 = 1024 block (/22); /23 would offer only 510 usable < 601 required. Utilisation 58.8% of 1022 usable. Network address is a multiple of the 1024-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[017] NYC USERS: 10.64.4.0/25 (gw 10.64.4.1, bcast 10.64.4.127)\n      Why: 100 hosts + 1 gateway + network + broadcast = 103 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 101 required. Utilisation 80.2% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[018] NYC MGMT: 10.64.4.128/27 (gw 10.64.4.129, bcast 10.64.4.159)\n      Why: 16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[019] Site block NYC: 10.64.0.0/21\n      Why: Sum of NYC's subnet blocks = 1,184 addresses, rounded up to the next power of two (2,048) so the whole site is one bit-aligned prefix /21. This lets the site be advertised as a single summary route (wildcard 0.0.7.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[020] LONDON IOT-SCANNERS: 10.64.8.0/23 (gw 10.64.8.1, bcast 10.64.9.255)\n      Why: 500 hosts + 1 gateway + network + broadcast = 503 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 501 required. Utilisation 98.2% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[021] LONDON USERS: 10.64.10.0/26 (gw 10.64.10.1, bcast 10.64.10.63)\n      Why: 60 hosts + 1 gateway + network + broadcast = 63 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 61 required. Utilisation 98.4% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[022] LONDON MGMT: 10.64.10.64/27 (gw 10.64.10.65, bcast 10.64.10.95)\n      Why: 16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[023] Site block LONDON: 10.64.8.0/22\n      Why: Sum of LONDON's subnet blocks = 608 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[024] SINGAPORE IOT-SCANNERS: 10.64.12.0/23 (gw 10.64.12.1, bcast 10.64.13.255)\n      Why: 450 hosts + 1 gateway + network + broadcast = 453 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 451 required. Utilisation 88.4% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[025] SINGAPORE USERS: 10.64.14.0/26 (gw 10.64.14.1, bcast 10.64.14.63)\n      Why: 40 hosts + 1 gateway + network + broadcast = 43 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 41 required. Utilisation 66.1% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[026] SINGAPORE MGMT: 10.64.14.64/27 (gw 10.64.14.65, bcast 10.64.14.95)\n      Why: 16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[027] Site block SINGAPORE: 10.64.12.0/22\n      Why: Sum of SINGAPORE's subnet blocks = 608 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[028] MUMBAI IOT-SCANNERS: 10.64.16.0/23 (gw 10.64.16.1, bcast 10.64.17.255)\n      Why: 450 hosts + 1 gateway + network + broadcast = 453 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 451 required. Utilisation 88.4% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[029] MUMBAI USERS: 10.64.18.0/26 (gw 10.64.18.1, bcast 10.64.18.63)\n      Why: 50 hosts + 1 gateway + network + broadcast = 53 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 51 required. Utilisation 82.3% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[030] MUMBAI MGMT: 10.64.18.64/27 (gw 10.64.18.65, bcast 10.64.18.95)\n      Why: 16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[031] Site block MUMBAI: 10.64.16.0/22\n      Why: Sum of MUMBAI's subnet blocks = 608 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[032] Site block INFRA: 10.64.20.0/27\n      Why: Sum of INFRA's subnet blocks = 24 addresses, rounded up to the next power of two (32) so the whole site is one bit-aligned prefix /27. This lets the site be advertised as a single summary route (wildcard 0.0.0.31).\n      Ref: RFC 4632 (CIDR aggregation)\n[033] CLOUD-VPC APP-TIER: 10.200.0.0/24 (gw 10.200.0.1, bcast 10.200.0.255)\n      Why: 200 hosts + 1 gateway + network + broadcast = 203 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 201 required. Utilisation 79.1% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[034] CLOUD-VPC DATA-TIER: 10.200.1.0/26 (gw 10.200.1.1, bcast 10.200.1.63)\n      Why: 50 hosts + 1 gateway + network + broadcast = 53 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 51 required. Utilisation 82.3% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[035] Site block CLOUD-VPC: 10.200.0.0/16\n      Why: CLOUD-VPC keeps its own provider-assigned prefix 10.200.0.0/16, allocated outside the enterprise root 10.64.0.0/16 so cloud and on-prem routes never overlap and each side can be summarised independently.\n      Ref: RFC 4632\n[036] Root utilisation: 7.86% of 10.64.0.0/16\n      Why: 23 subnets packed largest-first with zero overlap (verified by sorting on network address and checking each broadcast < next network). Host demand fills 77.33% of allocated addresses. A fixed-length design using the largest LAN block everywhere would consume 14,360 addresses vs 3,352 with VLSM.\n      Ref: RFC 1878, RFC 4632\n[037] Cloud tunnel inside addresses: 169.254.10.0/24 carved into /30s\n      Why: Cloud VPN gateways number the BGP-over-IPsec inside interfaces from the IPv4 link-local range; using it keeps tunnel addressing out of both the enterprise root and the VPC CIDR.\n      Ref: RFC 3927\n[038] Internet underlay addresses: 203.0.113.0/24 /30 per site (lab)\n      Why: Public WAN addresses in the lab use the RFC 5737 documentation block so the configs never collide with real Internet space; replace with ISP-assigned addresses in production.\n      Ref: RFC 5737\n\n== L3 Routing ============================================================\n[039] Interior gateway protocol: Multi-area OSPFv2 (area 0 backbone at NYC, one area per remote site)\n      Why: Selected multi-area OSPF because 4 geographically dispersed sites interconnect over an Internet/IPsec WAN whose tunnels can flap independently. Areas confine Type-1/2 LSA flooding and SPF recalculation to the site where a change happens; area 0 carries only inter-area summaries. OSPF remains vendor-neutral and converges in seconds as a link-state protocol.\n      Ref: RFC 2328 (OSPFv2) section 3, RFC 3509 (ABR behaviour)\n[040] Area 1 summary (LONDON): area 1 range 10.64.8.0 255.255.252.0\n      Why: The ABR at LONDON advertises 3 intra-area subnets into area 0 as one Type-3 LSA 10.64.8.0/22. This works only because the VLSM engine allocated the site as one contiguous, bit-aligned block; it shrinks every other router's routing table and hides intra-site flaps from the backbone.\n      Ref: RFC 2328 section 12.4.3, RFC 4632\n[041] Area 2 summary (SINGAPORE): area 2 range 10.64.12.0 255.255.252.0\n      Why: The ABR at SINGAPORE advertises 3 intra-area subnets into area 0 as one Type-3 LSA 10.64.12.0/22. This works only because the VLSM engine allocated the site as one contiguous, bit-aligned block; it shrinks every other router's routing table and hides intra-site flaps from the backbone.\n      Ref: RFC 2328 section 12.4.3, RFC 4632\n[042] Area 3 summary (MUMBAI): area 3 range 10.64.16.0 255.255.252.0\n      Why: The ABR at MUMBAI advertises 3 intra-area subnets into area 0 as one Type-3 LSA 10.64.16.0/22. This works only because the VLSM engine allocated the site as one contiguous, bit-aligned block; it shrinks every other router's routing table and hides intra-site flaps from the backbone.\n      Ref: RFC 2328 section 12.4.3, RFC 4632\n[043] OSPF reference bandwidth: auto-cost reference-bandwidth 100000\n      Why: The default 100 Mbps reference gives FastEthernet, 1G and 10G links the same cost (1). Raising it to 100 Gbps makes cost = 100000 / link Mbps, so 10G = 10, 1G = 100 and SPF prefers the faster path. Must be identical on every router.\n      Ref: RFC 2328 Appendix C.3\n[044] Cloud boundary: eBGP AS65010 <-> AS64512 (CLOUD-VPC)\n      Why: The cloud VPC is a separate administrative and routing domain; cloud VPN gateways only exchange dynamic routes via BGP. eBGP isolates the domains: the enterprise advertises one aggregate (10.64.0.0/16) filtered by prefix-list, and accepts only the VPC CIDR, so a mistake on either side cannot leak or black-hole the other's routes. Private ASNs from 64512-65534 are used.\n      Ref: RFC 4271 (BGP-4), RFC 6996 (private ASNs), RFC 7454 (BGP filtering)\n[045] BGP -> OSPF: Redistribute VPC prefix into OSPF at NYC\n      Why: Spokes keep a local Internet default route (split tunnelling), so the VPC prefix must be injected into OSPF as an E2 route by the hub that terminates the eBGP session; a route-map limits redistribution to the VPC CIDR only.\n      Ref: RFC 2328 section 2.3 (AS-external routes)\n\n== QoS & Latency =========================================================\n[046] Path latency: Worst path SINGAPORE -> NYC -> CLOUD-VPC = 107.776 ms one-way\n      Why: Estimated from cable/route distance at ~4.9 us/km (Internet paths x1.4) plus 0.05 ms per hop. Intercontinental latency is dominated by physics, so chatty IoT protocols should batch telemetry and use MQTT/HTTPS keep-alives rather than synchronous request/response.\n      Ref: ITU-T G.114\n\n== Verification ==========================================================\n[047] Packet-flow simulation: 38/38 checks passed\n      Why: Every LAN's last usable address was resolved by longest-prefix match to exactly one subnet (proves zero overlap), and representative flows (DHCP, DNS, Internet, lateral SMB, cloud MQTT/SSH) were walked through each generated ACL entry-by-entry using the same wildcard arithmetic the router applies."
+}

@@ -1,0 +1,1370 @@
+! NetArchitect v1.0.0 export - Global WAN
+! Topology: Hub-and-spoke IPsec overlay with regional site LANs | Routing: Multi-area OSPF
+!
+! CABLING PLAN (connect these ports in Packet Tracer / GNS3 before pasting)
+!   NYC-ASW1             GigabitEthernet1/1/1     <-> NYC-RTR1             GigabitEthernet0/0/0     Cat6a LAN trunk (router-on-a-stick)
+!   LONDON-ASW1          GigabitEthernet1/1/1     <-> LONDON-RTR1          GigabitEthernet0/0/0     Cat6a LAN trunk (router-on-a-stick)
+!   SINGAPORE-ASW1       GigabitEthernet1/1/1     <-> SINGAPORE-RTR1       GigabitEthernet0/0/0     Cat6a LAN trunk (router-on-a-stick)
+!   MUMBAI-ASW1          GigabitEthernet1/1/1     <-> MUMBAI-RTR1          GigabitEthernet0/0/0     Cat6a LAN trunk (router-on-a-stick)
+!   ISP-SIM              GigabitEthernet0/0/0     <-> ISP-SW               GigabitEthernet1/1/1     ISP trunk
+!   ISP-SW               GigabitEthernet1/0/1     <-> NYC-RTR1             GigabitEthernet0/0/1     Internet underlay (simulated)
+!   ISP-SW               GigabitEthernet1/0/2     <-> LONDON-RTR1          GigabitEthernet0/0/1     Internet underlay (simulated)
+!   ISP-SW               GigabitEthernet1/0/3     <-> SINGAPORE-RTR1       GigabitEthernet0/0/1     Internet underlay (simulated)
+!   ISP-SW               GigabitEthernet1/0/4     <-> MUMBAI-RTR1          GigabitEthernet0/0/1     Internet underlay (simulated)
+!   ISP-SW               GigabitEthernet1/0/5     <-> CLOUD-VPC-VGW-SIM    GigabitEthernet0/0/1     Internet underlay (simulated)
+!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: NYC-RTR1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - NYC-RTR1
+! Platform : Cisco ISR4331 (IOS-XE) / IOSv
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: site edge router, hub (area 0)
+! Site block: 10.64.0.0/21
+! ======================================================================
+enable
+configure terminal
+!
+hostname NYC-RTR1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+!
+! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 28800
+crypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC-GRE
+ set transform-set TS-GRE
+crypto ipsec transform-set TS-VTI esp-aes 256 esp-sha256-hmac
+ mode tunnel
+crypto ipsec profile IPSEC-VTI
+ set transform-set TS-VTI
+crypto isakmp key NA-b93a5b47676d4b47 address 203.0.113.10
+crypto isakmp key NA-14d7968553cfd1a0 address 203.0.113.14
+crypto isakmp key NA-9e6359a05b1f2ad3 address 203.0.113.18
+crypto isakmp key NA-261fd155fc225fe4 address 203.0.113.22
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended IOT-IN-V100
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.64.0.0 0.0.3.255 host 1.1.1.1 eq domain
+ remark HTTPS to cloud app
+ permit tcp 10.64.0.0 0.0.3.255 10.200.0.0 0.0.0.255 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.0.0 0.0.3.255 10.200.0.0 0.0.0.255 eq 8883
+ remark HTTPS to cloud app
+ permit tcp 10.64.0.0 0.0.3.255 10.200.1.0 0.0.0.63 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.0.0 0.0.3.255 10.200.1.0 0.0.0.63 eq 8883
+ remark IoT may not talk to anything else
+ deny ip 10.64.0.0 0.0.3.255 any log
+!
+! --- Loopback (router-id) ---
+interface Loopback0
+ ip address 10.64.20.20 255.255.255.255
+!
+! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---
+interface GigabitEthernet0/0/0
+ description LAN trunk to NYC-ASW1
+ no ip address
+ no shutdown
+interface GigabitEthernet0/0/0.10
+ description USERS gateway 10.64.4.0/25 (100 hosts)
+ encapsulation dot1Q 10
+ ip address 10.64.4.1 255.255.255.128
+interface GigabitEthernet0/0/0.99
+ description MGMT gateway 10.64.4.128/27 (16 hosts)
+ encapsulation dot1Q 99
+ ip address 10.64.4.129 255.255.255.224
+interface GigabitEthernet0/0/0.100
+ description IOT-SCANNERS gateway 10.64.0.0/22 (600 hosts)
+ encapsulation dot1Q 100
+ ip address 10.64.0.1 255.255.252.0
+ ip access-group IOT-IN-V100 in
+interface GigabitEthernet0/0/0.999
+ description native VLAN (unused)
+ encapsulation dot1Q 999 native
+!
+! --- Internet underlay (RFC 5737 lab addressing) ---
+interface GigabitEthernet0/0/1
+ description INTERNET underlay
+ ip address 203.0.113.6 255.255.255.252
+ no shutdown
+ip route 0.0.0.0 0.0.0.0 203.0.113.5 name INTERNET
+!
+! --- Encrypted tunnels ---
+interface Tunnel1
+ description GRE/IPsec to LONDON (5,570 km)
+ ip address 10.64.20.1 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.10
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel2
+ description GRE/IPsec to SINGAPORE (15,340 km)
+ ip address 10.64.20.5 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.14
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel3
+ description GRE/IPsec to MUMBAI (12,540 km)
+ ip address 10.64.20.9 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.18
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel6
+ description IPsec VTI + eBGP to CLOUD-VPC VPC
+ ip address 169.254.10.21 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ tunnel source GigabitEthernet0/0/1
+ tunnel mode ipsec ipv4
+ tunnel destination 203.0.113.22
+ tunnel protection ipsec profile IPSEC-VTI
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.64.4.1
+ip dhcp excluded-address 10.64.0.1
+ip dhcp pool NYC-USERS
+ network 10.64.4.0 255.255.255.128
+ default-router 10.64.4.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+ip dhcp pool NYC-IOT-SCANNERS
+ network 10.64.0.0 255.255.252.0
+ default-router 10.64.0.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+!
+! --- OSPF (Multi-area OSPF) ---
+router ospf 1
+ router-id 10.64.20.20
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface Tunnel1
+ no passive-interface Tunnel2
+ no passive-interface Tunnel3
+ network 10.64.20.20 0.0.0.0 area 0
+ network 10.64.20.0 0.0.0.3 area 0
+ network 10.64.20.4 0.0.0.3 area 0
+ network 10.64.20.8 0.0.0.3 area 0
+ network 10.64.4.0 0.0.0.127 area 0
+ network 10.64.4.128 0.0.0.31 area 0
+ network 10.64.0.0 0.0.3.255 area 0
+ redistribute bgp 65010 subnets route-map BGP-TO-OSPF
+!
+! --- eBGP to cloud VPC (aggregate out, VPC CIDR in) ---
+ip route 10.64.0.0 255.255.0.0 Null0 254 name AGGREGATE-DISCARD
+ip prefix-list TO-CLOUD seq 5 permit 10.64.0.0/16
+ip prefix-list FROM-CLOUD seq 5 permit 10.200.0.0/16 le 24
+route-map BGP-TO-OSPF permit 10
+ match ip address prefix-list FROM-CLOUD
+router bgp 65010
+ bgp router-id 10.64.20.20
+ bgp log-neighbor-changes
+ neighbor 169.254.10.22 remote-as 64512
+ neighbor 169.254.10.22 description CLOUD-VPC VGW
+ neighbor 169.254.10.22 timers 10 30
+ address-family ipv4
+  network 10.64.0.0 mask 255.255.0.0
+  neighbor 169.254.10.22 activate
+  neighbor 169.254.10.22 prefix-list TO-CLOUD out
+  neighbor 169.254.10.22 prefix-list FROM-CLOUD in
+ exit-address-family
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 4
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: LONDON-RTR1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - LONDON-RTR1
+! Platform : Cisco ISR4331 (IOS-XE) / IOSv
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: site edge router, ABR area 0/1
+! Site block: 10.64.8.0/22
+! ======================================================================
+enable
+configure terminal
+!
+hostname LONDON-RTR1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+!
+! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 28800
+crypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC-GRE
+ set transform-set TS-GRE
+crypto ipsec transform-set TS-VTI esp-aes 256 esp-sha256-hmac
+ mode tunnel
+crypto ipsec profile IPSEC-VTI
+ set transform-set TS-VTI
+crypto isakmp key NA-b93a5b47676d4b47 address 203.0.113.6
+crypto isakmp key NA-34ef1501908242c3 address 203.0.113.18
+crypto isakmp key NA-11a9e9909014e40d address 203.0.113.22
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended IOT-IN-V100
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.64.8.0 0.0.1.255 host 1.1.1.1 eq domain
+ remark HTTPS to cloud app
+ permit tcp 10.64.8.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.8.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883
+ remark HTTPS to cloud app
+ permit tcp 10.64.8.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.8.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883
+ remark IoT may not talk to anything else
+ deny ip 10.64.8.0 0.0.1.255 any log
+!
+! --- Loopback (router-id) ---
+interface Loopback0
+ ip address 10.64.20.21 255.255.255.255
+!
+! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---
+interface GigabitEthernet0/0/0
+ description LAN trunk to LONDON-ASW1
+ no ip address
+ no shutdown
+interface GigabitEthernet0/0/0.10
+ description USERS gateway 10.64.10.0/26 (60 hosts)
+ encapsulation dot1Q 10
+ ip address 10.64.10.1 255.255.255.192
+interface GigabitEthernet0/0/0.99
+ description MGMT gateway 10.64.10.64/27 (16 hosts)
+ encapsulation dot1Q 99
+ ip address 10.64.10.65 255.255.255.224
+interface GigabitEthernet0/0/0.100
+ description IOT-SCANNERS gateway 10.64.8.0/23 (500 hosts)
+ encapsulation dot1Q 100
+ ip address 10.64.8.1 255.255.254.0
+ ip access-group IOT-IN-V100 in
+interface GigabitEthernet0/0/0.999
+ description native VLAN (unused)
+ encapsulation dot1Q 999 native
+!
+! --- Internet underlay (RFC 5737 lab addressing) ---
+interface GigabitEthernet0/0/1
+ description INTERNET underlay
+ ip address 203.0.113.10 255.255.255.252
+ no shutdown
+ip route 0.0.0.0 0.0.0.0 203.0.113.9 name INTERNET
+!
+! --- Encrypted tunnels ---
+interface Tunnel1
+ description GRE/IPsec to NYC (5,570 km)
+ ip address 10.64.20.2 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.6
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel4
+ description GRE/IPsec to MUMBAI (7,190 km)
+ ip address 10.64.20.13 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.18
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel7
+ description IPsec VTI + eBGP to CLOUD-VPC VPC
+ ip address 169.254.10.25 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ tunnel source GigabitEthernet0/0/1
+ tunnel mode ipsec ipv4
+ tunnel destination 203.0.113.22
+ tunnel protection ipsec profile IPSEC-VTI
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.64.10.1
+ip dhcp excluded-address 10.64.8.1
+ip dhcp pool LONDON-USERS
+ network 10.64.10.0 255.255.255.192
+ default-router 10.64.10.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+ip dhcp pool LONDON-IOT-SCANNERS
+ network 10.64.8.0 255.255.254.0
+ default-router 10.64.8.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+!
+! --- OSPF (Multi-area OSPF) ---
+router ospf 1
+ router-id 10.64.20.21
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface Tunnel1
+ no passive-interface Tunnel4
+ network 10.64.20.21 0.0.0.0 area 0
+ network 10.64.20.0 0.0.0.3 area 0
+ network 10.64.20.12 0.0.0.3 area 0
+ network 10.64.10.0 0.0.0.63 area 1
+ network 10.64.10.64 0.0.0.31 area 1
+ network 10.64.8.0 0.0.1.255 area 1
+ area 1 range 10.64.8.0 255.255.252.0
+ redistribute bgp 65010 subnets route-map BGP-TO-OSPF
+!
+! --- eBGP to cloud VPC (aggregate out, VPC CIDR in) ---
+ip route 10.64.0.0 255.255.0.0 Null0 254 name AGGREGATE-DISCARD
+ip prefix-list TO-CLOUD seq 5 permit 10.64.0.0/16
+ip prefix-list FROM-CLOUD seq 5 permit 10.200.0.0/16 le 24
+route-map BGP-TO-OSPF permit 10
+ match ip address prefix-list FROM-CLOUD
+router bgp 65010
+ bgp router-id 10.64.20.21
+ bgp log-neighbor-changes
+ neighbor 169.254.10.26 remote-as 64512
+ neighbor 169.254.10.26 description CLOUD-VPC VGW
+ neighbor 169.254.10.26 timers 10 30
+ address-family ipv4
+  network 10.64.0.0 mask 255.255.0.0
+  neighbor 169.254.10.26 activate
+  neighbor 169.254.10.26 prefix-list TO-CLOUD out
+  neighbor 169.254.10.26 prefix-list FROM-CLOUD in
+ exit-address-family
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 4
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: SINGAPORE-RTR1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - SINGAPORE-RTR1
+! Platform : Cisco ISR4331 (IOS-XE) / IOSv
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: site edge router, ABR area 0/2
+! Site block: 10.64.12.0/22
+! ======================================================================
+enable
+configure terminal
+!
+hostname SINGAPORE-RTR1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+!
+! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 28800
+crypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC-GRE
+ set transform-set TS-GRE
+crypto isakmp key NA-14d7968553cfd1a0 address 203.0.113.6
+crypto isakmp key NA-1a7616bfdc3f9c5e address 203.0.113.18
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended IOT-IN-V100
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.64.12.0 0.0.1.255 host 1.1.1.1 eq domain
+ remark HTTPS to cloud app
+ permit tcp 10.64.12.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.12.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883
+ remark HTTPS to cloud app
+ permit tcp 10.64.12.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.12.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883
+ remark IoT may not talk to anything else
+ deny ip 10.64.12.0 0.0.1.255 any log
+!
+! --- Loopback (router-id) ---
+interface Loopback0
+ ip address 10.64.20.22 255.255.255.255
+!
+! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---
+interface GigabitEthernet0/0/0
+ description LAN trunk to SINGAPORE-ASW1
+ no ip address
+ no shutdown
+interface GigabitEthernet0/0/0.10
+ description USERS gateway 10.64.14.0/26 (40 hosts)
+ encapsulation dot1Q 10
+ ip address 10.64.14.1 255.255.255.192
+interface GigabitEthernet0/0/0.99
+ description MGMT gateway 10.64.14.64/27 (16 hosts)
+ encapsulation dot1Q 99
+ ip address 10.64.14.65 255.255.255.224
+interface GigabitEthernet0/0/0.100
+ description IOT-SCANNERS gateway 10.64.12.0/23 (450 hosts)
+ encapsulation dot1Q 100
+ ip address 10.64.12.1 255.255.254.0
+ ip access-group IOT-IN-V100 in
+interface GigabitEthernet0/0/0.999
+ description native VLAN (unused)
+ encapsulation dot1Q 999 native
+!
+! --- Internet underlay (RFC 5737 lab addressing) ---
+interface GigabitEthernet0/0/1
+ description INTERNET underlay
+ ip address 203.0.113.14 255.255.255.252
+ no shutdown
+ip route 0.0.0.0 0.0.0.0 203.0.113.13 name INTERNET
+!
+! --- Encrypted tunnels ---
+interface Tunnel2
+ description GRE/IPsec to NYC (15,340 km)
+ ip address 10.64.20.6 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.6
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel5
+ description GRE/IPsec to MUMBAI (3,900 km)
+ ip address 10.64.20.17 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.18
+ tunnel protection ipsec profile IPSEC-GRE
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.64.14.1
+ip dhcp excluded-address 10.64.12.1
+ip dhcp pool SINGAPORE-USERS
+ network 10.64.14.0 255.255.255.192
+ default-router 10.64.14.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+ip dhcp pool SINGAPORE-IOT-SCANNERS
+ network 10.64.12.0 255.255.254.0
+ default-router 10.64.12.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+!
+! --- OSPF (Multi-area OSPF) ---
+router ospf 1
+ router-id 10.64.20.22
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface Tunnel2
+ no passive-interface Tunnel5
+ network 10.64.20.22 0.0.0.0 area 0
+ network 10.64.20.4 0.0.0.3 area 0
+ network 10.64.20.16 0.0.0.3 area 0
+ network 10.64.14.0 0.0.0.63 area 2
+ network 10.64.14.64 0.0.0.31 area 2
+ network 10.64.12.0 0.0.1.255 area 2
+ area 2 range 10.64.12.0 255.255.252.0
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 4
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: MUMBAI-RTR1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - MUMBAI-RTR1
+! Platform : Cisco ISR4331 (IOS-XE) / IOSv
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: site edge router, ABR area 0/3
+! Site block: 10.64.16.0/22
+! ======================================================================
+enable
+configure terminal
+!
+hostname MUMBAI-RTR1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+!
+! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 28800
+crypto ipsec transform-set TS-GRE esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC-GRE
+ set transform-set TS-GRE
+crypto isakmp key NA-9e6359a05b1f2ad3 address 203.0.113.6
+crypto isakmp key NA-34ef1501908242c3 address 203.0.113.10
+crypto isakmp key NA-1a7616bfdc3f9c5e address 203.0.113.14
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended IOT-IN-V100
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.64.16.0 0.0.1.255 host 1.1.1.1 eq domain
+ remark HTTPS to cloud app
+ permit tcp 10.64.16.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.16.0 0.0.1.255 10.200.0.0 0.0.0.255 eq 8883
+ remark HTTPS to cloud app
+ permit tcp 10.64.16.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 443
+ remark MQTT/TLS telemetry
+ permit tcp 10.64.16.0 0.0.1.255 10.200.1.0 0.0.0.63 eq 8883
+ remark IoT may not talk to anything else
+ deny ip 10.64.16.0 0.0.1.255 any log
+!
+! --- Loopback (router-id) ---
+interface Loopback0
+ ip address 10.64.20.23 255.255.255.255
+!
+! --- LAN: router-on-a-stick sub-interfaces (802.1Q) ---
+interface GigabitEthernet0/0/0
+ description LAN trunk to MUMBAI-ASW1
+ no ip address
+ no shutdown
+interface GigabitEthernet0/0/0.10
+ description USERS gateway 10.64.18.0/26 (50 hosts)
+ encapsulation dot1Q 10
+ ip address 10.64.18.1 255.255.255.192
+interface GigabitEthernet0/0/0.99
+ description MGMT gateway 10.64.18.64/27 (16 hosts)
+ encapsulation dot1Q 99
+ ip address 10.64.18.65 255.255.255.224
+interface GigabitEthernet0/0/0.100
+ description IOT-SCANNERS gateway 10.64.16.0/23 (450 hosts)
+ encapsulation dot1Q 100
+ ip address 10.64.16.1 255.255.254.0
+ ip access-group IOT-IN-V100 in
+interface GigabitEthernet0/0/0.999
+ description native VLAN (unused)
+ encapsulation dot1Q 999 native
+!
+! --- Internet underlay (RFC 5737 lab addressing) ---
+interface GigabitEthernet0/0/1
+ description INTERNET underlay
+ ip address 203.0.113.18 255.255.255.252
+ no shutdown
+ip route 0.0.0.0 0.0.0.0 203.0.113.17 name INTERNET
+!
+! --- Encrypted tunnels ---
+interface Tunnel3
+ description GRE/IPsec to NYC (12,540 km)
+ ip address 10.64.20.10 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.6
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel4
+ description GRE/IPsec to LONDON (7,190 km)
+ ip address 10.64.20.14 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.10
+ tunnel protection ipsec profile IPSEC-GRE
+interface Tunnel5
+ description GRE/IPsec to SINGAPORE (3,900 km)
+ ip address 10.64.20.18 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-point
+ tunnel source GigabitEthernet0/0/1
+ tunnel destination 203.0.113.14
+ tunnel protection ipsec profile IPSEC-GRE
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.64.18.1
+ip dhcp excluded-address 10.64.16.1
+ip dhcp pool MUMBAI-USERS
+ network 10.64.18.0 255.255.255.192
+ default-router 10.64.18.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+ip dhcp pool MUMBAI-IOT-SCANNERS
+ network 10.64.16.0 255.255.254.0
+ default-router 10.64.16.1
+ dns-server 1.1.1.1
+ domain-name wan.netarch.lab
+!
+! --- OSPF (Multi-area OSPF) ---
+router ospf 1
+ router-id 10.64.20.23
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface Tunnel3
+ no passive-interface Tunnel4
+ no passive-interface Tunnel5
+ network 10.64.20.23 0.0.0.0 area 0
+ network 10.64.20.8 0.0.0.3 area 0
+ network 10.64.20.12 0.0.0.3 area 0
+ network 10.64.20.16 0.0.0.3 area 0
+ network 10.64.18.0 0.0.0.63 area 3
+ network 10.64.18.64 0.0.0.31 area 3
+ network 10.64.16.0 0.0.1.255 area 3
+ area 3 range 10.64.16.0 255.255.252.0
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 4
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: NYC-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - NYC-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 35 access switch(es) in NYC; increment the hostname and the Vlan99 address (next free host in 10.64.4.128/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname NYC-ASW1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 10
+ name USERS
+vlan 99
+ name MGMT
+vlan 100
+ name IOT-SCANNERS
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan99
+ description In-band management
+ ip address 10.64.4.130 255.255.255.224
+ no shutdown
+ip default-gateway 10.64.4.129
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 18
+ description IOT-SCANNERS endpoints
+ switchport mode access
+ switchport access vlan 100
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/19 - 22
+ description USERS endpoints
+ switchport mode access
+ switchport access vlan 10
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to NYC-RTR1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,99,100,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: LONDON-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - LONDON-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 28 access switch(es) in LONDON; increment the hostname and the Vlan99 address (next free host in 10.64.10.64/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname LONDON-ASW1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 10
+ name USERS
+vlan 99
+ name MGMT
+vlan 100
+ name IOT-SCANNERS
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan99
+ description In-band management
+ ip address 10.64.10.66 255.255.255.224
+ no shutdown
+ip default-gateway 10.64.10.65
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 19
+ description IOT-SCANNERS endpoints
+ switchport mode access
+ switchport access vlan 100
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/20 - 22
+ description USERS endpoints
+ switchport mode access
+ switchport access vlan 10
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to LONDON-RTR1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,99,100,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: SINGAPORE-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - SINGAPORE-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 25 access switch(es) in SINGAPORE; increment the hostname and the Vlan99 address (next free host in 10.64.14.64/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname SINGAPORE-ASW1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 10
+ name USERS
+vlan 99
+ name MGMT
+vlan 100
+ name IOT-SCANNERS
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan99
+ description In-band management
+ ip address 10.64.14.66 255.255.255.224
+ no shutdown
+ip default-gateway 10.64.14.65
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 19
+ description IOT-SCANNERS endpoints
+ switchport mode access
+ switchport access vlan 100
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/20 - 22
+ description USERS endpoints
+ switchport mode access
+ switchport access vlan 10
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to SINGAPORE-RTR1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,99,100,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: MUMBAI-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - MUMBAI-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 25 access switch(es) in MUMBAI; increment the hostname and the Vlan99 address (next free host in 10.64.18.64/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname MUMBAI-ASW1
+no ip domain-lookup
+ip domain-name wan.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 10
+ name USERS
+vlan 99
+ name MGMT
+vlan 100
+ name IOT-SCANNERS
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan99
+ description In-band management
+ ip address 10.64.18.66 255.255.255.224
+ no shutdown
+ip default-gateway 10.64.18.65
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 19
+ description IOT-SCANNERS endpoints
+ switchport mode access
+ switchport access vlan 100
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/20 - 22
+ description USERS endpoints
+ switchport mode access
+ switchport access vlan 10
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to MUMBAI-RTR1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,99,100,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark NYC MGMT
+ permit 10.64.4.128 0.0.0.31
+ remark LONDON MGMT
+ permit 10.64.10.64 0.0.0.31
+ remark SINGAPORE MGMT
+ permit 10.64.14.64 0.0.0.31
+ remark MUMBAI MGMT
+ permit 10.64.18.64 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: ISP-SIM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - ISP-SIM
+! Platform : Cisco ISR4331 (lab Internet simulator)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Router-on-a-stick: one sub-interface per customer /30 (RFC 5737 TEST-NET-3).
+! ======================================================================
+enable
+configure terminal
+!
+hostname ISP-SIM
+no ip domain-lookup
+interface GigabitEthernet0/0/0
+ description trunk to ISP-SW
+ no ip address
+ no shutdown
+interface GigabitEthernet0/0/0.11
+ description NYC-RTR1
+ encapsulation dot1Q 11
+ ip address 203.0.113.5 255.255.255.252
+interface GigabitEthernet0/0/0.12
+ description LONDON-RTR1
+ encapsulation dot1Q 12
+ ip address 203.0.113.9 255.255.255.252
+interface GigabitEthernet0/0/0.13
+ description SINGAPORE-RTR1
+ encapsulation dot1Q 13
+ ip address 203.0.113.13 255.255.255.252
+interface GigabitEthernet0/0/0.14
+ description MUMBAI-RTR1
+ encapsulation dot1Q 14
+ ip address 203.0.113.17 255.255.255.252
+interface GigabitEthernet0/0/0.15
+ description CLOUD-VPC-VGW-SIM
+ encapsulation dot1Q 15
+ ip address 203.0.113.21 255.255.255.252
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: ISP-SW
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - ISP-SW
+! Platform : Cisco Catalyst 3650 (lab Internet access switch)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! ======================================================================
+enable
+configure terminal
+!
+hostname ISP-SW
+no ip domain-lookup
+vlan 11
+ name NYC-RTR1
+vlan 12
+ name LONDON-RTR1
+vlan 13
+ name SINGAPORE-RTR1
+vlan 14
+ name MUMBAI-RTR1
+vlan 15
+ name CLOUD-VPC-VGW-SIM
+interface GigabitEthernet1/0/1
+ description NYC-RTR1 Gi0/0/1
+ switchport mode access
+ switchport access vlan 11
+ spanning-tree portfast
+ no shutdown
+interface GigabitEthernet1/0/2
+ description LONDON-RTR1 Gi0/0/1
+ switchport mode access
+ switchport access vlan 12
+ spanning-tree portfast
+ no shutdown
+interface GigabitEthernet1/0/3
+ description SINGAPORE-RTR1 Gi0/0/1
+ switchport mode access
+ switchport access vlan 13
+ spanning-tree portfast
+ no shutdown
+interface GigabitEthernet1/0/4
+ description MUMBAI-RTR1 Gi0/0/1
+ switchport mode access
+ switchport access vlan 14
+ spanning-tree portfast
+ no shutdown
+interface GigabitEthernet1/0/5
+ description CLOUD-VPC-VGW-SIM Gi0/0/1
+ switchport mode access
+ switchport access vlan 15
+ spanning-tree portfast
+ no shutdown
+interface GigabitEthernet1/1/1
+ description trunk to ISP-SIM
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 11,12,13,14,15
+ switchport nonegotiate
+ no shutdown
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: CLOUD-VPC-VGW-SIM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - CLOUD-VPC-VGW-SIM
+! Platform : Cisco ISR4331 / CSR1000v (lab stand-in for the cloud VPN gateway)
+! Scenario : Global WAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! In production these values are entered in the cloud console (VPN connection + BGP ASN); this router lets the lab run end-to-end.
+! ======================================================================
+enable
+configure terminal
+!
+hostname CLOUD-VPC-VGW-SIM
+no ip domain-lookup
+!
+! --- IPsec: IKEv1 AES-256/SHA-256/DH14 ---
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 28800
+crypto ipsec transform-set TS-VTI esp-aes 256 esp-sha256-hmac
+ mode tunnel
+crypto ipsec profile IPSEC-VTI
+ set transform-set TS-VTI
+crypto isakmp key NA-261fd155fc225fe4 address 203.0.113.6
+crypto isakmp key NA-11a9e9909014e40d address 203.0.113.10
+interface GigabitEthernet0/0/1
+ description INTERNET underlay
+ ip address 203.0.113.22 255.255.255.252
+ no shutdown
+ip route 0.0.0.0 0.0.0.0 203.0.113.21
+interface Loopback1
+ description VPC subnet APP-TIER 10.200.0.0/24
+ ip address 10.200.0.1 255.255.255.0
+interface Loopback2
+ description VPC subnet DATA-TIER 10.200.1.0/26
+ ip address 10.200.1.1 255.255.255.192
+interface Tunnel6
+ description VTI to NYC-RTR1
+ ip address 169.254.10.22 255.255.255.252
+ tunnel source GigabitEthernet0/0/1
+ tunnel mode ipsec ipv4
+ tunnel destination 203.0.113.6
+ tunnel protection ipsec profile IPSEC-VTI
+interface Tunnel7
+ description VTI to LONDON-RTR1
+ ip address 169.254.10.26 255.255.255.252
+ tunnel source GigabitEthernet0/0/1
+ tunnel mode ipsec ipv4
+ tunnel destination 203.0.113.10
+ tunnel protection ipsec profile IPSEC-VTI
+ip route 10.200.0.0 255.255.0.0 Null0 254
+router bgp 64512
+ bgp log-neighbor-changes
+ neighbor 169.254.10.21 remote-as 65010
+ neighbor 169.254.10.21 timers 10 30
+ neighbor 169.254.10.25 remote-as 65010
+ neighbor 169.254.10.25 timers 10 30
+ address-family ipv4
+  network 10.200.0.0 mask 255.255.0.0
+  neighbor 169.254.10.21 activate
+  neighbor 169.254.10.25 activate
+ exit-address-family
+!
+end
+write memory

@@ -1,0 +1,10 @@
+{
+  "name": "Copper run too long (expected PhysicalDistanceViolationError)",
+  "network_type": "campus",
+  "root_prefix": "10.20.0.0/16",
+  "sites": [
+    {"name": "HALL", "vlans": [{"name": "DATA", "vlan_id": 10, "hosts": 40}, {"name": "MGMT", "vlan_id": 99, "hosts": 4, "role": "mgmt"}]},
+    {"name": "GYM", "vlans": [{"name": "DATA", "vlan_id": 20, "hosts": 20}, {"name": "MGMT", "vlan_id": 98, "hosts": 4, "role": "mgmt"}]}
+  ],
+  "links": [{"a": "HALL", "b": "GYM", "distance_m": 140, "media": "copper"}]
+}

@@ -1,0 +1,937 @@
+! NetArchitect v1.0.0 export - Campus LAN
+! Topology: Three-tier hierarchical (core / distribution / access) | Routing: Single-area OSPF
+!
+! CABLING PLAN (connect these ports in Packet Tracer / GNS3 before pasting)
+!   BLDG-A-DSW1          GigabitEthernet1/1/1     <-> BLDG-B-DSW1          GigabitEthernet1/1/1     OM4 MMF 10GBASE-SR 250m
+!   BLDG-A-DSW1          GigabitEthernet1/1/2     <-> BLDG-C-DSW1          GigabitEthernet1/1/1     OM4 MMF 10GBASE-SR 380m
+!   BLDG-B-DSW1          GigabitEthernet1/1/2     <-> BLDG-C-DSW1          GigabitEthernet1/1/2     OM4 MMF 10GBASE-SR 320m
+!   BLDG-A-ASW1          GigabitEthernet1/1/1     <-> BLDG-A-DSW1          GigabitEthernet1/0/1     Cat6a/MMF access uplink (trunk)
+!   BLDG-B-ASW1          GigabitEthernet1/1/1     <-> BLDG-B-DSW1          GigabitEthernet1/0/1     Cat6a/MMF access uplink (trunk)
+!   BLDG-C-ASW1          GigabitEthernet1/1/1     <-> BLDG-C-DSW1          GigabitEthernet1/0/1     Cat6a/MMF access uplink (trunk)
+!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: BLDG-A-DSW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - BLDG-A-DSW1
+! Platform : Cisco Catalyst 3650-24PS (L3) / IOSvL2
+! Scenario : Campus LAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: building distribution (L3 gateway for 6 VLANs, OSPF area 0)
+! Site block: 10.10.0.0/21
+! ======================================================================
+enable
+configure terminal
+!
+hostname BLDG-A-DSW1
+no ip domain-lookup
+ip domain-name campus.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+ip routing
+!
+! --- Spanning tree: Rapid PVST+, this switch is root ---
+spanning-tree mode rapid-pvst
+spanning-tree vlan 110,120,130,140,150,199 priority 4096
+!
+! --- VLAN database ---
+vlan 110
+ name STAFF
+vlan 120
+ name VOICE
+vlan 130
+ name WIFI
+vlan 140
+ name GUEST
+vlan 150
+ name AP-MGMT
+vlan 199
+ name MGMT
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended GUEST-IN-V140
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.10.4.0 0.0.0.63 host 1.1.1.1 eq domain
+ remark block guest -> internal RFC 1918
+ deny ip 10.10.4.0 0.0.0.63 10.0.0.0 0.255.255.255 log
+ deny ip 10.10.4.0 0.0.0.63 172.16.0.0 0.15.255.255 log
+ deny ip 10.10.4.0 0.0.0.63 192.168.0.0 0.0.255.255 log
+ remark Internet only
+ permit ip 10.10.4.0 0.0.0.63 any
+!
+! --- Loopback (OSPF router-id) ---
+interface Loopback0
+ ip address 10.10.16.12 255.255.255.255
+!
+! --- SVIs (default gateways) ---
+interface Vlan110
+ description STAFF gateway 10.10.0.0/23 (300 hosts)
+ ip address 10.10.0.1 255.255.254.0
+ no shutdown
+interface Vlan120
+ description VOICE gateway 10.10.2.0/24 (150 hosts)
+ ip address 10.10.2.1 255.255.255.0
+ no shutdown
+interface Vlan130
+ description WIFI gateway 10.10.3.0/24 (200 hosts)
+ ip address 10.10.3.1 255.255.255.0
+ no shutdown
+interface Vlan140
+ description GUEST gateway 10.10.4.0/26 (50 hosts)
+ ip address 10.10.4.1 255.255.255.192
+ ip access-group GUEST-IN-V140 in
+ no shutdown
+interface Vlan150
+ description AP-MGMT gateway 10.10.4.64/26 (40 hosts)
+ ip address 10.10.4.65 255.255.255.192
+ no shutdown
+interface Vlan199
+ description MGMT gateway 10.10.4.128/27 (24 hosts)
+ ip address 10.10.4.129 255.255.255.224
+ no shutdown
+!
+! --- Downlink trunks to 17 access switch(es) ---
+interface range GigabitEthernet1/0/1 - 17
+ description TRUNK to access layer
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 110,120,130,140,150,199,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/0/18 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Routed inter-building links ---
+interface GigabitEthernet1/1/1
+ description P2P to BLDG-B-DSW1 (OM4 MMF 10GBASE-SR 250m)
+ no switchport
+ ip address 10.10.16.1 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+interface GigabitEthernet1/1/2
+ description P2P to BLDG-C-DSW1 (OM4 MMF 10GBASE-SR 380m)
+ no switchport
+ ip address 10.10.16.5 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.10.0.1
+ip dhcp excluded-address 10.10.2.1
+ip dhcp excluded-address 10.10.3.1
+ip dhcp excluded-address 10.10.4.1
+ip dhcp excluded-address 10.10.4.65
+ip dhcp pool BLDG-A-STAFF
+ network 10.10.0.0 255.255.254.0
+ default-router 10.10.0.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-A-VOICE
+ network 10.10.2.0 255.255.255.0
+ default-router 10.10.2.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-A-WIFI
+ network 10.10.3.0 255.255.255.0
+ default-router 10.10.3.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-A-GUEST
+ network 10.10.4.0 255.255.255.192
+ default-router 10.10.4.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-A-AP-MGMT
+ network 10.10.4.64 255.255.255.192
+ default-router 10.10.4.65
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+!
+! --- OSPF (Single-area OSPF) ---
+router ospf 1
+ router-id 10.10.16.12
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface GigabitEthernet1/1/1
+ no passive-interface GigabitEthernet1/1/2
+ network 10.10.16.12 0.0.0.0 area 0
+ network 10.10.16.0 0.0.0.3 area 0
+ network 10.10.16.4 0.0.0.3 area 0
+ network 10.10.0.0 0.0.1.255 area 0
+ network 10.10.2.0 0.0.0.255 area 0
+ network 10.10.3.0 0.0.0.255 area 0
+ network 10.10.4.0 0.0.0.63 area 0
+ network 10.10.4.64 0.0.0.63 area 0
+ network 10.10.4.128 0.0.0.31 area 0
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark BLDG-A MGMT
+ permit 10.10.4.128 0.0.0.31
+ remark BLDG-B MGMT
+ permit 10.10.11.0 0.0.0.31
+ remark BLDG-C MGMT
+ permit 10.10.14.96 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: BLDG-B-DSW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - BLDG-B-DSW1
+! Platform : Cisco Catalyst 3650-24PS (L3) / IOSvL2
+! Scenario : Campus LAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: building distribution (L3 gateway for 6 VLANs, OSPF area 0)
+! Site block: 10.10.8.0/22
+! ======================================================================
+enable
+configure terminal
+!
+hostname BLDG-B-DSW1
+no ip domain-lookup
+ip domain-name campus.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+ip routing
+!
+! --- Spanning tree: Rapid PVST+, this switch is root ---
+spanning-tree mode rapid-pvst
+spanning-tree vlan 210,220,230,240,250,299 priority 4096
+!
+! --- VLAN database ---
+vlan 210
+ name STAFF
+vlan 220
+ name VOICE
+vlan 230
+ name WIFI
+vlan 240
+ name GUEST
+vlan 250
+ name AP-MGMT
+vlan 299
+ name MGMT
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended GUEST-IN-V240
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.10.10.128 0.0.0.63 host 1.1.1.1 eq domain
+ remark block guest -> internal RFC 1918
+ deny ip 10.10.10.128 0.0.0.63 10.0.0.0 0.255.255.255 log
+ deny ip 10.10.10.128 0.0.0.63 172.16.0.0 0.15.255.255 log
+ deny ip 10.10.10.128 0.0.0.63 192.168.0.0 0.0.255.255 log
+ remark Internet only
+ permit ip 10.10.10.128 0.0.0.63 any
+!
+! --- Loopback (OSPF router-id) ---
+interface Loopback0
+ ip address 10.10.16.13 255.255.255.255
+!
+! --- SVIs (default gateways) ---
+interface Vlan210
+ description STAFF gateway 10.10.8.0/24 (220 hosts)
+ ip address 10.10.8.1 255.255.255.0
+ no shutdown
+interface Vlan220
+ description VOICE gateway 10.10.10.0/25 (100 hosts)
+ ip address 10.10.10.1 255.255.255.128
+ no shutdown
+interface Vlan230
+ description WIFI gateway 10.10.9.0/24 (140 hosts)
+ ip address 10.10.9.1 255.255.255.0
+ no shutdown
+interface Vlan240
+ description GUEST gateway 10.10.10.128/26 (40 hosts)
+ ip address 10.10.10.129 255.255.255.192
+ ip access-group GUEST-IN-V240 in
+ no shutdown
+interface Vlan250
+ description AP-MGMT gateway 10.10.10.192/26 (30 hosts)
+ ip address 10.10.10.193 255.255.255.192
+ no shutdown
+interface Vlan299
+ description MGMT gateway 10.10.11.0/27 (16 hosts)
+ ip address 10.10.11.1 255.255.255.224
+ no shutdown
+!
+! --- Downlink trunks to 13 access switch(es) ---
+interface range GigabitEthernet1/0/1 - 13
+ description TRUNK to access layer
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 210,220,230,240,250,299,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/0/14 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Routed inter-building links ---
+interface GigabitEthernet1/1/1
+ description P2P to BLDG-A-DSW1 (OM4 MMF 10GBASE-SR 250m)
+ no switchport
+ ip address 10.10.16.2 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+interface GigabitEthernet1/1/2
+ description P2P to BLDG-C-DSW1 (OM4 MMF 10GBASE-SR 320m)
+ no switchport
+ ip address 10.10.16.9 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.10.8.1
+ip dhcp excluded-address 10.10.9.1
+ip dhcp excluded-address 10.10.10.1
+ip dhcp excluded-address 10.10.10.129
+ip dhcp excluded-address 10.10.10.193
+ip dhcp pool BLDG-B-STAFF
+ network 10.10.8.0 255.255.255.0
+ default-router 10.10.8.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-B-WIFI
+ network 10.10.9.0 255.255.255.0
+ default-router 10.10.9.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-B-VOICE
+ network 10.10.10.0 255.255.255.128
+ default-router 10.10.10.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-B-GUEST
+ network 10.10.10.128 255.255.255.192
+ default-router 10.10.10.129
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-B-AP-MGMT
+ network 10.10.10.192 255.255.255.192
+ default-router 10.10.10.193
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+!
+! --- OSPF (Single-area OSPF) ---
+router ospf 1
+ router-id 10.10.16.13
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface GigabitEthernet1/1/1
+ no passive-interface GigabitEthernet1/1/2
+ network 10.10.16.13 0.0.0.0 area 0
+ network 10.10.16.0 0.0.0.3 area 0
+ network 10.10.16.8 0.0.0.3 area 0
+ network 10.10.8.0 0.0.0.255 area 0
+ network 10.10.9.0 0.0.0.255 area 0
+ network 10.10.10.0 0.0.0.127 area 0
+ network 10.10.10.128 0.0.0.63 area 0
+ network 10.10.10.192 0.0.0.63 area 0
+ network 10.10.11.0 0.0.0.31 area 0
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark BLDG-A MGMT
+ permit 10.10.4.128 0.0.0.31
+ remark BLDG-B MGMT
+ permit 10.10.11.0 0.0.0.31
+ remark BLDG-C MGMT
+ permit 10.10.14.96 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: BLDG-C-DSW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - BLDG-C-DSW1
+! Platform : Cisco Catalyst 3650-24PS (L3) / IOSvL2
+! Scenario : Campus LAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! Role: building distribution (L3 gateway for 6 VLANs, OSPF area 0)
+! Site block: 10.10.12.0/22
+! ======================================================================
+enable
+configure terminal
+!
+hostname BLDG-C-DSW1
+no ip domain-lookup
+ip domain-name campus.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+ip routing
+!
+! --- Spanning tree: Rapid PVST+, this switch is root ---
+spanning-tree mode rapid-pvst
+spanning-tree vlan 310,320,330,340,350,399 priority 4096
+!
+! --- VLAN database ---
+vlan 310
+ name STAFF
+vlan 320
+ name VOICE
+vlan 330
+ name WIFI
+vlan 340
+ name GUEST
+vlan 350
+ name AP-MGMT
+vlan 399
+ name MGMT
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Security ACLs (wildcard masks computed bitwise) ---
+ip access-list extended GUEST-IN-V340
+ remark DHCP to local gateway
+ permit udp any eq bootpc any eq bootps
+ remark DNS
+ permit udp 10.10.14.0 0.0.0.63 host 1.1.1.1 eq domain
+ remark block guest -> internal RFC 1918
+ deny ip 10.10.14.0 0.0.0.63 10.0.0.0 0.255.255.255 log
+ deny ip 10.10.14.0 0.0.0.63 172.16.0.0 0.15.255.255 log
+ deny ip 10.10.14.0 0.0.0.63 192.168.0.0 0.0.255.255 log
+ remark Internet only
+ permit ip 10.10.14.0 0.0.0.63 any
+!
+! --- Loopback (OSPF router-id) ---
+interface Loopback0
+ ip address 10.10.16.14 255.255.255.255
+!
+! --- SVIs (default gateways) ---
+interface Vlan310
+ description STAFF gateway 10.10.12.0/24 (180 hosts)
+ ip address 10.10.12.1 255.255.255.0
+ no shutdown
+interface Vlan320
+ description VOICE gateway 10.10.13.0/25 (80 hosts)
+ ip address 10.10.13.1 255.255.255.128
+ no shutdown
+interface Vlan330
+ description WIFI gateway 10.10.13.128/25 (110 hosts)
+ ip address 10.10.13.129 255.255.255.128
+ no shutdown
+interface Vlan340
+ description GUEST gateway 10.10.14.0/26 (30 hosts)
+ ip address 10.10.14.1 255.255.255.192
+ ip access-group GUEST-IN-V340 in
+ no shutdown
+interface Vlan350
+ description AP-MGMT gateway 10.10.14.64/27 (25 hosts)
+ ip address 10.10.14.65 255.255.255.224
+ no shutdown
+interface Vlan399
+ description MGMT gateway 10.10.14.96/27 (16 hosts)
+ ip address 10.10.14.97 255.255.255.224
+ no shutdown
+!
+! --- Downlink trunks to 11 access switch(es) ---
+interface range GigabitEthernet1/0/1 - 11
+ description TRUNK to access layer
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 310,320,330,340,350,399,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/0/12 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Routed inter-building links ---
+interface GigabitEthernet1/1/1
+ description P2P to BLDG-A-DSW1 (OM4 MMF 10GBASE-SR 380m)
+ no switchport
+ ip address 10.10.16.6 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+interface GigabitEthernet1/1/2
+ description P2P to BLDG-B-DSW1 (OM4 MMF 10GBASE-SR 320m)
+ no switchport
+ ip address 10.10.16.10 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+!
+! --- DHCP (gateway excluded, one pool per VLAN) ---
+ip dhcp excluded-address 10.10.12.1
+ip dhcp excluded-address 10.10.13.1
+ip dhcp excluded-address 10.10.13.129
+ip dhcp excluded-address 10.10.14.1
+ip dhcp excluded-address 10.10.14.65
+ip dhcp pool BLDG-C-STAFF
+ network 10.10.12.0 255.255.255.0
+ default-router 10.10.12.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-C-VOICE
+ network 10.10.13.0 255.255.255.128
+ default-router 10.10.13.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-C-WIFI
+ network 10.10.13.128 255.255.255.128
+ default-router 10.10.13.129
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-C-GUEST
+ network 10.10.14.0 255.255.255.192
+ default-router 10.10.14.1
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+ip dhcp pool BLDG-C-AP-MGMT
+ network 10.10.14.64 255.255.255.224
+ default-router 10.10.14.65
+ dns-server 1.1.1.1
+ domain-name campus.netarch.lab
+!
+! --- OSPF (Single-area OSPF) ---
+router ospf 1
+ router-id 10.10.16.14
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface GigabitEthernet1/1/1
+ no passive-interface GigabitEthernet1/1/2
+ network 10.10.16.14 0.0.0.0 area 0
+ network 10.10.16.4 0.0.0.3 area 0
+ network 10.10.16.8 0.0.0.3 area 0
+ network 10.10.12.0 0.0.0.255 area 0
+ network 10.10.13.0 0.0.0.127 area 0
+ network 10.10.13.128 0.0.0.127 area 0
+ network 10.10.14.0 0.0.0.63 area 0
+ network 10.10.14.64 0.0.0.31 area 0
+ network 10.10.14.96 0.0.0.31 area 0
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark BLDG-A MGMT
+ permit 10.10.4.128 0.0.0.31
+ remark BLDG-B MGMT
+ permit 10.10.11.0 0.0.0.31
+ remark BLDG-C MGMT
+ permit 10.10.14.96 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: BLDG-A-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - BLDG-A-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Campus LAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 17 access switch(es) in BLDG-A; increment the hostname and the Vlan199 address (next free host in 10.10.4.128/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname BLDG-A-ASW1
+no ip domain-lookup
+ip domain-name campus.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 110
+ name STAFF
+vlan 120
+ name VOICE
+vlan 130
+ name WIFI
+vlan 140
+ name GUEST
+vlan 150
+ name AP-MGMT
+vlan 199
+ name MGMT
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan199
+ description In-band management
+ ip address 10.10.4.130 255.255.255.224
+ no shutdown
+ip default-gateway 10.10.4.129
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 18
+ description STAFF endpoints + IP phone
+ switchport mode access
+ switchport access vlan 110
+ switchport voice vlan 120
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/19 - 22
+ description PoE access points (FlexConnect local switching)
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 150
+ switchport trunk allowed vlan 130,140,150
+ switchport nonegotiate
+ spanning-tree portfast trunk
+ spanning-tree bpduguard enable
+ power inline auto
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to BLDG-A-DSW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 110,120,130,140,150,199,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark BLDG-A MGMT
+ permit 10.10.4.128 0.0.0.31
+ remark BLDG-B MGMT
+ permit 10.10.11.0 0.0.0.31
+ remark BLDG-C MGMT
+ permit 10.10.14.96 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: BLDG-B-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - BLDG-B-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Campus LAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 13 access switch(es) in BLDG-B; increment the hostname and the Vlan299 address (next free host in 10.10.11.0/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname BLDG-B-ASW1
+no ip domain-lookup
+ip domain-name campus.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 210
+ name STAFF
+vlan 220
+ name VOICE
+vlan 230
+ name WIFI
+vlan 240
+ name GUEST
+vlan 250
+ name AP-MGMT
+vlan 299
+ name MGMT
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan299
+ description In-band management
+ ip address 10.10.11.2 255.255.255.224
+ no shutdown
+ip default-gateway 10.10.11.1
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 18
+ description STAFF endpoints + IP phone
+ switchport mode access
+ switchport access vlan 210
+ switchport voice vlan 220
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/19 - 22
+ description PoE access points (FlexConnect local switching)
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 250
+ switchport trunk allowed vlan 230,240,250
+ switchport nonegotiate
+ spanning-tree portfast trunk
+ spanning-tree bpduguard enable
+ power inline auto
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to BLDG-B-DSW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 210,220,230,240,250,299,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark BLDG-A MGMT
+ permit 10.10.4.128 0.0.0.31
+ remark BLDG-B MGMT
+ permit 10.10.11.0 0.0.0.31
+ remark BLDG-C MGMT
+ permit 10.10.14.96 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DEVICE: BLDG-C-ASW1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ======================================================================
+! NetArchitect generated configuration - BLDG-C-ASW1
+! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)
+! Scenario : Campus LAN
+! Paste into privileged EXEC mode. Lab credentials below - change before production.
+! TEMPLATE: replicate for 11 access switch(es) in BLDG-C; increment the hostname and the Vlan399 address (next free host in 10.10.14.96/27).
+! ======================================================================
+enable
+configure terminal
+!
+hostname BLDG-C-ASW1
+no ip domain-lookup
+ip domain-name campus.netarch.lab
+service password-encryption
+service timestamps log datetime msec
+enable secret NetArch-Lab-2026
+username netadmin privilege 15 secret NetArch-Lab-2026
+banner motd ^Authorized access only - NetArchitect lab^
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+!
+! --- VLAN database ---
+vlan 310
+ name STAFF
+vlan 320
+ name VOICE
+vlan 330
+ name WIFI
+vlan 340
+ name GUEST
+vlan 350
+ name AP-MGMT
+vlan 399
+ name MGMT
+vlan 998
+ name BLACKHOLE
+vlan 999
+ name NATIVE-UNUSED
+!
+! --- Management SVI ---
+interface Vlan399
+ description In-band management
+ ip address 10.10.14.98 255.255.255.224
+ no shutdown
+ip default-gateway 10.10.14.97
+!
+! --- Edge ports (PortFast + BPDU Guard, DTP off) ---
+interface range GigabitEthernet1/0/1 - 18
+ description STAFF endpoints + IP phone
+ switchport mode access
+ switchport access vlan 310
+ switchport voice vlan 320
+ switchport nonegotiate
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+interface range GigabitEthernet1/0/19 - 22
+ description PoE access points (FlexConnect local switching)
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 350
+ switchport trunk allowed vlan 330,340,350
+ switchport nonegotiate
+ spanning-tree portfast trunk
+ spanning-tree bpduguard enable
+ power inline auto
+ no shutdown
+interface range GigabitEthernet1/0/23 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Uplink trunk ---
+interface GigabitEthernet1/1/1
+ description TRUNK to BLDG-C-DSW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 310,320,330,340,350,399,999
+ switchport nonegotiate
+ no shutdown
+interface range GigabitEthernet1/1/2 - 4
+ description UNUSED
+ switchport mode access
+ switchport access vlan 998
+ shutdown
+!
+! --- Management plane (SSH only, ACL-restricted) ---
+ip access-list standard VTY-MGMT
+ remark BLDG-A MGMT
+ permit 10.10.4.128 0.0.0.31
+ remark BLDG-B MGMT
+ permit 10.10.11.0 0.0.0.31
+ remark BLDG-C MGMT
+ permit 10.10.14.96 0.0.0.31
+ deny any log
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line con 0
+ logging synchronous
+ exec-timeout 15 0
+ login local
+line vty 0 15
+ access-class VTY-MGMT in
+ exec-timeout 15 0
+ login local
+ transport input ssh
+!
+end
+write memory

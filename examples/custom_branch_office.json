@@ -1,0 +1,30 @@
+{
+  "name": "Branch office (custom example)",
+  "profile": "custom",
+  "network_type": "campus",
+  "root_prefix": "192.168.0.0/22",
+  "resiliency": "single",
+  "ports_per_switch": 24,
+  "sites": [
+    {
+      "name": "MAIN",
+      "aps": 4,
+      "vlans": [
+        {"name": "STAFF", "vlan_id": 10, "hosts": 90, "role": "data"},
+        {"name": "VOICE", "vlan_id": 20, "hosts": 40, "role": "voice"},
+        {"name": "GUEST", "vlan_id": 30, "hosts": 25, "role": "guest"},
+        {"name": "AP-MGMT", "vlan_id": 40, "hosts": 4, "role": "ap"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 6, "role": "mgmt"}
+      ],
+      "cable_runs": [{"name": "Desk run", "distance_m": 60}]
+    },
+    {
+      "name": "ANNEX",
+      "vlans": [
+        {"name": "STAFF", "vlan_id": 11, "hosts": 30, "role": "data"},
+        {"name": "MGMT", "vlan_id": 98, "hosts": 4, "role": "mgmt"}
+      ]
+    }
+  ],
+  "links": [{"a": "MAIN", "b": "ANNEX", "distance_m": 650, "bandwidth_gbps": 10}]
+}

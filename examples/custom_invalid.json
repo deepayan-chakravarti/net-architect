@@ -1,0 +1,11 @@
+{
+  "name": "",
+  "network_type": "campus",
+  "root_prefix": "10.0.0.7/16",
+  "resiliency": "dual_homed",
+  "sites": [
+    {"name": "A", "vlans": [{"name": "DATA", "vlan_id": 1, "hosts": 0}]},
+    {"name": "B", "vlans": [{"name": "DATA", "vlan_id": 1002, "hosts": 20}]}
+  ],
+  "links": [{"a": "A", "b": "C", "distance_m": -40}]
+}

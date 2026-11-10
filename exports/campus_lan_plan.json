@@ -1,0 +1,2299 @@
+{
+  "version": "1.0.0",
+  "meta": {
+    "name": "Campus LAN",
+    "profile": "campus_lan",
+    "network_type": "campus",
+    "resiliency": "redundant",
+    "root_prefix": "10.10.0.0/16",
+    "warnings": []
+  },
+  "topology": {
+    "tier": "Three-tier hierarchical (core / distribution / access)",
+    "sites": {
+      "BLDG-A": {
+        "port_demand": 340,
+        "access_switches": 17,
+        "aps": 40,
+        "voice_phones": 150,
+        "wireless_clients": 250,
+        "poe_total_w": 3510.0,
+        "poe_per_switch_w": 206.5
+      },
+      "BLDG-B": {
+        "port_demand": 250,
+        "access_switches": 13,
+        "aps": 30,
+        "voice_phones": 100,
+        "wireless_clients": 180,
+        "poe_total_w": 2440.0,
+        "poe_per_switch_w": 187.7
+      },
+      "BLDG-C": {
+        "port_demand": 205,
+        "access_switches": 11,
+        "aps": 25,
+        "voice_phones": 80,
+        "wireless_clients": 140,
+        "poe_total_w": 1982.0,
+        "poe_per_switch_w": 180.2
+      }
+    },
+    "access_switches_total": 41
+  },
+  "media": {
+    "links": [
+      {
+        "subject": "BLDG-A <-> BLDG-B",
+        "distance_m": 250.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "OM4 MMF",
+        "transceiver": "10GBASE-SR",
+        "standard": "IEEE 802.3ae Clause 52",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.0012254901960784314,
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.25,
+          "fiber_loss_db": 0.88,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 2.38,
+          "total_with_margin_db": 2.38,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.52,
+          "passes": true,
+          "attenuator_needed": false
+        },
+        "warnings": [],
+        "id": "L1",
+        "a": "BLDG-A",
+        "b": "BLDG-B",
+        "role": "primary"
+      },
+      {
+        "subject": "BLDG-A <-> BLDG-C",
+        "distance_m": 380.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "OM4 MMF",
+        "transceiver": "10GBASE-SR",
+        "standard": "IEEE 802.3ae Clause 52",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.0018627450980392157,
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.38,
+          "fiber_loss_db": 1.33,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 2.83,
+          "total_with_margin_db": 2.83,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.07,
+          "passes": true,
+          "attenuator_needed": false
+        },
+        "warnings": [
+          "Optical headroom only 0.07 dB on 10GBASE-SR; clean/inspect connectors or reduce patch points."
+        ],
+        "id": "L2",
+        "a": "BLDG-A",
+        "b": "BLDG-C",
+        "role": "primary"
+      },
+      {
+        "subject": "BLDG-B <-> BLDG-C",
+        "distance_m": 320.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "OM4 MMF",
+        "transceiver": "10GBASE-SR",
+        "standard": "IEEE 802.3ae Clause 52",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.001568627450980392,
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.32,
+          "fiber_loss_db": 1.12,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 2.62,
+          "total_with_margin_db": 2.62,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.28,
+          "passes": true,
+          "attenuator_needed": false
+        },
+        "warnings": [
+          "Optical headroom only 0.28 dB on 10GBASE-SR; clean/inspect connectors or reduce patch points."
+        ],
+        "id": "L3",
+        "a": "BLDG-B",
+        "b": "BLDG-C",
+        "role": "primary"
+      }
+    ],
+    "cable_runs": [
+      {
+        "subject": "BLDG-A IDF to desk (horizontal)",
+        "distance_m": 85.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Cat6a UTP",
+        "transceiver": "10GBASE-T (RJ-45)",
+        "standard": "IEEE 802.3an",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.0004166666666666667,
+        "budget": null,
+        "warnings": []
+      },
+      {
+        "subject": "BLDG-A Ceiling AP drop",
+        "distance_m": 90.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "Cat6a UTP",
+        "transceiver": "10GBASE-T (RJ-45)",
+        "standard": "IEEE 802.3an",
+        "transport": "fiber",
+        "service": "",
+        "poe": true,
+        "latency_ms": 0.00044117647058823526,
+        "budget": null,
+        "warnings": []
+      },
+      {
+        "subject": "BLDG-A MDF to floor-4 IDF riser",
+        "distance_m": 140.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "OM4 MMF",
+        "transceiver": "10GBASE-SR",
+        "standard": "IEEE 802.3ae Clause 52",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.0006862745098039216,
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.14,
+          "fiber_loss_db": 0.49,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 1.99,
+          "total_with_margin_db": 1.99,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.91,
+          "passes": true,
+          "attenuator_needed": false
+        },
+        "warnings": []
+      },
+      {
+        "subject": "BLDG-B IDF to desk (horizontal)",
+        "distance_m": 72.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Cat6a UTP",
+        "transceiver": "10GBASE-T (RJ-45)",
+        "standard": "IEEE 802.3an",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.0003529411764705882,
+        "budget": null,
+        "warnings": []
+      },
+      {
+        "subject": "BLDG-B Ceiling AP drop",
+        "distance_m": 64.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "Cat6a UTP",
+        "transceiver": "10GBASE-T (RJ-45)",
+        "standard": "IEEE 802.3an",
+        "transport": "fiber",
+        "service": "",
+        "poe": true,
+        "latency_ms": 0.00031372549019607844,
+        "budget": null,
+        "warnings": []
+      },
+      {
+        "subject": "BLDG-C IDF to desk (horizontal)",
+        "distance_m": 95.0,
+        "bandwidth_gbps": 1,
+        "speed_tier_gbps": 10,
+        "medium": "Cat6a UTP",
+        "transceiver": "10GBASE-T (RJ-45)",
+        "standard": "IEEE 802.3an",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.0004656862745098039,
+        "budget": null,
+        "warnings": []
+      },
+      {
+        "subject": "BLDG-C Lab bench (fibre requested)",
+        "distance_m": 40.0,
+        "bandwidth_gbps": 10,
+        "speed_tier_gbps": 10,
+        "medium": "OM4 MMF",
+        "transceiver": "10GBASE-SR",
+        "standard": "IEEE 802.3ae Clause 52",
+        "transport": "fiber",
+        "service": "",
+        "poe": false,
+        "latency_ms": 0.000196078431372549,
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.04,
+          "fiber_loss_db": 0.14,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 1.64,
+          "total_with_margin_db": 1.64,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 1.26,
+          "passes": true,
+          "attenuator_needed": false
+        },
+        "warnings": []
+      }
+    ]
+  },
+  "addressing": {
+    "root": "10.10.0.0/16",
+    "root_size": 65536,
+    "site_blocks_allocated": 4112,
+    "root_utilization_pct": 6.27,
+    "subnet_count": 24,
+    "address_efficiency_pct": 67.37,
+    "flsm_equivalent_addresses": 9231,
+    "vlsm_addresses": 2639,
+    "blocks": [
+      {
+        "root": "10.10.0.0/21",
+        "root_size": 2048,
+        "allocated": 1184,
+        "free": 864,
+        "root_utilization_pct": 57.81,
+        "subnets": [
+          {
+            "name": "STAFF",
+            "site": "BLDG-A",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 110,
+            "hosts_requested": 300,
+            "cidr": "10.10.0.0/23",
+            "network": "10.10.0.0",
+            "prefix": 23,
+            "mask": "255.255.254.0",
+            "wildcard": "0.0.1.255",
+            "broadcast": "10.10.1.255",
+            "gateway": "10.10.0.1",
+            "first_usable": "10.10.0.1",
+            "last_usable": "10.10.1.254",
+            "usable": 510,
+            "block_size": 512,
+            "utilization_pct": 59.0
+          },
+          {
+            "name": "VOICE",
+            "site": "BLDG-A",
+            "kind": "lan",
+            "role": "voice",
+            "vlan_id": 120,
+            "hosts_requested": 150,
+            "cidr": "10.10.2.0/24",
+            "network": "10.10.2.0",
+            "prefix": 24,
+            "mask": "255.255.255.0",
+            "wildcard": "0.0.0.255",
+            "broadcast": "10.10.2.255",
+            "gateway": "10.10.2.1",
+            "first_usable": "10.10.2.1",
+            "last_usable": "10.10.2.254",
+            "usable": 254,
+            "block_size": 256,
+            "utilization_pct": 59.4
+          },
+          {
+            "name": "WIFI",
+            "site": "BLDG-A",
+            "kind": "lan",
+            "role": "wireless",
+            "vlan_id": 130,
+            "hosts_requested": 200,
+            "cidr": "10.10.3.0/24",
+            "network": "10.10.3.0",
+            "prefix": 24,
+            "mask": "255.255.255.0",
+            "wildcard": "0.0.0.255",
+            "broadcast": "10.10.3.255",
+            "gateway": "10.10.3.1",
+            "first_usable": "10.10.3.1",
+            "last_usable": "10.10.3.254",
+            "usable": 254,
+            "block_size": 256,
+            "utilization_pct": 79.1
+          },
+          {
+            "name": "GUEST",
+            "site": "BLDG-A",
+            "kind": "lan",
+            "role": "guest",
+            "vlan_id": 140,
+            "hosts_requested": 50,
+            "cidr": "10.10.4.0/26",
+            "network": "10.10.4.0",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.10.4.63",
+            "gateway": "10.10.4.1",
+            "first_usable": "10.10.4.1",
+            "last_usable": "10.10.4.62",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 82.3
+          },
+          {
+            "name": "AP-MGMT",
+            "site": "BLDG-A",
+            "kind": "lan",
+            "role": "ap",
+            "vlan_id": 150,
+            "hosts_requested": 40,
+            "cidr": "10.10.4.64/26",
+            "network": "10.10.4.64",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.10.4.127",
+            "gateway": "10.10.4.65",
+            "first_usable": "10.10.4.65",
+            "last_usable": "10.10.4.126",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 66.1
+          },
+          {
+            "name": "MGMT",
+            "site": "BLDG-A",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 199,
+            "hosts_requested": 24,
+            "cidr": "10.10.4.128/27",
+            "network": "10.10.4.128",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.10.4.159",
+            "gateway": "10.10.4.129",
+            "first_usable": "10.10.4.129",
+            "last_usable": "10.10.4.158",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 83.3
+          }
+        ],
+        "site": "BLDG-A",
+        "block": "10.10.0.0/21",
+        "mask": "255.255.248.0",
+        "wildcard": "0.0.7.255"
+      },
+      {
+        "root": "10.10.8.0/22",
+        "root_size": 1024,
+        "allocated": 800,
+        "free": 224,
+        "root_utilization_pct": 78.12,
+        "subnets": [
+          {
+            "name": "STAFF",
+            "site": "BLDG-B",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 210,
+            "hosts_requested": 220,
+            "cidr": "10.10.8.0/24",
+            "network": "10.10.8.0",
+            "prefix": 24,
+            "mask": "255.255.255.0",
+            "wildcard": "0.0.0.255",
+            "broadcast": "10.10.8.255",
+            "gateway": "10.10.8.1",
+            "first_usable": "10.10.8.1",
+            "last_usable": "10.10.8.254",
+            "usable": 254,
+            "block_size": 256,
+            "utilization_pct": 87.0
+          },
+          {
+            "name": "WIFI",
+            "site": "BLDG-B",
+            "kind": "lan",
+            "role": "wireless",
+            "vlan_id": 230,
+            "hosts_requested": 140,
+            "cidr": "10.10.9.0/24",
+            "network": "10.10.9.0",
+            "prefix": 24,
+            "mask": "255.255.255.0",
+            "wildcard": "0.0.0.255",
+            "broadcast": "10.10.9.255",
+            "gateway": "10.10.9.1",
+            "first_usable": "10.10.9.1",
+            "last_usable": "10.10.9.254",
+            "usable": 254,
+            "block_size": 256,
+            "utilization_pct": 55.5
+          },
+          {
+            "name": "VOICE",
+            "site": "BLDG-B",
+            "kind": "lan",
+            "role": "voice",
+            "vlan_id": 220,
+            "hosts_requested": 100,
+            "cidr": "10.10.10.0/25",
+            "network": "10.10.10.0",
+            "prefix": 25,
+            "mask": "255.255.255.128",
+            "wildcard": "0.0.0.127",
+            "broadcast": "10.10.10.127",
+            "gateway": "10.10.10.1",
+            "first_usable": "10.10.10.1",
+            "last_usable": "10.10.10.126",
+            "usable": 126,
+            "block_size": 128,
+            "utilization_pct": 80.2
+          },
+          {
+            "name": "GUEST",
+            "site": "BLDG-B",
+            "kind": "lan",
+            "role": "guest",
+            "vlan_id": 240,
+            "hosts_requested": 40,
+            "cidr": "10.10.10.128/26",
+            "network": "10.10.10.128",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.10.10.191",
+            "gateway": "10.10.10.129",
+            "first_usable": "10.10.10.129",
+            "last_usable": "10.10.10.190",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 66.1
+          },
+          {
+            "name": "AP-MGMT",
+            "site": "BLDG-B",
+            "kind": "lan",
+            "role": "ap",
+            "vlan_id": 250,
+            "hosts_requested": 30,
+            "cidr": "10.10.10.192/26",
+            "network": "10.10.10.192",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.10.10.255",
+            "gateway": "10.10.10.193",
+            "first_usable": "10.10.10.193",
+            "last_usable": "10.10.10.254",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 50.0
+          },
+          {
+            "name": "MGMT",
+            "site": "BLDG-B",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 299,
+            "hosts_requested": 16,
+            "cidr": "10.10.11.0/27",
+            "network": "10.10.11.0",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.10.11.31",
+            "gateway": "10.10.11.1",
+            "first_usable": "10.10.11.1",
+            "last_usable": "10.10.11.30",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 56.7
+          }
+        ],
+        "site": "BLDG-B",
+        "block": "10.10.8.0/22",
+        "mask": "255.255.252.0",
+        "wildcard": "0.0.3.255"
+      },
+      {
+        "root": "10.10.12.0/22",
+        "root_size": 1024,
+        "allocated": 640,
+        "free": 384,
+        "root_utilization_pct": 62.5,
+        "subnets": [
+          {
+            "name": "STAFF",
+            "site": "BLDG-C",
+            "kind": "lan",
+            "role": "data",
+            "vlan_id": 310,
+            "hosts_requested": 180,
+            "cidr": "10.10.12.0/24",
+            "network": "10.10.12.0",
+            "prefix": 24,
+            "mask": "255.255.255.0",
+            "wildcard": "0.0.0.255",
+            "broadcast": "10.10.12.255",
+            "gateway": "10.10.12.1",
+            "first_usable": "10.10.12.1",
+            "last_usable": "10.10.12.254",
+            "usable": 254,
+            "block_size": 256,
+            "utilization_pct": 71.3
+          },
+          {
+            "name": "VOICE",
+            "site": "BLDG-C",
+            "kind": "lan",
+            "role": "voice",
+            "vlan_id": 320,
+            "hosts_requested": 80,
+            "cidr": "10.10.13.0/25",
+            "network": "10.10.13.0",
+            "prefix": 25,
+            "mask": "255.255.255.128",
+            "wildcard": "0.0.0.127",
+            "broadcast": "10.10.13.127",
+            "gateway": "10.10.13.1",
+            "first_usable": "10.10.13.1",
+            "last_usable": "10.10.13.126",
+            "usable": 126,
+            "block_size": 128,
+            "utilization_pct": 64.3
+          },
+          {
+            "name": "WIFI",
+            "site": "BLDG-C",
+            "kind": "lan",
+            "role": "wireless",
+            "vlan_id": 330,
+            "hosts_requested": 110,
+            "cidr": "10.10.13.128/25",
+            "network": "10.10.13.128",
+            "prefix": 25,
+            "mask": "255.255.255.128",
+            "wildcard": "0.0.0.127",
+            "broadcast": "10.10.13.255",
+            "gateway": "10.10.13.129",
+            "first_usable": "10.10.13.129",
+            "last_usable": "10.10.13.254",
+            "usable": 126,
+            "block_size": 128,
+            "utilization_pct": 88.1
+          },
+          {
+            "name": "GUEST",
+            "site": "BLDG-C",
+            "kind": "lan",
+            "role": "guest",
+            "vlan_id": 340,
+            "hosts_requested": 30,
+            "cidr": "10.10.14.0/26",
+            "network": "10.10.14.0",
+            "prefix": 26,
+            "mask": "255.255.255.192",
+            "wildcard": "0.0.0.63",
+            "broadcast": "10.10.14.63",
+            "gateway": "10.10.14.1",
+            "first_usable": "10.10.14.1",
+            "last_usable": "10.10.14.62",
+            "usable": 62,
+            "block_size": 64,
+            "utilization_pct": 50.0
+          },
+          {
+            "name": "AP-MGMT",
+            "site": "BLDG-C",
+            "kind": "lan",
+            "role": "ap",
+            "vlan_id": 350,
+            "hosts_requested": 25,
+            "cidr": "10.10.14.64/27",
+            "network": "10.10.14.64",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.10.14.95",
+            "gateway": "10.10.14.65",
+            "first_usable": "10.10.14.65",
+            "last_usable": "10.10.14.94",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 86.7
+          },
+          {
+            "name": "MGMT",
+            "site": "BLDG-C",
+            "kind": "lan",
+            "role": "mgmt",
+            "vlan_id": 399,
+            "hosts_requested": 16,
+            "cidr": "10.10.14.96/27",
+            "network": "10.10.14.96",
+            "prefix": 27,
+            "mask": "255.255.255.224",
+            "wildcard": "0.0.0.31",
+            "broadcast": "10.10.14.127",
+            "gateway": "10.10.14.97",
+            "first_usable": "10.10.14.97",
+            "last_usable": "10.10.14.126",
+            "usable": 30,
+            "block_size": 32,
+            "utilization_pct": 56.7
+          }
+        ],
+        "site": "BLDG-C",
+        "block": "10.10.12.0/22",
+        "mask": "255.255.252.0",
+        "wildcard": "0.0.3.255"
+      },
+      {
+        "root": "10.10.16.0/28",
+        "root_size": 16,
+        "allocated": 15,
+        "free": 1,
+        "root_utilization_pct": 93.75,
+        "subnets": [
+          {
+            "name": "P2P-BLDG-A-BLDG-B",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.10.16.0/30",
+            "network": "10.10.16.0",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.10.16.3",
+            "gateway": null,
+            "first_usable": "10.10.16.1",
+            "last_usable": "10.10.16.2",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "P2P-BLDG-A-BLDG-C",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.10.16.4/30",
+            "network": "10.10.16.4",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.10.16.7",
+            "gateway": null,
+            "first_usable": "10.10.16.5",
+            "last_usable": "10.10.16.6",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "P2P-BLDG-B-BLDG-C",
+            "site": "INFRA",
+            "kind": "p2p",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 2,
+            "cidr": "10.10.16.8/30",
+            "network": "10.10.16.8",
+            "prefix": 30,
+            "mask": "255.255.255.252",
+            "wildcard": "0.0.0.3",
+            "broadcast": "10.10.16.11",
+            "gateway": null,
+            "first_usable": "10.10.16.9",
+            "last_usable": "10.10.16.10",
+            "usable": 2,
+            "block_size": 4,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-BLDG-A",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.10.16.12/32",
+            "network": "10.10.16.12",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.10.16.12",
+            "gateway": null,
+            "first_usable": "10.10.16.12",
+            "last_usable": "10.10.16.12",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-BLDG-B",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.10.16.13/32",
+            "network": "10.10.16.13",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.10.16.13",
+            "gateway": null,
+            "first_usable": "10.10.16.13",
+            "last_usable": "10.10.16.13",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          },
+          {
+            "name": "LO-BLDG-C",
+            "site": "INFRA",
+            "kind": "loopback",
+            "role": "",
+            "vlan_id": null,
+            "hosts_requested": 1,
+            "cidr": "10.10.16.14/32",
+            "network": "10.10.16.14",
+            "prefix": 32,
+            "mask": "255.255.255.255",
+            "wildcard": "0.0.0.0",
+            "broadcast": "10.10.16.14",
+            "gateway": null,
+            "first_usable": "10.10.16.14",
+            "last_usable": "10.10.16.14",
+            "usable": 1,
+            "block_size": 1,
+            "utilization_pct": 100.0
+          }
+        ],
+        "site": "INFRA",
+        "block": "10.10.16.0/28",
+        "mask": "255.255.255.240",
+        "wildcard": "0.0.0.15"
+      }
+    ]
+  },
+  "routing": {
+    "igp": "OSPFv2",
+    "process_id": 1,
+    "reference_bandwidth_mbps": 100000,
+    "hub": "BLDG-A",
+    "areas": {
+      "BLDG-A": 0,
+      "BLDG-B": 0,
+      "BLDG-C": 0
+    },
+    "summaries": {},
+    "bfd": false,
+    "bgp": null,
+    "subnet_count": 24,
+    "design": "Single-area OSPF"
+  },
+  "latency": {
+    "pairs": [
+      {
+        "a": "BLDG-A",
+        "b": "BLDG-B",
+        "one_way_ms": 0.051,
+        "path": [
+          "BLDG-A",
+          "BLDG-B"
+        ]
+      },
+      {
+        "a": "BLDG-A",
+        "b": "BLDG-C",
+        "one_way_ms": 0.052,
+        "path": [
+          "BLDG-A",
+          "BLDG-C"
+        ]
+      },
+      {
+        "a": "BLDG-B",
+        "b": "BLDG-C",
+        "one_way_ms": 0.052,
+        "path": [
+          "BLDG-B",
+          "BLDG-C"
+        ]
+      }
+    ],
+    "worst": {
+      "a": "BLDG-A",
+      "b": "BLDG-C",
+      "one_way_ms": 0.052,
+      "path": [
+        "BLDG-A",
+        "BLDG-C"
+      ]
+    },
+    "budget_ms": null
+  },
+  "qos": null,
+  "acls": [
+    {
+      "name": "GUEST-IN-V140",
+      "kind": "extended",
+      "purpose": "Guest isolation: DHCP/DNS allowed, all RFC 1918 destinations denied, Internet permitted",
+      "ios": "ip access-list extended GUEST-IN-V140\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.10.4.0 0.0.0.63 host 1.1.1.1 eq domain\n remark block guest -> internal RFC 1918\n deny ip 10.10.4.0 0.0.0.63 10.0.0.0 0.255.255.255 log\n deny ip 10.10.4.0 0.0.0.63 172.16.0.0 0.15.255.255 log\n deny ip 10.10.4.0 0.0.0.63 192.168.0.0 0.0.255.255 log\n remark Internet only\n permit ip 10.10.4.0 0.0.0.63 any"
+    },
+    {
+      "name": "GUEST-IN-V240",
+      "kind": "extended",
+      "purpose": "Guest isolation: DHCP/DNS allowed, all RFC 1918 destinations denied, Internet permitted",
+      "ios": "ip access-list extended GUEST-IN-V240\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.10.10.128 0.0.0.63 host 1.1.1.1 eq domain\n remark block guest -> internal RFC 1918\n deny ip 10.10.10.128 0.0.0.63 10.0.0.0 0.255.255.255 log\n deny ip 10.10.10.128 0.0.0.63 172.16.0.0 0.15.255.255 log\n deny ip 10.10.10.128 0.0.0.63 192.168.0.0 0.0.255.255 log\n remark Internet only\n permit ip 10.10.10.128 0.0.0.63 any"
+    },
+    {
+      "name": "GUEST-IN-V340",
+      "kind": "extended",
+      "purpose": "Guest isolation: DHCP/DNS allowed, all RFC 1918 destinations denied, Internet permitted",
+      "ios": "ip access-list extended GUEST-IN-V340\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.10.14.0 0.0.0.63 host 1.1.1.1 eq domain\n remark block guest -> internal RFC 1918\n deny ip 10.10.14.0 0.0.0.63 10.0.0.0 0.255.255.255 log\n deny ip 10.10.14.0 0.0.0.63 172.16.0.0 0.15.255.255 log\n deny ip 10.10.14.0 0.0.0.63 192.168.0.0 0.0.255.255 log\n remark Internet only\n permit ip 10.10.14.0 0.0.0.63 any"
+    },
+    {
+      "name": "VTY-MGMT",
+      "kind": "standard",
+      "purpose": "Only management subnets may SSH to devices",
+      "ios": "ip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log"
+    }
+  ],
+  "configs": {
+    "BLDG-A-DSW1": "! ======================================================================\n! NetArchitect generated configuration - BLDG-A-DSW1\n! Platform : Cisco Catalyst 3650-24PS (L3) / IOSvL2\n! Scenario : Campus LAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: building distribution (L3 gateway for 6 VLANs, OSPF area 0)\n! Site block: 10.10.0.0/21\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname BLDG-A-DSW1\nno ip domain-lookup\nip domain-name campus.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nip routing\n!\n! --- Spanning tree: Rapid PVST+, this switch is root ---\nspanning-tree mode rapid-pvst\nspanning-tree vlan 110,120,130,140,150,199 priority 4096\n!\n! --- VLAN database ---\nvlan 110\n name STAFF\nvlan 120\n name VOICE\nvlan 130\n name WIFI\nvlan 140\n name GUEST\nvlan 150\n name AP-MGMT\nvlan 199\n name MGMT\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended GUEST-IN-V140\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.10.4.0 0.0.0.63 host 1.1.1.1 eq domain\n remark block guest -> internal RFC 1918\n deny ip 10.10.4.0 0.0.0.63 10.0.0.0 0.255.255.255 log\n deny ip 10.10.4.0 0.0.0.63 172.16.0.0 0.15.255.255 log\n deny ip 10.10.4.0 0.0.0.63 192.168.0.0 0.0.255.255 log\n remark Internet only\n permit ip 10.10.4.0 0.0.0.63 any\n!\n! --- Loopback (OSPF router-id) ---\ninterface Loopback0\n ip address 10.10.16.12 255.255.255.255\n!\n! --- SVIs (default gateways) ---\ninterface Vlan110\n description STAFF gateway 10.10.0.0/23 (300 hosts)\n ip address 10.10.0.1 255.255.254.0\n no shutdown\ninterface Vlan120\n description VOICE gateway 10.10.2.0/24 (150 hosts)\n ip address 10.10.2.1 255.255.255.0\n no shutdown\ninterface Vlan130\n description WIFI gateway 10.10.3.0/24 (200 hosts)\n ip address 10.10.3.1 255.255.255.0\n no shutdown\ninterface Vlan140\n description GUEST gateway 10.10.4.0/26 (50 hosts)\n ip address 10.10.4.1 255.255.255.192\n ip access-group GUEST-IN-V140 in\n no shutdown\ninterface Vlan150\n description AP-MGMT gateway 10.10.4.64/26 (40 hosts)\n ip address 10.10.4.65 255.255.255.192\n no shutdown\ninterface Vlan199\n description MGMT gateway 10.10.4.128/27 (24 hosts)\n ip address 10.10.4.129 255.255.255.224\n no shutdown\n!\n! --- Downlink trunks to 17 access switch(es) ---\ninterface range GigabitEthernet1/0/1 - 17\n description TRUNK to access layer\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 110,120,130,140,150,199,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/0/18 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Routed inter-building links ---\ninterface GigabitEthernet1/1/1\n description P2P to BLDG-B-DSW1 (OM4 MMF 10GBASE-SR 250m)\n no switchport\n ip address 10.10.16.1 255.255.255.252\n ip ospf network point-to-point\n no shutdown\ninterface GigabitEthernet1/1/2\n description P2P to BLDG-C-DSW1 (OM4 MMF 10GBASE-SR 380m)\n no switchport\n ip address 10.10.16.5 255.255.255.252\n ip ospf network point-to-point\n no shutdown\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.10.0.1\nip dhcp excluded-address 10.10.2.1\nip dhcp excluded-address 10.10.3.1\nip dhcp excluded-address 10.10.4.1\nip dhcp excluded-address 10.10.4.65\nip dhcp pool BLDG-A-STAFF\n network 10.10.0.0 255.255.254.0\n default-router 10.10.0.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-A-VOICE\n network 10.10.2.0 255.255.255.0\n default-router 10.10.2.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-A-WIFI\n network 10.10.3.0 255.255.255.0\n default-router 10.10.3.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-A-GUEST\n network 10.10.4.0 255.255.255.192\n default-router 10.10.4.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-A-AP-MGMT\n network 10.10.4.64 255.255.255.192\n default-router 10.10.4.65\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\n!\n! --- OSPF (Single-area OSPF) ---\nrouter ospf 1\n router-id 10.10.16.12\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface GigabitEthernet1/1/1\n no passive-interface GigabitEthernet1/1/2\n network 10.10.16.12 0.0.0.0 area 0\n network 10.10.16.0 0.0.0.3 area 0\n network 10.10.16.4 0.0.0.3 area 0\n network 10.10.0.0 0.0.1.255 area 0\n network 10.10.2.0 0.0.0.255 area 0\n network 10.10.3.0 0.0.0.255 area 0\n network 10.10.4.0 0.0.0.63 area 0\n network 10.10.4.64 0.0.0.63 area 0\n network 10.10.4.128 0.0.0.31 area 0\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "BLDG-B-DSW1": "! ======================================================================\n! NetArchitect generated configuration - BLDG-B-DSW1\n! Platform : Cisco Catalyst 3650-24PS (L3) / IOSvL2\n! Scenario : Campus LAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: building distribution (L3 gateway for 6 VLANs, OSPF area 0)\n! Site block: 10.10.8.0/22\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname BLDG-B-DSW1\nno ip domain-lookup\nip domain-name campus.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nip routing\n!\n! --- Spanning tree: Rapid PVST+, this switch is root ---\nspanning-tree mode rapid-pvst\nspanning-tree vlan 210,220,230,240,250,299 priority 4096\n!\n! --- VLAN database ---\nvlan 210\n name STAFF\nvlan 220\n name VOICE\nvlan 230\n name WIFI\nvlan 240\n name GUEST\nvlan 250\n name AP-MGMT\nvlan 299\n name MGMT\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended GUEST-IN-V240\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.10.10.128 0.0.0.63 host 1.1.1.1 eq domain\n remark block guest -> internal RFC 1918\n deny ip 10.10.10.128 0.0.0.63 10.0.0.0 0.255.255.255 log\n deny ip 10.10.10.128 0.0.0.63 172.16.0.0 0.15.255.255 log\n deny ip 10.10.10.128 0.0.0.63 192.168.0.0 0.0.255.255 log\n remark Internet only\n permit ip 10.10.10.128 0.0.0.63 any\n!\n! --- Loopback (OSPF router-id) ---\ninterface Loopback0\n ip address 10.10.16.13 255.255.255.255\n!\n! --- SVIs (default gateways) ---\ninterface Vlan210\n description STAFF gateway 10.10.8.0/24 (220 hosts)\n ip address 10.10.8.1 255.255.255.0\n no shutdown\ninterface Vlan220\n description VOICE gateway 10.10.10.0/25 (100 hosts)\n ip address 10.10.10.1 255.255.255.128\n no shutdown\ninterface Vlan230\n description WIFI gateway 10.10.9.0/24 (140 hosts)\n ip address 10.10.9.1 255.255.255.0\n no shutdown\ninterface Vlan240\n description GUEST gateway 10.10.10.128/26 (40 hosts)\n ip address 10.10.10.129 255.255.255.192\n ip access-group GUEST-IN-V240 in\n no shutdown\ninterface Vlan250\n description AP-MGMT gateway 10.10.10.192/26 (30 hosts)\n ip address 10.10.10.193 255.255.255.192\n no shutdown\ninterface Vlan299\n description MGMT gateway 10.10.11.0/27 (16 hosts)\n ip address 10.10.11.1 255.255.255.224\n no shutdown\n!\n! --- Downlink trunks to 13 access switch(es) ---\ninterface range GigabitEthernet1/0/1 - 13\n description TRUNK to access layer\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 210,220,230,240,250,299,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/0/14 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Routed inter-building links ---\ninterface GigabitEthernet1/1/1\n description P2P to BLDG-A-DSW1 (OM4 MMF 10GBASE-SR 250m)\n no switchport\n ip address 10.10.16.2 255.255.255.252\n ip ospf network point-to-point\n no shutdown\ninterface GigabitEthernet1/1/2\n description P2P to BLDG-C-DSW1 (OM4 MMF 10GBASE-SR 320m)\n no switchport\n ip address 10.10.16.9 255.255.255.252\n ip ospf network point-to-point\n no shutdown\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.10.8.1\nip dhcp excluded-address 10.10.9.1\nip dhcp excluded-address 10.10.10.1\nip dhcp excluded-address 10.10.10.129\nip dhcp excluded-address 10.10.10.193\nip dhcp pool BLDG-B-STAFF\n network 10.10.8.0 255.255.255.0\n default-router 10.10.8.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-B-WIFI\n network 10.10.9.0 255.255.255.0\n default-router 10.10.9.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-B-VOICE\n network 10.10.10.0 255.255.255.128\n default-router 10.10.10.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-B-GUEST\n network 10.10.10.128 255.255.255.192\n default-router 10.10.10.129\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-B-AP-MGMT\n network 10.10.10.192 255.255.255.192\n default-router 10.10.10.193\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\n!\n! --- OSPF (Single-area OSPF) ---\nrouter ospf 1\n router-id 10.10.16.13\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface GigabitEthernet1/1/1\n no passive-interface GigabitEthernet1/1/2\n network 10.10.16.13 0.0.0.0 area 0\n network 10.10.16.0 0.0.0.3 area 0\n network 10.10.16.8 0.0.0.3 area 0\n network 10.10.8.0 0.0.0.255 area 0\n network 10.10.9.0 0.0.0.255 area 0\n network 10.10.10.0 0.0.0.127 area 0\n network 10.10.10.128 0.0.0.63 area 0\n network 10.10.10.192 0.0.0.63 area 0\n network 10.10.11.0 0.0.0.31 area 0\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "BLDG-C-DSW1": "! ======================================================================\n! NetArchitect generated configuration - BLDG-C-DSW1\n! Platform : Cisco Catalyst 3650-24PS (L3) / IOSvL2\n! Scenario : Campus LAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! Role: building distribution (L3 gateway for 6 VLANs, OSPF area 0)\n! Site block: 10.10.12.0/22\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname BLDG-C-DSW1\nno ip domain-lookup\nip domain-name campus.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nip routing\n!\n! --- Spanning tree: Rapid PVST+, this switch is root ---\nspanning-tree mode rapid-pvst\nspanning-tree vlan 310,320,330,340,350,399 priority 4096\n!\n! --- VLAN database ---\nvlan 310\n name STAFF\nvlan 320\n name VOICE\nvlan 330\n name WIFI\nvlan 340\n name GUEST\nvlan 350\n name AP-MGMT\nvlan 399\n name MGMT\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Security ACLs (wildcard masks computed bitwise) ---\nip access-list extended GUEST-IN-V340\n remark DHCP to local gateway\n permit udp any eq bootpc any eq bootps\n remark DNS\n permit udp 10.10.14.0 0.0.0.63 host 1.1.1.1 eq domain\n remark block guest -> internal RFC 1918\n deny ip 10.10.14.0 0.0.0.63 10.0.0.0 0.255.255.255 log\n deny ip 10.10.14.0 0.0.0.63 172.16.0.0 0.15.255.255 log\n deny ip 10.10.14.0 0.0.0.63 192.168.0.0 0.0.255.255 log\n remark Internet only\n permit ip 10.10.14.0 0.0.0.63 any\n!\n! --- Loopback (OSPF router-id) ---\ninterface Loopback0\n ip address 10.10.16.14 255.255.255.255\n!\n! --- SVIs (default gateways) ---\ninterface Vlan310\n description STAFF gateway 10.10.12.0/24 (180 hosts)\n ip address 10.10.12.1 255.255.255.0\n no shutdown\ninterface Vlan320\n description VOICE gateway 10.10.13.0/25 (80 hosts)\n ip address 10.10.13.1 255.255.255.128\n no shutdown\ninterface Vlan330\n description WIFI gateway 10.10.13.128/25 (110 hosts)\n ip address 10.10.13.129 255.255.255.128\n no shutdown\ninterface Vlan340\n description GUEST gateway 10.10.14.0/26 (30 hosts)\n ip address 10.10.14.1 255.255.255.192\n ip access-group GUEST-IN-V340 in\n no shutdown\ninterface Vlan350\n description AP-MGMT gateway 10.10.14.64/27 (25 hosts)\n ip address 10.10.14.65 255.255.255.224\n no shutdown\ninterface Vlan399\n description MGMT gateway 10.10.14.96/27 (16 hosts)\n ip address 10.10.14.97 255.255.255.224\n no shutdown\n!\n! --- Downlink trunks to 11 access switch(es) ---\ninterface range GigabitEthernet1/0/1 - 11\n description TRUNK to access layer\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 310,320,330,340,350,399,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/0/12 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Routed inter-building links ---\ninterface GigabitEthernet1/1/1\n description P2P to BLDG-A-DSW1 (OM4 MMF 10GBASE-SR 380m)\n no switchport\n ip address 10.10.16.6 255.255.255.252\n ip ospf network point-to-point\n no shutdown\ninterface GigabitEthernet1/1/2\n description P2P to BLDG-B-DSW1 (OM4 MMF 10GBASE-SR 320m)\n no switchport\n ip address 10.10.16.10 255.255.255.252\n ip ospf network point-to-point\n no shutdown\n!\n! --- DHCP (gateway excluded, one pool per VLAN) ---\nip dhcp excluded-address 10.10.12.1\nip dhcp excluded-address 10.10.13.1\nip dhcp excluded-address 10.10.13.129\nip dhcp excluded-address 10.10.14.1\nip dhcp excluded-address 10.10.14.65\nip dhcp pool BLDG-C-STAFF\n network 10.10.12.0 255.255.255.0\n default-router 10.10.12.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-C-VOICE\n network 10.10.13.0 255.255.255.128\n default-router 10.10.13.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-C-WIFI\n network 10.10.13.128 255.255.255.128\n default-router 10.10.13.129\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-C-GUEST\n network 10.10.14.0 255.255.255.192\n default-router 10.10.14.1\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\nip dhcp pool BLDG-C-AP-MGMT\n network 10.10.14.64 255.255.255.224\n default-router 10.10.14.65\n dns-server 1.1.1.1\n domain-name campus.netarch.lab\n!\n! --- OSPF (Single-area OSPF) ---\nrouter ospf 1\n router-id 10.10.16.14\n auto-cost reference-bandwidth 100000\n passive-interface default\n no passive-interface GigabitEthernet1/1/1\n no passive-interface GigabitEthernet1/1/2\n network 10.10.16.14 0.0.0.0 area 0\n network 10.10.16.4 0.0.0.3 area 0\n network 10.10.16.8 0.0.0.3 area 0\n network 10.10.12.0 0.0.0.255 area 0\n network 10.10.13.0 0.0.0.127 area 0\n network 10.10.13.128 0.0.0.127 area 0\n network 10.10.14.0 0.0.0.63 area 0\n network 10.10.14.64 0.0.0.31 area 0\n network 10.10.14.96 0.0.0.31 area 0\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "BLDG-A-ASW1": "! ======================================================================\n! NetArchitect generated configuration - BLDG-A-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Campus LAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 17 access switch(es) in BLDG-A; increment the hostname and the Vlan199 address (next free host in 10.10.4.128/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname BLDG-A-ASW1\nno ip domain-lookup\nip domain-name campus.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 110\n name STAFF\nvlan 120\n name VOICE\nvlan 130\n name WIFI\nvlan 140\n name GUEST\nvlan 150\n name AP-MGMT\nvlan 199\n name MGMT\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan199\n description In-band management\n ip address 10.10.4.130 255.255.255.224\n no shutdown\nip default-gateway 10.10.4.129\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 18\n description STAFF endpoints + IP phone\n switchport mode access\n switchport access vlan 110\n switchport voice vlan 120\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/19 - 22\n description PoE access points (FlexConnect local switching)\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 150\n switchport trunk allowed vlan 130,140,150\n switchport nonegotiate\n spanning-tree portfast trunk\n spanning-tree bpduguard enable\n power inline auto\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to BLDG-A-DSW1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 110,120,130,140,150,199,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "BLDG-B-ASW1": "! ======================================================================\n! NetArchitect generated configuration - BLDG-B-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Campus LAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 13 access switch(es) in BLDG-B; increment the hostname and the Vlan299 address (next free host in 10.10.11.0/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname BLDG-B-ASW1\nno ip domain-lookup\nip domain-name campus.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 210\n name STAFF\nvlan 220\n name VOICE\nvlan 230\n name WIFI\nvlan 240\n name GUEST\nvlan 250\n name AP-MGMT\nvlan 299\n name MGMT\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan299\n description In-band management\n ip address 10.10.11.2 255.255.255.224\n no shutdown\nip default-gateway 10.10.11.1\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 18\n description STAFF endpoints + IP phone\n switchport mode access\n switchport access vlan 210\n switchport voice vlan 220\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/19 - 22\n description PoE access points (FlexConnect local switching)\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 250\n switchport trunk allowed vlan 230,240,250\n switchport nonegotiate\n spanning-tree portfast trunk\n spanning-tree bpduguard enable\n power inline auto\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to BLDG-B-DSW1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 210,220,230,240,250,299,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n",
+    "BLDG-C-ASW1": "! ======================================================================\n! NetArchitect generated configuration - BLDG-C-ASW1\n! Platform : Cisco Catalyst 3650-24PS / 2960 (L2 access)\n! Scenario : Campus LAN\n! Paste into privileged EXEC mode. Lab credentials below - change before production.\n! TEMPLATE: replicate for 11 access switch(es) in BLDG-C; increment the hostname and the Vlan399 address (next free host in 10.10.14.96/27).\n! ======================================================================\nenable\nconfigure terminal\n!\nhostname BLDG-C-ASW1\nno ip domain-lookup\nip domain-name campus.netarch.lab\nservice password-encryption\nservice timestamps log datetime msec\nenable secret NetArch-Lab-2026\nusername netadmin privilege 15 secret NetArch-Lab-2026\nbanner motd ^Authorized access only - NetArchitect lab^\nspanning-tree mode rapid-pvst\nspanning-tree portfast bpduguard default\n!\n! --- VLAN database ---\nvlan 310\n name STAFF\nvlan 320\n name VOICE\nvlan 330\n name WIFI\nvlan 340\n name GUEST\nvlan 350\n name AP-MGMT\nvlan 399\n name MGMT\nvlan 998\n name BLACKHOLE\nvlan 999\n name NATIVE-UNUSED\n!\n! --- Management SVI ---\ninterface Vlan399\n description In-band management\n ip address 10.10.14.98 255.255.255.224\n no shutdown\nip default-gateway 10.10.14.97\n!\n! --- Edge ports (PortFast + BPDU Guard, DTP off) ---\ninterface range GigabitEthernet1/0/1 - 18\n description STAFF endpoints + IP phone\n switchport mode access\n switchport access vlan 310\n switchport voice vlan 320\n switchport nonegotiate\n spanning-tree portfast\n spanning-tree bpduguard enable\n no shutdown\ninterface range GigabitEthernet1/0/19 - 22\n description PoE access points (FlexConnect local switching)\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 350\n switchport trunk allowed vlan 330,340,350\n switchport nonegotiate\n spanning-tree portfast trunk\n spanning-tree bpduguard enable\n power inline auto\n no shutdown\ninterface range GigabitEthernet1/0/23 - 24\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Uplink trunk ---\ninterface GigabitEthernet1/1/1\n description TRUNK to BLDG-C-DSW1\n switchport trunk encapsulation dot1q\n switchport mode trunk\n switchport trunk native vlan 999\n switchport trunk allowed vlan 310,320,330,340,350,399,999\n switchport nonegotiate\n no shutdown\ninterface range GigabitEthernet1/1/2 - 4\n description UNUSED\n switchport mode access\n switchport access vlan 998\n shutdown\n!\n! --- Management plane (SSH only, ACL-restricted) ---\nip access-list standard VTY-MGMT\n remark BLDG-A MGMT\n permit 10.10.4.128 0.0.0.31\n remark BLDG-B MGMT\n permit 10.10.11.0 0.0.0.31\n remark BLDG-C MGMT\n permit 10.10.14.96 0.0.0.31\n deny any log\ncrypto key generate rsa modulus 2048\nip ssh version 2\nline con 0\n logging synchronous\n exec-timeout 15 0\n login local\nline vty 0 15\n access-class VTY-MGMT in\n exec-timeout 15 0\n login local\n transport input ssh\n!\nend\nwrite memory\n"
+  },
+  "cabling": [
+    {
+      "a": "BLDG-A-DSW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "BLDG-B-DSW1",
+      "b_port": "GigabitEthernet1/1/1",
+      "medium": "OM4 MMF 10GBASE-SR 250m"
+    },
+    {
+      "a": "BLDG-A-DSW1",
+      "a_port": "GigabitEthernet1/1/2",
+      "b": "BLDG-C-DSW1",
+      "b_port": "GigabitEthernet1/1/1",
+      "medium": "OM4 MMF 10GBASE-SR 380m"
+    },
+    {
+      "a": "BLDG-B-DSW1",
+      "a_port": "GigabitEthernet1/1/2",
+      "b": "BLDG-C-DSW1",
+      "b_port": "GigabitEthernet1/1/2",
+      "medium": "OM4 MMF 10GBASE-SR 320m"
+    },
+    {
+      "a": "BLDG-A-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "BLDG-A-DSW1",
+      "b_port": "GigabitEthernet1/0/1",
+      "medium": "Cat6a/MMF access uplink (trunk)"
+    },
+    {
+      "a": "BLDG-B-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "BLDG-B-DSW1",
+      "b_port": "GigabitEthernet1/0/1",
+      "medium": "Cat6a/MMF access uplink (trunk)"
+    },
+    {
+      "a": "BLDG-C-ASW1",
+      "a_port": "GigabitEthernet1/1/1",
+      "b": "BLDG-C-DSW1",
+      "b_port": "GigabitEthernet1/0/1",
+      "medium": "Cat6a/MMF access uplink (trunk)"
+    }
+  ],
+  "verification": {
+    "passed": 30,
+    "total": 30,
+    "checks": [
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.1.254",
+        "expected": "BLDG-A/STAFF",
+        "result": "BLDG-A/STAFF",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.2.254",
+        "expected": "BLDG-A/VOICE",
+        "result": "BLDG-A/VOICE",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.3.254",
+        "expected": "BLDG-A/WIFI",
+        "result": "BLDG-A/WIFI",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.4.62",
+        "expected": "BLDG-A/GUEST",
+        "result": "BLDG-A/GUEST",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.4.126",
+        "expected": "BLDG-A/AP-MGMT",
+        "result": "BLDG-A/AP-MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.4.158",
+        "expected": "BLDG-A/MGMT",
+        "result": "BLDG-A/MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.8.254",
+        "expected": "BLDG-B/STAFF",
+        "result": "BLDG-B/STAFF",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.9.254",
+        "expected": "BLDG-B/WIFI",
+        "result": "BLDG-B/WIFI",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.10.126",
+        "expected": "BLDG-B/VOICE",
+        "result": "BLDG-B/VOICE",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.10.190",
+        "expected": "BLDG-B/GUEST",
+        "result": "BLDG-B/GUEST",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.10.254",
+        "expected": "BLDG-B/AP-MGMT",
+        "result": "BLDG-B/AP-MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.11.30",
+        "expected": "BLDG-B/MGMT",
+        "result": "BLDG-B/MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.12.254",
+        "expected": "BLDG-C/STAFF",
+        "result": "BLDG-C/STAFF",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.13.126",
+        "expected": "BLDG-C/VOICE",
+        "result": "BLDG-C/VOICE",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.13.254",
+        "expected": "BLDG-C/WIFI",
+        "result": "BLDG-C/WIFI",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.14.62",
+        "expected": "BLDG-C/GUEST",
+        "result": "BLDG-C/GUEST",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.14.94",
+        "expected": "BLDG-C/AP-MGMT",
+        "result": "BLDG-C/AP-MGMT",
+        "pass": true
+      },
+      {
+        "type": "lpm",
+        "flow": "dst 10.10.14.126",
+        "expected": "BLDG-C/MGMT",
+        "result": "BLDG-C/MGMT",
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V140",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V140",
+        "flow": "DNS query: udp 10.10.4.5 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V140",
+        "flow": "Internet HTTPS: tcp 10.10.4.5 -> 93.184.216.34:443",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 5,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V140",
+        "flow": "to internal BLDG-A/STAFF SMB: tcp 10.10.4.5 -> 10.10.0.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 2,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V240",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V240",
+        "flow": "DNS query: udp 10.10.10.133 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V240",
+        "flow": "Internet HTTPS: tcp 10.10.10.133 -> 93.184.216.34:443",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 5,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V240",
+        "flow": "to internal BLDG-A/STAFF SMB: tcp 10.10.10.133 -> 10.10.0.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 2,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V340",
+        "flow": "DHCP discover: udp 0.0.0.0 -> 255.255.255.255:67",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 0,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V340",
+        "flow": "DNS query: udp 10.10.14.5 -> 1.1.1.1:53",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 1,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V340",
+        "flow": "Internet HTTPS: tcp 10.10.14.5 -> 93.184.216.34:443",
+        "expected": "permit",
+        "result": "permit",
+        "matched_entry": 5,
+        "pass": true
+      },
+      {
+        "type": "acl",
+        "acl": "GUEST-IN-V340",
+        "flow": "to internal BLDG-A/STAFF SMB: tcp 10.10.14.5 -> 10.10.0.1:445",
+        "expected": "deny",
+        "result": "deny",
+        "matched_entry": 2,
+        "pass": true
+      }
+    ]
+  },
+  "rationale": [
+    {
+      "domain": "Input",
+      "subject": "Campus LAN",
+      "decision": "campus profile, 3 sites, 3 links, root 10.10.0.0/16",
+      "justification": "Parameters validated: 1,751 hosts across 18 subnets, resiliency 'redundant'.",
+      "references": [],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-A <-> BLDG-B",
+      "decision": "OM4 MMF + 10GBASE-SR",
+      "justification": "Selected OM4 multimode because 250 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.25 km x 3.5 dB/km + 1.5 dB connectors = 2.38 dB <= 2.9 dB channel budget (headroom 0.52 dB). VCSEL-based SR optics are cheaper than single-mode lasers.",
+      "references": [
+        "IEEE 802.3ae Clause 52",
+        "TIA-492AAAD (OM4)"
+      ],
+      "data": {
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.25,
+          "fiber_loss_db": 0.88,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 2.38,
+          "total_with_margin_db": 2.38,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.52,
+          "passes": true,
+          "attenuator_needed": false
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-A <-> BLDG-C",
+      "decision": "OM4 MMF + 10GBASE-SR",
+      "justification": "Selected OM4 multimode because 380 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.38 km x 3.5 dB/km + 1.5 dB connectors = 2.83 dB <= 2.9 dB channel budget (headroom 0.07 dB). VCSEL-based SR optics are cheaper than single-mode lasers.",
+      "references": [
+        "IEEE 802.3ae Clause 52",
+        "TIA-492AAAD (OM4)"
+      ],
+      "data": {
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.38,
+          "fiber_loss_db": 1.33,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 2.83,
+          "total_with_margin_db": 2.83,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.07,
+          "passes": true,
+          "attenuator_needed": false
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-A <-> BLDG-C",
+      "decision": "WARNING",
+      "justification": "Optical headroom only 0.07 dB on 10GBASE-SR; clean/inspect connectors or reduce patch points.",
+      "references": [],
+      "data": {},
+      "level": "warning"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-B <-> BLDG-C",
+      "decision": "OM4 MMF + 10GBASE-SR",
+      "justification": "Selected OM4 multimode because 320 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.32 km x 3.5 dB/km + 1.5 dB connectors = 2.62 dB <= 2.9 dB channel budget (headroom 0.28 dB). VCSEL-based SR optics are cheaper than single-mode lasers.",
+      "references": [
+        "IEEE 802.3ae Clause 52",
+        "TIA-492AAAD (OM4)"
+      ],
+      "data": {
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.32,
+          "fiber_loss_db": 1.12,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 2.62,
+          "total_with_margin_db": 2.62,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.28,
+          "passes": true,
+          "attenuator_needed": false
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-B <-> BLDG-C",
+      "decision": "WARNING",
+      "justification": "Optical headroom only 0.28 dB on 10GBASE-SR; clean/inspect connectors or reduce patch points.",
+      "references": [],
+      "data": {},
+      "level": "warning"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-A IDF to desk (horizontal)",
+      "decision": "Cat6a UTP + 10GBASE-T",
+      "justification": "Run length 85 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics.",
+      "references": [
+        "IEEE 802.3an",
+        "TIA-568.2-D"
+      ],
+      "data": {
+        "distance_m": 85.0,
+        "limit_m": 100.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-A Ceiling AP drop",
+      "decision": "Cat6a UTP + 10GBASE-T",
+      "justification": "Run length 90 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics. The run also carries PoE (IEEE 802.3bt Type 4, up to 90 W PSE), which is only possible on copper and is specified to the same 100 m channel.",
+      "references": [
+        "IEEE 802.3an",
+        "TIA-568.2-D",
+        "IEEE 802.3bt"
+      ],
+      "data": {
+        "distance_m": 90.0,
+        "limit_m": 100.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-A MDF to floor-4 IDF riser",
+      "decision": "OM4 MMF + 10GBASE-SR",
+      "justification": "Selected OM4 multimode because 140 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.14 km x 3.5 dB/km + 1.5 dB connectors = 1.99 dB <= 2.9 dB channel budget (headroom 0.91 dB). VCSEL-based SR optics are cheaper than single-mode lasers.",
+      "references": [
+        "IEEE 802.3ae Clause 52",
+        "TIA-492AAAD (OM4)"
+      ],
+      "data": {
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.14,
+          "fiber_loss_db": 0.49,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 1.99,
+          "total_with_margin_db": 1.99,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 0.91,
+          "passes": true,
+          "attenuator_needed": false
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-B IDF to desk (horizontal)",
+      "decision": "Cat6a UTP + 10GBASE-T",
+      "justification": "Run length 72 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics.",
+      "references": [
+        "IEEE 802.3an",
+        "TIA-568.2-D"
+      ],
+      "data": {
+        "distance_m": 72.0,
+        "limit_m": 100.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-B Ceiling AP drop",
+      "decision": "Cat6a UTP + 10GBASE-T",
+      "justification": "Run length 64 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics. The run also carries PoE (IEEE 802.3bt Type 4, up to 90 W PSE), which is only possible on copper and is specified to the same 100 m channel.",
+      "references": [
+        "IEEE 802.3an",
+        "TIA-568.2-D",
+        "IEEE 802.3bt"
+      ],
+      "data": {
+        "distance_m": 64.0,
+        "limit_m": 100.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-C IDF to desk (horizontal)",
+      "decision": "Cat6a UTP + 10GBASE-T",
+      "justification": "Run length 95 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics.",
+      "references": [
+        "IEEE 802.3an",
+        "TIA-568.2-D"
+      ],
+      "data": {
+        "distance_m": 95.0,
+        "limit_m": 100.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L1 Media",
+      "subject": "BLDG-C Lab bench (fibre requested)",
+      "decision": "OM4 MMF + 10GBASE-SR",
+      "justification": "Selected OM4 multimode because the requester explicitly asked for fibre, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.04 km x 3.5 dB/km + 1.5 dB connectors = 1.64 dB <= 2.9 dB channel budget (headroom 1.26 dB). VCSEL-based SR optics are cheaper than single-mode lasers.",
+      "references": [
+        "IEEE 802.3ae Clause 52",
+        "TIA-492AAAD (OM4)"
+      ],
+      "data": {
+        "budget": {
+          "optic": "10GBASE-SR",
+          "fiber_km": 0.04,
+          "fiber_loss_db": 0.14,
+          "connector_loss_db": 1.5,
+          "splices": 0,
+          "splice_loss_db": 0.0,
+          "margin_db": 0.0,
+          "total_loss_db": 1.64,
+          "total_with_margin_db": 1.64,
+          "max_loss_db": 2.9,
+          "min_loss_db": 0.0,
+          "headroom_db": 1.26,
+          "passes": true,
+          "attenuator_needed": false
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "BLDG-A access layer",
+      "decision": "17 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (340); 150 IP phones share the PC's port via the voice VLAN; 250 wireless clients attach through 40 APs, so only port-consuming endpoints are counted. ceil(340 x (1 + 20% growth) / 24) = 17.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 340,
+        "access_switches": 17,
+        "aps": 40,
+        "voice_phones": 150,
+        "wireless_clients": 250,
+        "poe_total_w": 3510.0,
+        "poe_per_switch_w": 206.5
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "BLDG-A PoE budget",
+      "decision": "3,510 W total, ~206 W per switch",
+      "justification": "40 APs x 30 W (802.3at Class 4 at the PSE) + 150 phones x 15.4 W (802.3af) = 3,510 W. Specify PoE+ access switches with at least 250 W PoE budget each (rounded up to the next 50 W PSU tier).",
+      "references": [
+        "IEEE 802.3at",
+        "IEEE 802.3af"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "BLDG-B access layer",
+      "decision": "13 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (250); 100 IP phones share the PC's port via the voice VLAN; 180 wireless clients attach through 30 APs, so only port-consuming endpoints are counted. ceil(250 x (1 + 20% growth) / 24) = 13.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 250,
+        "access_switches": 13,
+        "aps": 30,
+        "voice_phones": 100,
+        "wireless_clients": 180,
+        "poe_total_w": 2440.0,
+        "poe_per_switch_w": 187.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "BLDG-B PoE budget",
+      "decision": "2,440 W total, ~188 W per switch",
+      "justification": "30 APs x 30 W (802.3at Class 4 at the PSE) + 100 phones x 15.4 W (802.3af) = 2,440 W. Specify PoE+ access switches with at least 200 W PoE budget each (rounded up to the next 50 W PSU tier).",
+      "references": [
+        "IEEE 802.3at",
+        "IEEE 802.3af"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "BLDG-C access layer",
+      "decision": "11 x 24-port access switch(es)",
+      "justification": "Ports are consumed by wired data/IoT/server endpoints and APs (205); 80 IP phones share the PC's port via the voice VLAN; 140 wireless clients attach through 25 APs, so only port-consuming endpoints are counted. ceil(205 x (1 + 20% growth) / 24) = 11.",
+      "references": [
+        "IEEE 802.1Q (voice VLAN)"
+      ],
+      "data": {
+        "port_demand": 205,
+        "access_switches": 11,
+        "aps": 25,
+        "voice_phones": 80,
+        "wireless_clients": 140,
+        "poe_total_w": 1982.0,
+        "poe_per_switch_w": 180.2
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "BLDG-C PoE budget",
+      "decision": "1,982 W total, ~180 W per switch",
+      "justification": "25 APs x 30 W (802.3at Class 4 at the PSE) + 80 phones x 15.4 W (802.3af) = 1,982 W. Specify PoE+ access switches with at least 200 W PoE budget each (rounded up to the next 50 W PSU tier).",
+      "references": [
+        "IEEE 802.3at",
+        "IEEE 802.3af"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "Spanning tree",
+      "decision": "Rapid PVST+ (802.1w per VLAN), root at distribution",
+      "justification": "RSTP converges in under a second via proposal/agreement instead of 802.1D's 30-50 s listening/learning timers. The distribution switch is pinned as root (priority 4096) so the L2 forwarding path matches the L3 gateway, and PortFast + BPDU Guard on edge ports stop a rogue switch from triggering a topology change.",
+      "references": [
+        "IEEE 802.1w",
+        "IEEE 802.1D-2004"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "L2 Switching",
+      "subject": "Trunk policy",
+      "decision": "802.1Q trunks, explicit allowed list, native VLAN 999, DTP off",
+      "justification": "Trunks carry only the VLANs that exist at that site (no 'allowed vlan all'), the native VLAN is moved to unused VLAN 999 and DTP is disabled with 'nonegotiate'. This blocks double-tagging VLAN hopping and switch-spoofing attacks; unused ports are shut down in black-hole VLAN 998.",
+      "references": [
+        "IEEE 802.1Q",
+        "Cisco SAFE"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "Topology",
+      "subject": "Topology tier",
+      "decision": "Three-tier hierarchical (core / distribution / access)",
+      "justification": "Chosen because 3 buildings and 41 access switches: each building gets an L3 distribution switch (failure-domain + STP boundary), and inter-building fibre terminates on a routed core, so no VLAN spans buildings.",
+      "references": [
+        "Cisco Enterprise Campus design guide"
+      ],
+      "data": {
+        "access_switches_total": 41
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-A STAFF",
+      "decision": "10.10.0.0/23 (gw 10.10.0.1, bcast 10.10.1.255)",
+      "justification": "300 hosts + 1 gateway + network + broadcast = 303 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 301 required. Utilisation 59.0% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "STAFF",
+        "site": "BLDG-A",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 110,
+        "hosts_requested": 300,
+        "cidr": "10.10.0.0/23",
+        "network": "10.10.0.0",
+        "prefix": 23,
+        "mask": "255.255.254.0",
+        "wildcard": "0.0.1.255",
+        "broadcast": "10.10.1.255",
+        "gateway": "10.10.0.1",
+        "first_usable": "10.10.0.1",
+        "last_usable": "10.10.1.254",
+        "usable": 510,
+        "block_size": 512,
+        "utilization_pct": 59.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-A VOICE",
+      "decision": "10.10.2.0/24 (gw 10.10.2.1, bcast 10.10.2.255)",
+      "justification": "150 hosts + 1 gateway + network + broadcast = 153 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 151 required. Utilisation 59.4% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "VOICE",
+        "site": "BLDG-A",
+        "kind": "lan",
+        "role": "voice",
+        "vlan_id": 120,
+        "hosts_requested": 150,
+        "cidr": "10.10.2.0/24",
+        "network": "10.10.2.0",
+        "prefix": 24,
+        "mask": "255.255.255.0",
+        "wildcard": "0.0.0.255",
+        "broadcast": "10.10.2.255",
+        "gateway": "10.10.2.1",
+        "first_usable": "10.10.2.1",
+        "last_usable": "10.10.2.254",
+        "usable": 254,
+        "block_size": 256,
+        "utilization_pct": 59.4
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-A WIFI",
+      "decision": "10.10.3.0/24 (gw 10.10.3.1, bcast 10.10.3.255)",
+      "justification": "200 hosts + 1 gateway + network + broadcast = 203 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 201 required. Utilisation 79.1% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "WIFI",
+        "site": "BLDG-A",
+        "kind": "lan",
+        "role": "wireless",
+        "vlan_id": 130,
+        "hosts_requested": 200,
+        "cidr": "10.10.3.0/24",
+        "network": "10.10.3.0",
+        "prefix": 24,
+        "mask": "255.255.255.0",
+        "wildcard": "0.0.0.255",
+        "broadcast": "10.10.3.255",
+        "gateway": "10.10.3.1",
+        "first_usable": "10.10.3.1",
+        "last_usable": "10.10.3.254",
+        "usable": 254,
+        "block_size": 256,
+        "utilization_pct": 79.1
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-A GUEST",
+      "decision": "10.10.4.0/26 (gw 10.10.4.1, bcast 10.10.4.63)",
+      "justification": "50 hosts + 1 gateway + network + broadcast = 53 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 51 required. Utilisation 82.3% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "GUEST",
+        "site": "BLDG-A",
+        "kind": "lan",
+        "role": "guest",
+        "vlan_id": 140,
+        "hosts_requested": 50,
+        "cidr": "10.10.4.0/26",
+        "network": "10.10.4.0",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.10.4.63",
+        "gateway": "10.10.4.1",
+        "first_usable": "10.10.4.1",
+        "last_usable": "10.10.4.62",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 82.3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-A AP-MGMT",
+      "decision": "10.10.4.64/26 (gw 10.10.4.65, bcast 10.10.4.127)",
+      "justification": "40 hosts + 1 gateway + network + broadcast = 43 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 41 required. Utilisation 66.1% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "AP-MGMT",
+        "site": "BLDG-A",
+        "kind": "lan",
+        "role": "ap",
+        "vlan_id": 150,
+        "hosts_requested": 40,
+        "cidr": "10.10.4.64/26",
+        "network": "10.10.4.64",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.10.4.127",
+        "gateway": "10.10.4.65",
+        "first_usable": "10.10.4.65",
+        "last_usable": "10.10.4.126",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 66.1
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-A MGMT",
+      "decision": "10.10.4.128/27 (gw 10.10.4.129, bcast 10.10.4.159)",
+      "justification": "24 hosts + 1 gateway + network + broadcast = 27 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 25 required. Utilisation 83.3% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "BLDG-A",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 199,
+        "hosts_requested": 24,
+        "cidr": "10.10.4.128/27",
+        "network": "10.10.4.128",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.10.4.159",
+        "gateway": "10.10.4.129",
+        "first_usable": "10.10.4.129",
+        "last_usable": "10.10.4.158",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 83.3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block BLDG-A",
+      "decision": "10.10.0.0/21",
+      "justification": "Sum of BLDG-A's subnet blocks = 1,184 addresses, rounded up to the next power of two (2,048) so the whole site is one bit-aligned prefix /21. This lets the site be advertised as a single summary route (wildcard 0.0.7.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.10.0.0/21",
+        "demand": 1184
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-B STAFF",
+      "decision": "10.10.8.0/24 (gw 10.10.8.1, bcast 10.10.8.255)",
+      "justification": "220 hosts + 1 gateway + network + broadcast = 223 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 221 required. Utilisation 87.0% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "STAFF",
+        "site": "BLDG-B",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 210,
+        "hosts_requested": 220,
+        "cidr": "10.10.8.0/24",
+        "network": "10.10.8.0",
+        "prefix": 24,
+        "mask": "255.255.255.0",
+        "wildcard": "0.0.0.255",
+        "broadcast": "10.10.8.255",
+        "gateway": "10.10.8.1",
+        "first_usable": "10.10.8.1",
+        "last_usable": "10.10.8.254",
+        "usable": 254,
+        "block_size": 256,
+        "utilization_pct": 87.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-B WIFI",
+      "decision": "10.10.9.0/24 (gw 10.10.9.1, bcast 10.10.9.255)",
+      "justification": "140 hosts + 1 gateway + network + broadcast = 143 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 141 required. Utilisation 55.5% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "WIFI",
+        "site": "BLDG-B",
+        "kind": "lan",
+        "role": "wireless",
+        "vlan_id": 230,
+        "hosts_requested": 140,
+        "cidr": "10.10.9.0/24",
+        "network": "10.10.9.0",
+        "prefix": 24,
+        "mask": "255.255.255.0",
+        "wildcard": "0.0.0.255",
+        "broadcast": "10.10.9.255",
+        "gateway": "10.10.9.1",
+        "first_usable": "10.10.9.1",
+        "last_usable": "10.10.9.254",
+        "usable": 254,
+        "block_size": 256,
+        "utilization_pct": 55.5
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-B VOICE",
+      "decision": "10.10.10.0/25 (gw 10.10.10.1, bcast 10.10.10.127)",
+      "justification": "100 hosts + 1 gateway + network + broadcast = 103 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 101 required. Utilisation 80.2% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "VOICE",
+        "site": "BLDG-B",
+        "kind": "lan",
+        "role": "voice",
+        "vlan_id": 220,
+        "hosts_requested": 100,
+        "cidr": "10.10.10.0/25",
+        "network": "10.10.10.0",
+        "prefix": 25,
+        "mask": "255.255.255.128",
+        "wildcard": "0.0.0.127",
+        "broadcast": "10.10.10.127",
+        "gateway": "10.10.10.1",
+        "first_usable": "10.10.10.1",
+        "last_usable": "10.10.10.126",
+        "usable": 126,
+        "block_size": 128,
+        "utilization_pct": 80.2
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-B GUEST",
+      "decision": "10.10.10.128/26 (gw 10.10.10.129, bcast 10.10.10.191)",
+      "justification": "40 hosts + 1 gateway + network + broadcast = 43 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 41 required. Utilisation 66.1% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "GUEST",
+        "site": "BLDG-B",
+        "kind": "lan",
+        "role": "guest",
+        "vlan_id": 240,
+        "hosts_requested": 40,
+        "cidr": "10.10.10.128/26",
+        "network": "10.10.10.128",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.10.10.191",
+        "gateway": "10.10.10.129",
+        "first_usable": "10.10.10.129",
+        "last_usable": "10.10.10.190",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 66.1
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-B AP-MGMT",
+      "decision": "10.10.10.192/26 (gw 10.10.10.193, bcast 10.10.10.255)",
+      "justification": "30 hosts + 1 gateway + network + broadcast = 33 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 31 required. Utilisation 50.0% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "AP-MGMT",
+        "site": "BLDG-B",
+        "kind": "lan",
+        "role": "ap",
+        "vlan_id": 250,
+        "hosts_requested": 30,
+        "cidr": "10.10.10.192/26",
+        "network": "10.10.10.192",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.10.10.255",
+        "gateway": "10.10.10.193",
+        "first_usable": "10.10.10.193",
+        "last_usable": "10.10.10.254",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 50.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-B MGMT",
+      "decision": "10.10.11.0/27 (gw 10.10.11.1, bcast 10.10.11.31)",
+      "justification": "16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "BLDG-B",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 299,
+        "hosts_requested": 16,
+        "cidr": "10.10.11.0/27",
+        "network": "10.10.11.0",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.10.11.31",
+        "gateway": "10.10.11.1",
+        "first_usable": "10.10.11.1",
+        "last_usable": "10.10.11.30",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 56.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block BLDG-B",
+      "decision": "10.10.8.0/22",
+      "justification": "Sum of BLDG-B's subnet blocks = 800 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.10.8.0/22",
+        "demand": 800
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-C STAFF",
+      "decision": "10.10.12.0/24 (gw 10.10.12.1, bcast 10.10.12.255)",
+      "justification": "180 hosts + 1 gateway + network + broadcast = 183 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 181 required. Utilisation 71.3% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "STAFF",
+        "site": "BLDG-C",
+        "kind": "lan",
+        "role": "data",
+        "vlan_id": 310,
+        "hosts_requested": 180,
+        "cidr": "10.10.12.0/24",
+        "network": "10.10.12.0",
+        "prefix": 24,
+        "mask": "255.255.255.0",
+        "wildcard": "0.0.0.255",
+        "broadcast": "10.10.12.255",
+        "gateway": "10.10.12.1",
+        "first_usable": "10.10.12.1",
+        "last_usable": "10.10.12.254",
+        "usable": 254,
+        "block_size": 256,
+        "utilization_pct": 71.3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-C VOICE",
+      "decision": "10.10.13.0/25 (gw 10.10.13.1, bcast 10.10.13.127)",
+      "justification": "80 hosts + 1 gateway + network + broadcast = 83 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 81 required. Utilisation 64.3% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "VOICE",
+        "site": "BLDG-C",
+        "kind": "lan",
+        "role": "voice",
+        "vlan_id": 320,
+        "hosts_requested": 80,
+        "cidr": "10.10.13.0/25",
+        "network": "10.10.13.0",
+        "prefix": 25,
+        "mask": "255.255.255.128",
+        "wildcard": "0.0.0.127",
+        "broadcast": "10.10.13.127",
+        "gateway": "10.10.13.1",
+        "first_usable": "10.10.13.1",
+        "last_usable": "10.10.13.126",
+        "usable": 126,
+        "block_size": 128,
+        "utilization_pct": 64.3
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-C WIFI",
+      "decision": "10.10.13.128/25 (gw 10.10.13.129, bcast 10.10.13.255)",
+      "justification": "110 hosts + 1 gateway + network + broadcast = 113 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 111 required. Utilisation 88.1% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "WIFI",
+        "site": "BLDG-C",
+        "kind": "lan",
+        "role": "wireless",
+        "vlan_id": 330,
+        "hosts_requested": 110,
+        "cidr": "10.10.13.128/25",
+        "network": "10.10.13.128",
+        "prefix": 25,
+        "mask": "255.255.255.128",
+        "wildcard": "0.0.0.127",
+        "broadcast": "10.10.13.255",
+        "gateway": "10.10.13.129",
+        "first_usable": "10.10.13.129",
+        "last_usable": "10.10.13.254",
+        "usable": 126,
+        "block_size": 128,
+        "utilization_pct": 88.1
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-C GUEST",
+      "decision": "10.10.14.0/26 (gw 10.10.14.1, bcast 10.10.14.63)",
+      "justification": "30 hosts + 1 gateway + network + broadcast = 33 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 31 required. Utilisation 50.0% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "GUEST",
+        "site": "BLDG-C",
+        "kind": "lan",
+        "role": "guest",
+        "vlan_id": 340,
+        "hosts_requested": 30,
+        "cidr": "10.10.14.0/26",
+        "network": "10.10.14.0",
+        "prefix": 26,
+        "mask": "255.255.255.192",
+        "wildcard": "0.0.0.63",
+        "broadcast": "10.10.14.63",
+        "gateway": "10.10.14.1",
+        "first_usable": "10.10.14.1",
+        "last_usable": "10.10.14.62",
+        "usable": 62,
+        "block_size": 64,
+        "utilization_pct": 50.0
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-C AP-MGMT",
+      "decision": "10.10.14.64/27 (gw 10.10.14.65, bcast 10.10.14.95)",
+      "justification": "25 hosts + 1 gateway + network + broadcast = 28 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 26 required. Utilisation 86.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "AP-MGMT",
+        "site": "BLDG-C",
+        "kind": "lan",
+        "role": "ap",
+        "vlan_id": 350,
+        "hosts_requested": 25,
+        "cidr": "10.10.14.64/27",
+        "network": "10.10.14.64",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.10.14.95",
+        "gateway": "10.10.14.65",
+        "first_usable": "10.10.14.65",
+        "last_usable": "10.10.14.94",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 86.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "BLDG-C MGMT",
+      "decision": "10.10.14.96/27 (gw 10.10.14.97, bcast 10.10.14.127)",
+      "justification": "16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).",
+      "references": [
+        "RFC 950",
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "name": "MGMT",
+        "site": "BLDG-C",
+        "kind": "lan",
+        "role": "mgmt",
+        "vlan_id": 399,
+        "hosts_requested": 16,
+        "cidr": "10.10.14.96/27",
+        "network": "10.10.14.96",
+        "prefix": 27,
+        "mask": "255.255.255.224",
+        "wildcard": "0.0.0.31",
+        "broadcast": "10.10.14.127",
+        "gateway": "10.10.14.97",
+        "first_usable": "10.10.14.97",
+        "last_usable": "10.10.14.126",
+        "usable": 30,
+        "block_size": 32,
+        "utilization_pct": 56.7
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block BLDG-C",
+      "decision": "10.10.12.0/22",
+      "justification": "Sum of BLDG-C's subnet blocks = 640 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.10.12.0/22",
+        "demand": 640
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Site block INFRA",
+      "decision": "10.10.16.0/28",
+      "justification": "Sum of INFRA's subnet blocks = 15 addresses, rounded up to the next power of two (16) so the whole site is one bit-aligned prefix /28. This lets the site be advertised as a single summary route (wildcard 0.0.0.15).",
+      "references": [
+        "RFC 4632 (CIDR aggregation)"
+      ],
+      "data": {
+        "block": "10.10.16.0/28",
+        "demand": 15
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 VLSM",
+      "subject": "Root utilisation",
+      "decision": "6.27% of 10.10.0.0/16",
+      "justification": "24 subnets packed largest-first with zero overlap (verified by sorting on network address and checking each broadcast < next network). Host demand fills 67.37% of allocated addresses. A fixed-length design using the largest LAN block everywhere would consume 9,231 addresses vs 2,639 with VLSM.",
+      "references": [
+        "RFC 1878",
+        "RFC 4632"
+      ],
+      "data": {
+        "root_utilization_pct": 6.27,
+        "address_efficiency_pct": 67.37,
+        "flsm_equivalent_addresses": 9231,
+        "vlsm_addresses": 2639
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "Interior gateway protocol",
+      "decision": "OSPFv2 single area 0",
+      "justification": "The design is a single autonomous system with 24 subnets (< 50), so one LSDB stays small and SPF runs in milliseconds. A link-state protocol gives sub-second-to-seconds convergence without the hop-count limits and slow count-to-infinity behaviour of distance-vector RIP, and avoids the ABR/summarisation complexity that multi-area would add with no scaling benefit.",
+      "references": [
+        "RFC 2328 (OSPFv2)"
+      ],
+      "data": {
+        "subnets": 24
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "L3 Routing",
+      "subject": "OSPF reference bandwidth",
+      "decision": "auto-cost reference-bandwidth 100000",
+      "justification": "The default 100 Mbps reference gives FastEthernet, 1G and 10G links the same cost (1). Raising it to 100 Gbps makes cost = 100000 / link Mbps, so 10G = 10, 1G = 100 and SPF prefers the faster path. Must be identical on every router.",
+      "references": [
+        "RFC 2328 Appendix C.3"
+      ],
+      "data": {},
+      "level": "decision"
+    },
+    {
+      "domain": "QoS & Latency",
+      "subject": "Path latency",
+      "decision": "Worst path BLDG-A -> BLDG-C = 0.052 ms one-way",
+      "justification": "Estimated from cable/route distance at ~4.9 us/km (Internet paths x1.4) plus 0.05 ms per hop. Intercontinental latency is dominated by physics, so chatty IoT protocols should batch telemetry and use MQTT/HTTPS keep-alives rather than synchronous request/response.",
+      "references": [
+        "ITU-T G.114"
+      ],
+      "data": {
+        "worst": {
+          "a": "BLDG-A",
+          "b": "BLDG-C",
+          "one_way_ms": 0.052,
+          "path": [
+            "BLDG-A",
+            "BLDG-C"
+          ]
+        }
+      },
+      "level": "decision"
+    },
+    {
+      "domain": "Verification",
+      "subject": "Packet-flow simulation",
+      "decision": "30/30 checks passed",
+      "justification": "Every LAN's last usable address was resolved by longest-prefix match to exactly one subnet (proves zero overlap), and representative flows (DHCP, DNS, Internet, lateral SMB, cloud MQTT/SSH) were walked through each generated ACL entry-by-entry using the same wildcard arithmetic the router applies.",
+      "references": [],
+      "data": {
+        "passed": 30,
+        "total": 30
+      },
+      "level": "decision"
+    }
+  ],
+  "rationale_text": "== Input =================================================================\n[001] Campus LAN: campus profile, 3 sites, 3 links, root 10.10.0.0/16\n      Why: Parameters validated: 1,751 hosts across 18 subnets, resiliency 'redundant'.\n\n== L1 Media ==============================================================\n[002] BLDG-A <-> BLDG-B: OM4 MMF + 10GBASE-SR\n      Why: Selected OM4 multimode because 250 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.25 km x 3.5 dB/km + 1.5 dB connectors = 2.38 dB <= 2.9 dB channel budget (headroom 0.52 dB). VCSEL-based SR optics are cheaper than single-mode lasers.\n      Ref: IEEE 802.3ae Clause 52, TIA-492AAAD (OM4)\n[003] BLDG-A <-> BLDG-C: OM4 MMF + 10GBASE-SR\n      Why: Selected OM4 multimode because 380 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.38 km x 3.5 dB/km + 1.5 dB connectors = 2.83 dB <= 2.9 dB channel budget (headroom 0.07 dB). VCSEL-based SR optics are cheaper than single-mode lasers.\n      Ref: IEEE 802.3ae Clause 52, TIA-492AAAD (OM4)\n[!] BLDG-A <-> BLDG-C: WARNING\n      Why: Optical headroom only 0.07 dB on 10GBASE-SR; clean/inspect connectors or reduce patch points.\n[005] BLDG-B <-> BLDG-C: OM4 MMF + 10GBASE-SR\n      Why: Selected OM4 multimode because 320 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.32 km x 3.5 dB/km + 1.5 dB connectors = 2.62 dB <= 2.9 dB channel budget (headroom 0.28 dB). VCSEL-based SR optics are cheaper than single-mode lasers.\n      Ref: IEEE 802.3ae Clause 52, TIA-492AAAD (OM4)\n[!] BLDG-B <-> BLDG-C: WARNING\n      Why: Optical headroom only 0.28 dB on 10GBASE-SR; clean/inspect connectors or reduce patch points.\n[007] BLDG-A IDF to desk (horizontal): Cat6a UTP + 10GBASE-T\n      Why: Run length 85 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics.\n      Ref: IEEE 802.3an, TIA-568.2-D\n[008] BLDG-A Ceiling AP drop: Cat6a UTP + 10GBASE-T\n      Why: Run length 90 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics. The run also carries PoE (IEEE 802.3bt Type 4, up to 90 W PSE), which is only possible on copper and is specified to the same 100 m channel.\n      Ref: IEEE 802.3an, TIA-568.2-D, IEEE 802.3bt\n[009] BLDG-A MDF to floor-4 IDF riser: OM4 MMF + 10GBASE-SR\n      Why: Selected OM4 multimode because 140 m exceeds the 100 m copper channel limit of IEEE 802.3an, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.14 km x 3.5 dB/km + 1.5 dB connectors = 1.99 dB <= 2.9 dB channel budget (headroom 0.91 dB). VCSEL-based SR optics are cheaper than single-mode lasers.\n      Ref: IEEE 802.3ae Clause 52, TIA-492AAAD (OM4)\n[010] BLDG-B IDF to desk (horizontal): Cat6a UTP + 10GBASE-T\n      Why: Run length 72 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics.\n      Ref: IEEE 802.3an, TIA-568.2-D\n[011] BLDG-B Ceiling AP drop: Cat6a UTP + 10GBASE-T\n      Why: Run length 64 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics. The run also carries PoE (IEEE 802.3bt Type 4, up to 90 W PSE), which is only possible on copper and is specified to the same 100 m channel.\n      Ref: IEEE 802.3an, TIA-568.2-D, IEEE 802.3bt\n[012] BLDG-C IDF to desk (horizontal): Cat6a UTP + 10GBASE-T\n      Why: Run length 95 m is within the 100 m channel limit of IEEE 802.3an (90 m permanent link + 10 m patch cords). Cat6a (Class EA, 500 MHz) supports 10GBASE-T at full reach and costs far less than optics.\n      Ref: IEEE 802.3an, TIA-568.2-D\n[013] BLDG-C Lab bench (fibre requested): OM4 MMF + 10GBASE-SR\n      Why: Selected OM4 multimode because the requester explicitly asked for fibre, while staying within the 400 m reach of 10GBASE-SR at 850 nm. Reach on multimode is bounded by modal dispersion (OM4 effective modal bandwidth 4700 MHz*km), not attenuation. Loss check: 0.04 km x 3.5 dB/km + 1.5 dB connectors = 1.64 dB <= 2.9 dB channel budget (headroom 1.26 dB). VCSEL-based SR optics are cheaper than single-mode lasers.\n      Ref: IEEE 802.3ae Clause 52, TIA-492AAAD (OM4)\n\n== L2 Switching ==========================================================\n[014] BLDG-A access layer: 17 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (340); 150 IP phones share the PC's port via the voice VLAN; 250 wireless clients attach through 40 APs, so only port-consuming endpoints are counted. ceil(340 x (1 + 20% growth) / 24) = 17.\n      Ref: IEEE 802.1Q (voice VLAN)\n[015] BLDG-A PoE budget: 3,510 W total, ~206 W per switch\n      Why: 40 APs x 30 W (802.3at Class 4 at the PSE) + 150 phones x 15.4 W (802.3af) = 3,510 W. Specify PoE+ access switches with at least 250 W PoE budget each (rounded up to the next 50 W PSU tier).\n      Ref: IEEE 802.3at, IEEE 802.3af\n[016] BLDG-B access layer: 13 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (250); 100 IP phones share the PC's port via the voice VLAN; 180 wireless clients attach through 30 APs, so only port-consuming endpoints are counted. ceil(250 x (1 + 20% growth) / 24) = 13.\n      Ref: IEEE 802.1Q (voice VLAN)\n[017] BLDG-B PoE budget: 2,440 W total, ~188 W per switch\n      Why: 30 APs x 30 W (802.3at Class 4 at the PSE) + 100 phones x 15.4 W (802.3af) = 2,440 W. Specify PoE+ access switches with at least 200 W PoE budget each (rounded up to the next 50 W PSU tier).\n      Ref: IEEE 802.3at, IEEE 802.3af\n[018] BLDG-C access layer: 11 x 24-port access switch(es)\n      Why: Ports are consumed by wired data/IoT/server endpoints and APs (205); 80 IP phones share the PC's port via the voice VLAN; 140 wireless clients attach through 25 APs, so only port-consuming endpoints are counted. ceil(205 x (1 + 20% growth) / 24) = 11.\n      Ref: IEEE 802.1Q (voice VLAN)\n[019] BLDG-C PoE budget: 1,982 W total, ~180 W per switch\n      Why: 25 APs x 30 W (802.3at Class 4 at the PSE) + 80 phones x 15.4 W (802.3af) = 1,982 W. Specify PoE+ access switches with at least 200 W PoE budget each (rounded up to the next 50 W PSU tier).\n      Ref: IEEE 802.3at, IEEE 802.3af\n[020] Spanning tree: Rapid PVST+ (802.1w per VLAN), root at distribution\n      Why: RSTP converges in under a second via proposal/agreement instead of 802.1D's 30-50 s listening/learning timers. The distribution switch is pinned as root (priority 4096) so the L2 forwarding path matches the L3 gateway, and PortFast + BPDU Guard on edge ports stop a rogue switch from triggering a topology change.\n      Ref: IEEE 802.1w, IEEE 802.1D-2004\n[021] Trunk policy: 802.1Q trunks, explicit allowed list, native VLAN 999, DTP off\n      Why: Trunks carry only the VLANs that exist at that site (no 'allowed vlan all'), the native VLAN is moved to unused VLAN 999 and DTP is disabled with 'nonegotiate'. This blocks double-tagging VLAN hopping and switch-spoofing attacks; unused ports are shut down in black-hole VLAN 998.\n      Ref: IEEE 802.1Q, Cisco SAFE\n\n== Topology ==============================================================\n[022] Topology tier: Three-tier hierarchical (core / distribution / access)\n      Why: Chosen because 3 buildings and 41 access switches: each building gets an L3 distribution switch (failure-domain + STP boundary), and inter-building fibre terminates on a routed core, so no VLAN spans buildings.\n      Ref: Cisco Enterprise Campus design guide\n\n== L3 VLSM ===============================================================\n[023] BLDG-A STAFF: 10.10.0.0/23 (gw 10.10.0.1, bcast 10.10.1.255)\n      Why: 300 hosts + 1 gateway + network + broadcast = 303 addresses -> 2^9 = 512 block (/23); /24 would offer only 254 usable < 301 required. Utilisation 59.0% of 510 usable. Network address is a multiple of the 512-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[024] BLDG-A VOICE: 10.10.2.0/24 (gw 10.10.2.1, bcast 10.10.2.255)\n      Why: 150 hosts + 1 gateway + network + broadcast = 153 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 151 required. Utilisation 59.4% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[025] BLDG-A WIFI: 10.10.3.0/24 (gw 10.10.3.1, bcast 10.10.3.255)\n      Why: 200 hosts + 1 gateway + network + broadcast = 203 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 201 required. Utilisation 79.1% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[026] BLDG-A GUEST: 10.10.4.0/26 (gw 10.10.4.1, bcast 10.10.4.63)\n      Why: 50 hosts + 1 gateway + network + broadcast = 53 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 51 required. Utilisation 82.3% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[027] BLDG-A AP-MGMT: 10.10.4.64/26 (gw 10.10.4.65, bcast 10.10.4.127)\n      Why: 40 hosts + 1 gateway + network + broadcast = 43 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 41 required. Utilisation 66.1% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[028] BLDG-A MGMT: 10.10.4.128/27 (gw 10.10.4.129, bcast 10.10.4.159)\n      Why: 24 hosts + 1 gateway + network + broadcast = 27 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 25 required. Utilisation 83.3% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[029] Site block BLDG-A: 10.10.0.0/21\n      Why: Sum of BLDG-A's subnet blocks = 1,184 addresses, rounded up to the next power of two (2,048) so the whole site is one bit-aligned prefix /21. This lets the site be advertised as a single summary route (wildcard 0.0.7.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[030] BLDG-B STAFF: 10.10.8.0/24 (gw 10.10.8.1, bcast 10.10.8.255)\n      Why: 220 hosts + 1 gateway + network + broadcast = 223 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 221 required. Utilisation 87.0% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[031] BLDG-B WIFI: 10.10.9.0/24 (gw 10.10.9.1, bcast 10.10.9.255)\n      Why: 140 hosts + 1 gateway + network + broadcast = 143 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 141 required. Utilisation 55.5% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[032] BLDG-B VOICE: 10.10.10.0/25 (gw 10.10.10.1, bcast 10.10.10.127)\n      Why: 100 hosts + 1 gateway + network + broadcast = 103 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 101 required. Utilisation 80.2% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[033] BLDG-B GUEST: 10.10.10.128/26 (gw 10.10.10.129, bcast 10.10.10.191)\n      Why: 40 hosts + 1 gateway + network + broadcast = 43 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 41 required. Utilisation 66.1% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[034] BLDG-B AP-MGMT: 10.10.10.192/26 (gw 10.10.10.193, bcast 10.10.10.255)\n      Why: 30 hosts + 1 gateway + network + broadcast = 33 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 31 required. Utilisation 50.0% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[035] BLDG-B MGMT: 10.10.11.0/27 (gw 10.10.11.1, bcast 10.10.11.31)\n      Why: 16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[036] Site block BLDG-B: 10.10.8.0/22\n      Why: Sum of BLDG-B's subnet blocks = 800 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[037] BLDG-C STAFF: 10.10.12.0/24 (gw 10.10.12.1, bcast 10.10.12.255)\n      Why: 180 hosts + 1 gateway + network + broadcast = 183 addresses -> 2^8 = 256 block (/24); /25 would offer only 126 usable < 181 required. Utilisation 71.3% of 254 usable. Network address is a multiple of the 256-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[038] BLDG-C VOICE: 10.10.13.0/25 (gw 10.10.13.1, bcast 10.10.13.127)\n      Why: 80 hosts + 1 gateway + network + broadcast = 83 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 81 required. Utilisation 64.3% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[039] BLDG-C WIFI: 10.10.13.128/25 (gw 10.10.13.129, bcast 10.10.13.255)\n      Why: 110 hosts + 1 gateway + network + broadcast = 113 addresses -> 2^7 = 128 block (/25); /26 would offer only 62 usable < 111 required. Utilisation 88.1% of 126 usable. Network address is a multiple of the 128-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[040] BLDG-C GUEST: 10.10.14.0/26 (gw 10.10.14.1, bcast 10.10.14.63)\n      Why: 30 hosts + 1 gateway + network + broadcast = 33 addresses -> 2^6 = 64 block (/26); /27 would offer only 30 usable < 31 required. Utilisation 50.0% of 62 usable. Network address is a multiple of the 64-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[041] BLDG-C AP-MGMT: 10.10.14.64/27 (gw 10.10.14.65, bcast 10.10.14.95)\n      Why: 25 hosts + 1 gateway + network + broadcast = 28 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 26 required. Utilisation 86.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[042] BLDG-C MGMT: 10.10.14.96/27 (gw 10.10.14.97, bcast 10.10.14.127)\n      Why: 16 hosts + 1 gateway + network + broadcast = 19 addresses -> 2^5 = 32 block (/27); /28 would offer only 14 usable < 17 required. Utilisation 56.7% of 30 usable. Network address is a multiple of the 32-address block size, so it is bit-aligned (host bits all zero).\n      Ref: RFC 950, RFC 1878, RFC 4632\n[043] Site block BLDG-C: 10.10.12.0/22\n      Why: Sum of BLDG-C's subnet blocks = 640 addresses, rounded up to the next power of two (1,024) so the whole site is one bit-aligned prefix /22. This lets the site be advertised as a single summary route (wildcard 0.0.3.255).\n      Ref: RFC 4632 (CIDR aggregation)\n[044] Site block INFRA: 10.10.16.0/28\n      Why: Sum of INFRA's subnet blocks = 15 addresses, rounded up to the next power of two (16) so the whole site is one bit-aligned prefix /28. This lets the site be advertised as a single summary route (wildcard 0.0.0.15).\n      Ref: RFC 4632 (CIDR aggregation)\n[045] Root utilisation: 6.27% of 10.10.0.0/16\n      Why: 24 subnets packed largest-first with zero overlap (verified by sorting on network address and checking each broadcast < next network). Host demand fills 67.37% of allocated addresses. A fixed-length design using the largest LAN block everywhere would consume 9,231 addresses vs 2,639 with VLSM.\n      Ref: RFC 1878, RFC 4632\n\n== L3 Routing ============================================================\n[046] Interior gateway protocol: OSPFv2 single area 0\n      Why: The design is a single autonomous system with 24 subnets (< 50), so one LSDB stays small and SPF runs in milliseconds. A link-state protocol gives sub-second-to-seconds convergence without the hop-count limits and slow count-to-infinity behaviour of distance-vector RIP, and avoids the ABR/summarisation complexity that multi-area would add with no scaling benefit.\n      Ref: RFC 2328 (OSPFv2)\n[047] OSPF reference bandwidth: auto-cost reference-bandwidth 100000\n      Why: The default 100 Mbps reference gives FastEthernet, 1G and 10G links the same cost (1). Raising it to 100 Gbps makes cost = 100000 / link Mbps, so 10G = 10, 1G = 100 and SPF prefers the faster path. Must be identical on every router.\n      Ref: RFC 2328 Appendix C.3\n\n== QoS & Latency =========================================================\n[048] Path latency: Worst path BLDG-A -> BLDG-C = 0.052 ms one-way\n      Why: Estimated from cable/route distance at ~4.9 us/km (Internet paths x1.4) plus 0.05 ms per hop. Intercontinental latency is dominated by physics, so chatty IoT protocols should batch telemetry and use MQTT/HTTPS keep-alives rather than synchronous request/response.\n      Ref: ITU-T G.114\n\n== Verification ==========================================================\n[049] Packet-flow simulation: 30/30 checks passed\n      Why: Every LAN's last usable address was resolved by longest-prefix match to exactly one subnet (proves zero overlap), and representative flows (DHCP, DNS, Internet, lateral SMB, cloud MQTT/SSH) were walked through each generated ACL entry-by-entry using the same wildcard arithmetic the router applies."
+}

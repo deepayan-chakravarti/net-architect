@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetArchitect</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><circle cx="16" cy="6" r="3.2"/><circle cx="6" cy="24" r="3.2"/><circle cx="26" cy="24" r="3.2"/><path d="M16 9.2 7.6 21.3M16 9.2l8.4 12.1M9.2 24h13.6" fill="none" stroke-width="2"/></svg>
+    <div>
+      <h1>NetArchitect</h1>
+      <p>Recommendation &amp; Config Engine · CIC-307</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span id="status" class="status idle">Ready</span>
+    <button id="themeBtn" class="ghost" title="Toggle theme" aria-label="Toggle theme">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <section>
+      <h2>Scenario</h2>
+      <div id="presetCards" class="preset-cards"></div>
+    </section>
+    <section class="editor-section">
+      <div class="editor-head">
+        <h2>Parameters (JSON)</h2>
+        <label class="ghost small file-btn">Load file<input type="file" id="fileInput" accept=".json,application/json"></label>
+      </div>
+      <textarea id="paramEditor" spellcheck="false" aria-label="Parameter JSON"></textarea>
+      <div class="editor-actions">
+        <button id="runBtn" class="primary">Run engine</button>
+        <button id="formatBtn" class="ghost">Format</button>
+        <button id="resetBtn" class="ghost">Reset</button>
+      </div>
+      <div id="errorBox" class="error-box" hidden></div>
+    </section>
+  </aside>
+
+  <main class="content">
+    <nav class="tabs" id="tabs" role="tablist">
+      <button data-tab="overview" class="active">Overview</button>
+      <button data-tab="topology">Topology</button>
+      <button data-tab="media">L1 Media</button>
+      <button data-tab="addressing">VLSM</button>
+      <button data-tab="routing">Routing &amp; QoS</button>
+      <button data-tab="configs">Configs</button>
+      <button data-tab="rationale">Rationale</button>
+      <button data-tab="verify">Verification</button>
+      <button data-tab="tools">Tools</button>
+    </nav>
+
+    <div id="empty" class="empty">
+      <p>Pick a preset scenario or paste custom JSON, then press <b>Run engine</b>.</p>
+    </div>
+
+    <section class="panel" id="tab-overview"></section>
+    <section class="panel" id="tab-topology" hidden></section>
+    <section class="panel" id="tab-media" hidden></section>
+    <section class="panel" id="tab-addressing" hidden></section>
+    <section class="panel" id="tab-routing" hidden></section>
+    <section class="panel" id="tab-configs" hidden></section>
+    <section class="panel" id="tab-rationale" hidden></section>
+    <section class="panel" id="tab-verify" hidden></section>
+    <section class="panel always" id="tab-tools" hidden>
+      <div class="tool-grid">
+        <div class="card">
+          <h3>L1 media checker</h3>
+          <p class="muted">Apply the distance/bandwidth rules to a single cable run.</p>
+          <div class="form-grid">
+            <label>Distance (m)<input id="tDist" type="number" min="1" value="120"></label>
+            <label>Bandwidth (Gbps)<input id="tBw" type="number" min="1" max="100" value="10"></label>
+            <label>Preference<select id="tPref"><option>auto</option><option>copper</option><option>fiber</option></select></label>
+            <label>Transport<select id="tTrans"><option>fiber</option><option>evpl</option><option>internet</option></select></label>
+            <label class="check"><input id="tPoe" type="checkbox"> PoE</label>
+          </div>
+          <button id="tMediaBtn" class="primary">Check</button>
+          <div id="tMediaOut" class="tool-out"></div>
+        </div>
+        <div class="card">
+          <h3>VLSM calculator</h3>
+          <p class="muted">Bitwise allocator: sort descending, align, zero overlap.</p>
+          <div class="form-grid">
+            <label>Root prefix<input id="vRoot" value="192.168.10.0/24"></label>
+            <label>Hosts (comma separated)<input id="vHosts" value="100, 50, 25, 10"></label>
+            <label>P2P links<input id="vP2p" type="number" min="0" value="2"></label>
+            <label>P2P prefix<select id="vP2pPre"><option>30</option><option>31</option></select></label>
+          </div>
+          <button id="tVlsmBtn" class="primary">Allocate</button>
+          <div id="tVlsmOut" class="tool-out"></div>
+        </div>
+        <div class="card">
+          <h3>Wildcard mask</h3>
+          <p class="muted">Inverse mask for ACLs and OSPF network statements.</p>
+          <div class="form-grid">
+            <label>Prefix<input id="wCidr" value="10.1.4.0/22"></label>
+          </div>
+          <button id="tWcBtn" class="primary">Compute</button>
+          <div id="tWcOut" class="tool-out"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

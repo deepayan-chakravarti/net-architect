@@ -1,0 +1,64 @@
+{
+  "name": "Metro MAN",
+  "profile": "metro_man",
+  "description": "HQ + 2 remote offices 15-35 km away + FinTech colocation, 450 users. Focus: OS2 SMF, carrier EVPL, sub-5 ms QoS, dual-homed failover.",
+  "network_type": "metro",
+  "root_prefix": "172.16.0.0/16",
+  "p2p_prefix": 30,
+  "resiliency": "dual_homed",
+  "latency_budget_ms": 5,
+  "optical_margin_db": 1.0,
+  "ports_per_switch": 24,
+  "growth_factor": 0.2,
+  "hub": "HQ",
+  "dns_server": "1.1.1.1",
+  "domain_name": "metro.netarch.lab",
+  "qos": {
+    "classes": [
+      {"name": "REALTIME", "dscp": "ef", "percent": 30, "priority": true},
+      {"name": "TRADING", "dscp": "af41", "percent": 30, "priority": false},
+      {"name": "MGMT", "dscp": "cs6", "percent": 5, "priority": false}
+    ]
+  },
+  "sites": [
+    {
+      "name": "HQ",
+      "vlans": [
+        {"name": "USERS", "vlan_id": 10, "hosts": 250, "role": "data"},
+        {"name": "VOICE", "vlan_id": 20, "hosts": 120, "role": "voice", "qos_class": "REALTIME"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 16, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "REMOTE-1",
+      "vlans": [
+        {"name": "USERS", "vlan_id": 10, "hosts": 120, "role": "data"},
+        {"name": "VOICE", "vlan_id": 20, "hosts": 60, "role": "voice", "qos_class": "REALTIME"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 8, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "REMOTE-2",
+      "vlans": [
+        {"name": "USERS", "vlan_id": 10, "hosts": 80, "role": "data"},
+        {"name": "VOICE", "vlan_id": 20, "hosts": 40, "role": "voice", "qos_class": "REALTIME"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 8, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "COLO",
+      "vlans": [
+        {"name": "TRADING-SRV", "vlan_id": 30, "hosts": 60, "role": "server", "qos_class": "TRADING"},
+        {"name": "MKT-DATA", "vlan_id": 40, "hosts": 30, "role": "server", "qos_class": "REALTIME"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 8, "role": "mgmt"}
+      ]
+    }
+  ],
+  "links": [
+    {"a": "HQ", "b": "REMOTE-1", "distance_km": 22, "bandwidth_gbps": 1, "transport": "evpl", "role": "primary"},
+    {"a": "HQ", "b": "REMOTE-2", "distance_km": 35, "bandwidth_gbps": 1, "transport": "evpl", "role": "primary"},
+    {"a": "HQ", "b": "COLO", "distance_km": 15, "bandwidth_gbps": 1, "transport": "evpl", "role": "primary"},
+    {"a": "REMOTE-1", "b": "COLO", "distance_km": 28, "bandwidth_gbps": 1, "transport": "evpl", "role": "secondary"},
+    {"a": "REMOTE-2", "b": "COLO", "distance_km": 30, "bandwidth_gbps": 1, "transport": "evpl", "role": "secondary"}
+  ]
+}

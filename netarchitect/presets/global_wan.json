@@ -1,0 +1,68 @@
+{
+  "name": "Global WAN",
+  "profile": "global_wan",
+  "description": "4 cities + cloud VPC, 2,000 IoT scanners. Focus: IPsec VPN, multi-area OSPF + eBGP, route summarisation.",
+  "network_type": "wan",
+  "root_prefix": "10.64.0.0/16",
+  "p2p_prefix": 30,
+  "resiliency": "redundant",
+  "ports_per_switch": 24,
+  "growth_factor": 0.2,
+  "bgp_asn": 65010,
+  "hub": "NYC",
+  "dns_server": "1.1.1.1",
+  "domain_name": "wan.netarch.lab",
+  "sites": [
+    {
+      "name": "NYC",
+      "vlans": [
+        {"name": "IOT-SCANNERS", "vlan_id": 100, "hosts": 600, "role": "iot"},
+        {"name": "USERS", "vlan_id": 10, "hosts": 100, "role": "data"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 16, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "LONDON",
+      "vlans": [
+        {"name": "IOT-SCANNERS", "vlan_id": 100, "hosts": 500, "role": "iot"},
+        {"name": "USERS", "vlan_id": 10, "hosts": 60, "role": "data"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 16, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "SINGAPORE",
+      "vlans": [
+        {"name": "IOT-SCANNERS", "vlan_id": 100, "hosts": 450, "role": "iot"},
+        {"name": "USERS", "vlan_id": 10, "hosts": 40, "role": "data"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 16, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "MUMBAI",
+      "vlans": [
+        {"name": "IOT-SCANNERS", "vlan_id": 100, "hosts": 450, "role": "iot"},
+        {"name": "USERS", "vlan_id": 10, "hosts": 50, "role": "data"},
+        {"name": "MGMT", "vlan_id": 99, "hosts": 16, "role": "mgmt"}
+      ]
+    },
+    {
+      "name": "CLOUD-VPC",
+      "cloud": true,
+      "asn": 64512,
+      "vpc_cidr": "10.200.0.0/16",
+      "vlans": [
+        {"name": "APP-TIER", "hosts": 200, "role": "server"},
+        {"name": "DATA-TIER", "hosts": 50, "role": "server"}
+      ]
+    }
+  ],
+  "links": [
+    {"a": "NYC", "b": "LONDON", "distance_km": 5570, "bandwidth_gbps": 1, "transport": "internet"},
+    {"a": "NYC", "b": "SINGAPORE", "distance_km": 15340, "bandwidth_gbps": 1, "transport": "internet"},
+    {"a": "NYC", "b": "MUMBAI", "distance_km": 12540, "bandwidth_gbps": 1, "transport": "internet"},
+    {"a": "LONDON", "b": "MUMBAI", "distance_km": 7190, "bandwidth_gbps": 1, "transport": "internet", "role": "secondary"},
+    {"a": "SINGAPORE", "b": "MUMBAI", "distance_km": 3900, "bandwidth_gbps": 1, "transport": "internet", "role": "secondary"},
+    {"a": "NYC", "b": "CLOUD-VPC", "distance_km": 350, "bandwidth_gbps": 1, "transport": "internet"},
+    {"a": "LONDON", "b": "CLOUD-VPC", "distance_km": 5600, "bandwidth_gbps": 1, "transport": "internet", "role": "secondary"}
+  ]
+}
